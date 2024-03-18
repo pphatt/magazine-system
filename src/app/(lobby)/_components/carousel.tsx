@@ -15,12 +15,18 @@ export function CarouselSize() {
     Autoplay({ delay: 10000, stopOnInteraction: true })
   )
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const handleMouseEnter = plugin.current.stop as () => void
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const handleMouseLeave = plugin.current.reset as () => void
+
   return (
     <Carousel
       plugins={[plugin.current]}
       className="w-full max-w-xs"
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       opts={{
         align: "start",
         loop: true,
