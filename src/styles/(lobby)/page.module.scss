@@ -1,0 +1,143 @@
+.shell {
+  max-width: 100% !important;
+  margin: 0 !important;
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  height: 100%;
+  width: 100%;
+}
+
+.main-section {
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 66.666667%;
+  }
+
+  @media (min-width: 1280px) {
+    //flex-basis: 75%;
+
+    //max-width: 1152px;
+    width: 75%;
+  }
+}
+
+.content-wrapper {
+  position: relative;
+
+  width: 100%;
+
+  padding: 2em 0;
+}
+
+.content-container {
+  width: 100%;
+
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 576px) {
+    max-width: 540px;
+  }
+
+  @media (min-width: 768px) {
+    max-width: 720px;
+  }
+
+  @media (min-width: 992px) {
+    max-width: 960px;
+  }
+
+  @media (min-width: 1200px) {
+    max-width: 1140px;
+  }
+}
+
+.list-header-wrapper {
+  display: flex;
+  justify-content: center !important;
+  flex-wrap: wrap;
+
+  padding-bottom: 1.5rem !important;
+
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.list-header-container {
+  position: relative;
+
+  width: 100%;
+
+  padding-right: 15px;
+  padding-left: 15px;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  text-align: center !important;
+
+  animation-duration: 0.5s;
+  animation-name: fadeInUp;
+  animation-fill-mode: both;
+
+  @media (min-width: 768px) {
+    flex: 0 0 100%;
+
+    max-width: 100%;
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, 40px, 0);
+    }
+    100% {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+.list-header {
+  display: block;
+
+  color: #4986fc;
+
+  margin-bottom: 5px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+}
+
+.list-description {
+  margin-bottom: 1.5rem !important;
+
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.faculty-wrapper {
+  display: flex;
+  justify-content: center !important;
+  flex-wrap: wrap;
+
+  margin-right: -15px;
+  margin-left: -15px;
+}

@@ -1,0 +1,22 @@
+.layout {
+  display: grid;
+
+  min-height: 100vh;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  padding-right: 2rem;
+  padding-left: 2rem;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 1400px) {
+    max-width: 1400px;
+  }
+}

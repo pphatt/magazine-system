@@ -1,0 +1,79 @@
+.faculty-wrapper {
+  position: relative;
+
+  padding: 4rem 0;
+}
+
+.faculty-container {
+  width: 100%;
+
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.faculty-header-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  padding-bottom: 0.5rem;
+  margin-bottom: 3rem;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.faculty-header-container {
+  position: relative;
+
+  width: 100%;
+
+  padding-right: 15px;
+  padding-left: 15px;
+
+  text-align: center;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  animation-name: fadeInUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+
+  @media (min-width: 768px) {
+    flex: 0 0 66.66667%;
+
+    max-width: 66.66667%;
+  }
+
+  h2 {
+    color: rgba(0, 0, 0, 0.8);
+
+    margin-bottom: 1.5rem;
+
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+
+      transform: translate3d(0, 40px, 0);
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+

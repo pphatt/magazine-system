@@ -1,0 +1,86 @@
+.sign-in-layout {
+  max-width: 32rem !important;
+}
+
+.auth {
+  display: grid;
+  gap: 1rem;
+
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.separator {
+  position: relative;
+
+  .separator-line {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .separator-text {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+
+    font-size: 0.75rem;
+    line-height: 1rem;
+
+    text-transform: uppercase;
+
+    span {
+      color: hsl(240 5% 64.9%);
+      background-color: hsl(var(--background));
+
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  div {
+    flex: 1;
+
+    color: hsl(240 5% 64.9%);
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  span {
+    display: none;
+    margin-right: 0.25rem;
+
+    @media (min-width: 640px) {
+      display: inline-block;
+    }
+  }
+
+  a {
+    color: hsl(var(--foreground));
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    text-underline-offset: 4px;
+
+    transition-property: color, background-color, border-color,
+      text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+}

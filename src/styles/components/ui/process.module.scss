@@ -1,0 +1,23 @@
+.process {
+  position: relative;
+
+  background-color: hsl(var(--secondary));
+
+  border-radius: 9999px;
+
+  height: 1rem;
+  width: 60%;
+
+  overflow: hidden;
+
+  div {
+    background-color: hsl(var(--primary));
+
+    width: 100%;
+    height: 100%;
+
+    transition-property: all;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+  }
+}

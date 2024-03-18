@@ -1,0 +1,167 @@
+.main-nav-layout {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  height: 100%;
+}
+
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    gap: 2.5rem;
+  }
+}
+
+.name {
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: fit-content;
+    height: 90%;
+  }
+
+  img {
+    height: 2.5rem;
+
+    @media (min-width: 90em) {
+      height: 4rem;
+    }
+  }
+
+  span {
+    display: none;
+
+    margin-left: 8px;
+
+    font-size: 1.15rem;
+    font-weight: 700;
+
+    @media (min-width: 640px) {
+      display: inline-block;
+    }
+  }
+}
+
+.menu-with-card {
+  display: grid;
+  gap: 0.75rem;
+
+  padding: 1.5rem;
+
+  @media (min-width: 768px) {
+    width: 400px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 500px;
+
+    grid-template-columns: 0.75fr 1fr;
+  }
+}
+
+.menu-without-card {
+  display: grid;
+  gap: 0.75rem;
+
+  padding: 1rem;
+
+  width: 400px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 500px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 600px;
+  }
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  background-color: hsl(240 3.7% 15.9% / 0.5);
+
+  border-radius: calc(0.5rem - 2px);
+
+  height: 100%;
+  width: 100%;
+
+  padding: 1.5rem;
+
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  text-decoration-line: none;
+
+  user-select: none;
+
+  div {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+
+    font-weight: 500;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  p {
+    color: hsl(240 5% 64.9%);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+.list-item {
+  display: block;
+
+  color: hsl(0 0% 98%);
+
+  background-color: transparent;
+
+  border-radius: calc(0.5rem - 2px);
+  padding: 0.75rem;
+
+  line-height: 1;
+
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  cursor: pointer;
+
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+
+  div {
+    font-size: 0.875rem;
+    line-height: 1rem;
+    font-weight: 500;
+  }
+
+  p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    color: hsl(240 5% 64.9%);
+
+    font-size: 0.875rem;
+    line-height: 1.375;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background-color: hsl(240 3.7% 15.9%);
+  }
+}

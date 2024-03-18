@@ -1,0 +1,263 @@
+@use "../../variables" as var;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+
+  backdrop-filter: blur(4px);
+  background-color: hsl(var(--background)/.8);
+
+  z-index: 50;
+
+  animation-duration: 0.15s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  &[data-state="open"] {
+    --tw-enter-opacity: 0;
+
+    @include var.enter();
+  }
+
+  &[data-state="closed"] {
+    --tw-exit-opacity: 0;
+
+    @include var.exit();
+  }
+}
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  display: grid;
+  gap: 1rem;
+
+  background-color: hsl(var(--background));
+
+  border-width: 1px;
+
+  border-radius: 0.5rem;
+
+  max-width: 425px;
+  width: 100%;
+
+  padding: 1.5rem;
+
+  z-index: 50;
+
+  transform: translate(-50%, -50%) scale(1);
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.2s;
+
+  animation-duration: 0.15s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  &[data-state="open"] {
+    --tw-enter-opacity: 0;
+    --tw-enter-translate-x: -50%;
+    --tw-enter-translate-y: -48%;
+    --tw-enter-scale: 0.95;
+
+    @include var.enter();
+  }
+
+  &[data-state="closed"] {
+    --tw-exit-opacity: 0;
+    --tw-exit-translate-x: -50%;
+    --tw-exit-translate-y: -48%;
+    --tw-exit-scale: 0.95;
+
+    @include var.exit();
+  }
+}
+
+.command-dialog {
+  // this is not the shadcn/ui default style
+  position: fixed;
+  //top: 50%;
+  left: 50%;
+
+  display: grid;
+  gap: 1rem;
+
+  background-color: hsl(var(--background));
+
+  max-width: 32rem;
+  width: 100%;
+
+  border-width: 1px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  z-index: 50;
+
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1);
+
+  transform: translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.2s;
+
+  animation-duration: 0.15s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  &[data-state="open"] {
+    --tw-enter-opacity: 0;
+    --tw-enter-translate-x: -50%;
+    --tw-enter-translate-y: -48%;
+    --tw-enter-scale: 0.95;
+
+    --tw-translate-x: -50%;
+
+    @include var.enter();
+  }
+
+  &[data-state="closed"] {
+    --tw-exit-opacity: 0;
+    --tw-exit-translate-x: -50%;
+    --tw-exit-translate-y: -48%;
+    --tw-exit-scale: 0.95;
+  }
+
+  @media (min-width: 768px) {
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    border-radius: var(--radius);
+  }
+}
+
+.dialog-default {
+  @include var.exit();
+}
+
+.dialog-top {
+  top: 3%;
+
+  --tw-translate-y: 0px;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  -webkit-appearance: button;
+  background-color: transparent;
+  background-image: none;
+
+  border-radius: calc(0.5rem - 4px);
+
+  cursor: pointer;
+
+  opacity: 0.7;
+
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-title {
+  color: hsl(var(--foreground));
+  letter-spacing: -0.025em;
+
+  font-size: 1.125rem;
+  line-height: 1rem;
+  font-weight: 600;
+}
+
+.dialog-description {
+  color: hsl(var(--muted-foreground));
+  margin-top: 6px;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.dialog-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.dialog-trigger {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 2.5rem;
+
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary) / 0.9);
+
+  border-radius: calc(0.5rem - 2px);
+
+  padding: 0.5rem 1rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition-property: color, background-color, border-color,
+  text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  svg {
+    display: block;
+    vertical-align: middle;
+
+    width: 1rem;
+    height: 1rem;
+
+    margin-right: 0.5rem;
+
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+      100% {
+        transform: rotate(1turn);
+      }
+    }
+  }
+}

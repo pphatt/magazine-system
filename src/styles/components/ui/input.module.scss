@@ -1,0 +1,42 @@
+.input {
+  display: flex;
+
+  height: 2.5rem;
+  max-width: 20rem;
+  width: 100%;
+
+  background-color: hsl(var(--background));
+
+  border-color: hsl(var(--input));
+  border-width: 1px;
+  border-radius: calc(0.5rem - 2px);
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  padding: 0.5rem 0.75rem;
+
+  &:focus-visible {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    box-shadow: 0 0 0 2px hsl(240 10% 3.9%), 0 0 0 4px hsl(240 3.7% 15.9%),
+    0 0 #0000;
+  }
+
+  &[type="file"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    max-width: 20rem;
+
+    &::file-selector-button {
+      font-weight: 600;
+
+      &:hover {
+        background-color: hsl(var(--input));
+      }
+    }
+  }
+}

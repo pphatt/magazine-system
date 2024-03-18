@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  STUDENT
+  MARKETING_COORDINATOR
+  MARKETING_MANAGER
+  GUEST
+}
+
+enum FacultyEnum {
+  INFOMATION_TECNOLOGY
+  BUSINESS
+  GRAPHIC_DESIGN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(STUDENT)
+
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId String?
+
+  accounts      Account[]
+  contributions Contributions[]
+  workspace     Workspace[]     @relation("CreatedBy")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Faculty {
+  id      String      @id @default(cuid())
+  name    String
+  faculty FacultyEnum
+
+  workspace Workspace[]
+
+  user User[]
+
+  @@unique([faculty])
+}
+
+model Workspace {
+  id            String          @id @default(uuid())
+  name          String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Contributions Contributions[]
+
+  creatorId String
+  Creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
+
+  facultyId String
+  Faculty   Faculty @relation(fields: [facultyId], references: [id])
+
+  @@index([name])
+}
+
+model Contributions {
+  id        String   @id @default(cuid())
+  file      Bytes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+}

@@ -1,0 +1,37 @@
+.avatar {
+  position: relative;
+
+  display: flex;
+
+  flex-shrink: 0;
+
+  width: 2.5rem;
+  height: 2.5rem;
+
+  border-radius: 9999px;
+
+  overflow: hidden;
+}
+
+.avatar-image {
+  max-width: 100%;
+
+  width: 100%;
+  height: 100%;
+
+  aspect-ratio: 1/1;
+}
+
+.avatar-fallback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: hsl(var(--muted-foreground));
+  background-color: hsl(var(--muted));
+
+  border-radius: 9999px;
+
+  width: 100%;
+  height: 100%;
+}
