@@ -1,0 +1,145 @@
+.recent-wrapper {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.recent-header-wrapper {
+  padding-bottom: 3.5rem !important;
+  justify-content: center !important;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.recent-header-container {
+  text-align: center !important;
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  @media (min-width: 768px) {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.66667%;
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+  }
+}
+
+.recent-header-h2 {
+  font-size: 44px;
+  font-weight: 600;
+  margin-bottom: 1.5rem !important;
+}
+
+.recent-card-wrapper {
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.recent-card-container {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  @media (min-width: 992px) {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+  }
+}
+.recent-card {
+}
+.recent-card-img {
+  overflow: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 275px;
+  position: relative;
+  display: block;
+}
+.recent-card-date {
+  display: inline-block;
+  background: #5d50c6;
+  text-align: center !important;
+  padding: 0.5rem !important;
+}
+
+.card-day {
+  font-weight: 700;
+  font-size: 20px;
+  display: block;
+  color: #fff;
+  text-align: center !important;
+}
+.card-month {
+  font-size: 13px;
+  display: block;
+  color: #fff;
+  text-align: center !important;
+}
+.card-year {
+  font-size: 13px;
+  display: block;
+  color: #fff;
+  text-align: center !important;
+}
+
+.recent-card-content {
+  position: relative;
+  border-top: 0;
+  border-radius: 2px;
+  background: #fff !important;
+  padding: 1.5rem !important;
+}
+.recent-card-h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 400;
+}
+
+.recent-card-feature {
+  margin-top: 1.5rem !important;
+  align-items: center !important;
+  display: flex !important;
+}
+
+.recent-card-readmore {
+  margin-bottom: 0 !important;
+}
+
+.recent-card-btn {
+  cursor: pointer;
+  background: #fd5f00;
+  border: 1px solid #fd5f00;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 40px;
+  display: inline-block;
+  font-weight: 400;
+  padding: 6px 4px;
+}
+.recent-card-role {
+  margin-left: auto !important;
+  margin-bottom: 0 !important;
+  display: flex;
+}
+
+.mr-2 {
+  margin-right: 0.5rem !important;
+}
+
+.recent-card-chat {
+  color: #b3b3b3;
+}
