@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "dotenv -e .env.local prisma generate",
     "db:push": "dotenv -e .env.local -- prisma db push",
-    "db:seed": "dotenv -e .env.local -- ts-node --compiler-options {\\\"module\\\":\\\"CommonJS\\\"} src/db/seed.ts",
+    "db:seed": "dotenv -e .env.local -- node --no-warnings=ExperimentalWarning --loader ts-node/esm src/db/seed.ts",
     "db:studio": "dotenv -e .env.local -- prisma studio",
     "db:migrate": "dotenv -e .env.local -- prisma migrate dev --name",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
@@ -88,7 +88,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.2.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/eslint": "^8.56.2",
-    "@types/node": "^20.11.20",
+    "@types/node": "^20.11.30",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
     "@types/uuid": "^9.0.8",
@@ -100,6 +100,7 @@
     "husky": "^9.0.11",
     "prettier": "^3.2.5",
     "prisma": "^5.10.2",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
   }
 }
