@@ -1,6 +1,14 @@
 import * as React from "react"
+import Link from "next/link"
 
+import { Button } from "@/components/ui/button"
 import styles from "@/styles/(lobby)/_components/faculty.module.scss"
+
+const faculties = [
+  { faculty: "IT & Software", description: "100 Workspace", href: "/" },
+  { faculty: "Photography", description: "100 Workspace", href: "/" },
+  { faculty: "Marketing", description: "100 Workspace", href: "/" },
+]
 
 export function Faculty() {
   return (
@@ -16,102 +24,22 @@ export function Faculty() {
           </div>
         </div>
         <div className={styles["faculty-card-wrapper"]}>
-          <div className={styles["faculty-card"]}>
-            <div
-              className={styles["faculty-card-img"]}
-              style={{ backgroundImage: "url(images/course-1.jpg)" }}
-            ></div>
-            <div className={styles["faculty-card-content"]}>
-              <p className={styles["faculty-card-info"]}>
-                <span>
-                  <i className="icon-user mr-2"></i>Mr. Khan
-                </span>
-                <span>
-                  <i className="icon-table mr-2"></i>10 seats
-                </span>
-                <span>
-                  <i className="icon-calendar mr-2"></i>4 Years
-                </span>
-              </p>
-              <h3>
-                <a href="#">Electric Engineering</a>
-              </h3>
-              <p>
-                Separated they live in. A small river named Duden flows by their
-                place and supplies it with the necessary regelialia. It is a
-                paradisematic country
-              </p>
-              <p>
-                <a href="#" className={styles["faculty-card-submit-btn"]}>
-                  Apply now
-                </a>
-              </p>
+          {faculties.map(({ faculty, description, href }, index) => (
+            <div key={index} className={styles["faculty-card"]}>
+              <div className={styles["faculty-card-img"]}>
+                <img src={"images/course-1.jpg"} alt={""} />
+              </div>
+              <div className={styles["faculty-card-content"]}>
+                <h3>
+                  <Link href={href}>{faculty}</Link>
+                </h3>
+                <p>{description}</p>
+                <Button variant={"outline"} className={styles["view"]}>
+                  <Link href={href}>View Now</Link>
+                </Button>
+              </div>
             </div>
-          </div>
-          <div className={styles["faculty-card"]}>
-            <div
-              className={styles["faculty-card-img"]}
-              style={{ backgroundImage: "url(images/course-2.jpg)" }}
-            ></div>
-            <div className={styles["faculty-card-content"]}>
-              <p className={styles["faculty-card-info"]}>
-                <span>
-                  <i className="icon-user mr-2"></i>Mr. Khan
-                </span>
-                <span>
-                  <i className="icon-table mr-2"></i>10 seats
-                </span>
-                <span>
-                  <i className="icon-calendar mr-2"></i>4 Years
-                </span>
-              </p>
-              <h3>
-                <a href="#">Electric Engineering</a>
-              </h3>
-              <p>
-                Separated they live in. A small river named Duden flows by their
-                place and supplies it with the necessary regelialia. It is a
-                paradisematic country
-              </p>
-              <p>
-                <a href="#" className={styles["faculty-card-submit-btn"]}>
-                  Apply now
-                </a>
-              </p>
-            </div>
-          </div>
-          <div className={styles["faculty-card"]}>
-            <div
-              className={styles["faculty-card-img"]}
-              style={{ backgroundImage: "url(images/course-3.jpg)" }}
-            ></div>
-            <div className={styles["faculty-card-content"]}>
-              <p className={styles["faculty-card-info"]}>
-                <span>
-                  <i className="icon-user mr-2"></i>Mr. Khan
-                </span>
-                <span>
-                  <i className="icon-table mr-2"></i>10 seats
-                </span>
-                <span>
-                  <i className="icon-calendar mr-2"></i>4 Years
-                </span>
-              </p>
-              <h3>
-                <a href="#">Electric Engineering</a>
-              </h3>
-              <p>
-                Separated they live in. A small river named Duden flows by their
-                place and supplies it with the necessary regelialia. It is a
-                paradisematic country
-              </p>
-              <p>
-                <a href="#" className={styles["faculty-card-submit-btn"]}>
-                  Apply now
-                </a>
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

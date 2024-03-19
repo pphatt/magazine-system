@@ -4,6 +4,7 @@ import { Shell } from "@/components/shells/shell"
 import styles from "@/styles/(lobby)/page.module.scss"
 import { CarouselSize } from "@/app/(lobby)/_components/carousel"
 import { Faculty } from "@/app/(lobby)/_components/faculty"
+import { Footer } from "@/app/(lobby)/_components/footer"
 import { RecentBlog } from "@/app/(lobby)/_components/recent-blog"
 
 // const faculties = [
@@ -18,6 +19,7 @@ export default function Page() {
       <CarouselSize />
       <Faculty />
       <RecentBlog />
+      <Footer />
     </Shell>
   )
 }
