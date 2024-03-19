@@ -1,0 +1,43 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 4rem 0;
+}
+
+.inner-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.header-wrapper {
+  border-bottom-width: 1px;
+  border-color: #E5E7EB;
+
+  padding-bottom: 1.25rem;
+}
+
+.header-container {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+
+  margin-top: -0.5rem;
+  margin-left: -0.5rem;
+
+  h3 {
+    color: #111827;
+
+    margin-top: 0.5rem;
+    margin-left: 0.5rem;
+
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5rem;
+  }
+}

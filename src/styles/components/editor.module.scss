@@ -1,0 +1,38 @@
+.editor-layout {
+  background-color: rgb(250 250 250);
+
+  width: 100%;
+
+  border-width: 1px;
+  border-color: rgb(228 228 231);
+  border-radius: 0.5rem;
+
+  padding: 1rem;
+}
+
+.editor-form {
+  width: fit-content;
+}
+
+.editor-title {
+  background-color: transparent;
+
+  width: 100%;
+
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 700;
+
+  overflow: hidden;
+  appearance: none;
+
+  resize: none;
+
+  &:focus-visible {
+    outline: 0;
+  }
+}
+
+.editor {
+  min-height: 500px;
+}
