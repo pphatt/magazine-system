@@ -1,10 +1,14 @@
+import { supabase } from "@/server/supabase/supabase"
 import Attaches from "@editorjs/attaches"
-import {supabase} from "@/server/supabase/supabase";
 
-export class EditorAttaches extends Attaches  {
+export class EditorAttaches extends Attaches {
   async removed() {
     // access the image block's file data
     const { file } = this._data as { file: { url: string } }
+
+    if (!file.url) {
+      return
+    }
 
     await supabase.storage
       .from("images")
