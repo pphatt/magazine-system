@@ -6,6 +6,10 @@ export class EditorImage extends Image {
     // access the image block's file data
     const { file } = this._data as { file: { url: string } }
 
+    if (!file.url) {
+      return
+    }
+
     await supabase.storage
       .from("images")
       .remove([

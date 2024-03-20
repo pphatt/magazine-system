@@ -1,25 +1,32 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { supabase } from "@/server/supabase/supabase"
-import type EditorJS from "@editorjs/editorjs"
+import * as React from "react";
+import { supabase } from "@/server/supabase/supabase";
+import type EditorJS from "@editorjs/editorjs";
 // import { zodResolver } from "@hookform/resolvers/zod"
 // import { useForm } from "react-hook-form"
-import TextareaAutosize from "react-textarea-autosize"
+import TextareaAutosize from "react-textarea-autosize";
+import { v4 } from "uuid";
 
-import { EditorAttaches } from "@/components/editor/attaches"
-import { EditorCode } from "@/components/editor/code"
-import { EditorEmbed } from "@/components/editor/embed"
-import { EditorHeader } from "@/components/editor/header"
-import { EditorImage } from "@/components/editor/image"
-import { EditorInlineCode } from "@/components/editor/inline-code"
-import { EditorLink } from "@/components/editor/link"
-import { EditorList } from "@/components/editor/list"
-import { EditorTable } from "@/components/editor/table"
+
+
+import { EditorAttaches } from "@/components/editor/attaches";
+import { EditorCode } from "@/components/editor/code";
+import { EditorEmbed } from "@/components/editor/embed";
+import { EditorHeader } from "@/components/editor/header";
+import { EditorImage } from "@/components/editor/image";
+import { EditorInlineCode } from "@/components/editor/inline-code";
+import { EditorLink } from "@/components/editor/link";
+import { EditorList } from "@/components/editor/list";
+import { EditorTable } from "@/components/editor/table";
 // import type { z } from "zod"
 
 // import { workspaceSchema } from "@/lib/validations/workspace"
-import styles from "@/styles/components/editor.module.scss"
+import styles from "@/styles/components/editor.module.scss";
+
+
+
+
 
 // type WorkspaceCreationRequest = z.infer<typeof workspaceSchema>
 
@@ -83,7 +90,7 @@ export function Editor({ workspaceId }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("images")
-                    .upload(workspaceId, file)
+                    .upload(v4(), file)
 
                   return {
                     success: 1,
@@ -105,7 +112,7 @@ export function Editor({ workspaceId }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("images")
-                    .upload(workspaceId, file)
+                    .upload(v4(), file)
 
                   return {
                     success: 1,

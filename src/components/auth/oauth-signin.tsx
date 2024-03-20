@@ -13,7 +13,6 @@ type OAuthStrategy = "google" | "github"
 
 const authProvider = [
   { name: "Google", strategy: "google", icon: "google" },
-  { name: "Github", strategy: "github", icon: "gitHub" },
 ] as {
   name: string
   strategy: OAuthStrategy
