@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { Button } from "@/components/ui/button"
 import styles from "@/styles/(lobby)/_components/recent-blog.module.scss"
 import {Button} from "@/components/ui/button";
 
