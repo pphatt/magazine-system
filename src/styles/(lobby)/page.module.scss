@@ -4,6 +4,7 @@
 
   padding-left: 0 !important;
   padding-right: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .layout {
@@ -140,4 +141,16 @@
 
   margin-right: -15px;
   margin-left: -15px;
+}
+
+.images-wrapper {
+  display: flex;
+
+  img {
+    height: 350px;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
 }
