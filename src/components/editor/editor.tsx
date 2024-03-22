@@ -71,6 +71,7 @@ export function Editor({ faculty }: EditorProps) {
     onSuccess: () => {
       toast("Workspace created successfully.")
       router.push("/faculty")
+      router.refresh()
     },
   })
 

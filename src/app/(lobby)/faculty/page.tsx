@@ -33,7 +33,7 @@ export default async function FacultyPage() {
         )}
       </div>
 
-      <FacultyWorkspace />
+      <FacultyWorkspace user={user} />
     </div>
   )
 }

@@ -31,11 +31,13 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify("OK"), { status: 200 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return new Response(error.message, { status: 400 })
+      return new Response(JSON.stringify(error.message), { status: 400 })
     }
 
     return new Response(
-      "Could not create workspace at this time. Please try later",
+      JSON.stringify(
+        "Could not create workspace at this time. Please try later"
+      ),
       { status: 500 }
     )
   }
