@@ -1,6 +1,8 @@
 import {
   AlertCircle,
   AlignJustify,
+  Plus,
+  FileText,
   ArrowUpFromDot,
   Ban,
   BarChart3,
@@ -97,7 +99,9 @@ export const Icons = {
   arrowUpVote: ArrowUpFromDot,
   globe: Globe,
   filter: Filter,
+  fileText: FileText,
   moveRight: MoveRight,
+  plus: Plus,
   search: Search,
   laptop: Laptop2,
   bookOpen: BookOpen,

@@ -167,6 +167,25 @@
   //}
 }
 
+.ce-toolbar__content,
+.ce-block__content {
+  max-width: 71rem !important;
+}
+
+.ce-block__content {
+  margin: 0 !important;
+}
+
+.ce-toolbar {
+  left: initial !important;
+}
+
+//.codex-editor__redactor {
+//  @media (min-width: 651px) {
+//    margin-right: 60px;
+//  }
+//}
+
 body {
   // README: optional global styles
   overflow-y: scroll;

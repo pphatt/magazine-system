@@ -33,16 +33,17 @@ enum VoteEnum {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String       @id @default(uuid())
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-  password      String
-  role          UserRole  @default(STUDENT)
+  password      String?
+  role          UserRole     @default(STUDENT)
+  faculty       FacultyEnum?
 
-  faculty   Faculty? @relation(fields: [facultyId], references: [id])
-  facultyId String?
+  // faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  // facultyId String?
 
   accounts      Account[]
   contributions Contributions[]
@@ -71,31 +72,32 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Faculty {
-  id      String      @id @default(cuid())
-  name    String
-  faculty FacultyEnum
-
-  workspace Workspace[]
-
-  user User[]
-
-  @@unique([faculty])
-}
+// model Faculty {
+//   id      String      @id @default(cuid())
+//   name    String
+//   faculty FacultyEnum
+//
+//   workspace Workspace[]
+//
+//   user User[]
+//
+//   @@unique([faculty])
+// }
 
 model Workspace {
   id            String          @id @default(uuid())
-  name          String          @unique
+  name          String
+  content       Json?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   Contributions Contributions[]
+  faculty       FacultyEnum?
 
   creatorId String
   Creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
 
-  facultyId String
-  Faculty   Faculty @relation(fields: [facultyId], references: [id])
-
+  // facultyId String
+  // Faculty   Faculty @relation(fields: [facultyId], references: [id])
   @@index([name])
 }
 

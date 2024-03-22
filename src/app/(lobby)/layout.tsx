@@ -12,10 +12,13 @@ export default async function LobbyLayout({ children }: LobbyLayoutProps) {
   const user = await auth()
 
   return (
-    <div className={styles["layout"]}>
-      <SiteHeader user={user} />
-      <main>{children}</main>
-      <SiteFooter />
-    </div>
+    <>
+      <div className={styles["layout"]}>
+        <SiteHeader user={user}/>
+        <main>{children}</main>
+      </div>
+
+      <SiteFooter/>
+    </>
   )
 }

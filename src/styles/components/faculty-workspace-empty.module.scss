@@ -1,0 +1,37 @@
+.layout-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.layout-container {
+  text-align: center;
+
+  svg {
+    color: hsl(var(--muted-foreground));
+
+    width: 3rem;
+    height: 3rem;
+
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h3 {
+    margin-top: 0.5rem;
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+  }
+
+  p {
+    color: hsl(var(--muted-foreground));
+
+    margin-top: 0.25rem;
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}

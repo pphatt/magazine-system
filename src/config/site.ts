@@ -19,8 +19,8 @@ export const siteConfig = {
       items: [],
     },
     {
-      title: "Dashboard",
-      href: "/dashboard",
+      title: "Faculty",
+      href: "/faculty",
       icon: "",
       items: [],
     },

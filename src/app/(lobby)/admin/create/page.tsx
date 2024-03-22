@@ -19,7 +19,7 @@ export default function CreateWorkspacePage() {
         </div>
 
         {/* form */}
-        <Editor workspaceId={uuid} />
+        <Editor faculty={uuid} />
 
         <div className="w-full flex justify-end">
           <Button type="submit" className="w-full" form="subreddit-post-form">

@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import React from "react";
-import Link from "next/link";
-import type { MainNavItem } from "@/types";
+import React from "react"
+import Link from "next/link"
+import type { MainNavItem } from "@/types"
 
-
-
-import { cn } from "@/lib/utils";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import styles from "@/styles/components/layouts/main-nav.module.scss";
-
-
-
-
+import { cn } from "@/lib/utils"
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import styles from "@/styles/components/layouts/main-nav.module.scss"
 
 interface MainNavProps {
   items: MainNavItem[]

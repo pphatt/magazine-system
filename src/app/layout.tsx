@@ -3,6 +3,7 @@ import "@/styles/globals.scss"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import { Providers } from "@/providers/providers"
+import TanstackProviders from "@/providers/tanstack-providers"
 import { auth } from "@/server/auth/auth"
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from "sonner"
@@ -29,16 +30,18 @@ export default async function RootLayout({
         <head />
         <Script defer data-domain="mangado.org"></Script>
         <body className={inter.className}>
-          <Providers
-            attribute="class"
-            defaultTheme="light"
-            forcedTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster />
-          </Providers>
+          <TanstackProviders>
+            <Providers
+              attribute="class"
+              defaultTheme="light"
+              forcedTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+              <Toaster />
+            </Providers>
+          </TanstackProviders>
         </body>
       </html>
     </SessionProvider>

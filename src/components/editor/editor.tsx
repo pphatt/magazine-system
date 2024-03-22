@@ -1,67 +1,81 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { supabase } from "@/server/supabase/supabase";
-import type EditorJS from "@editorjs/editorjs";
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { useForm } from "react-hook-form"
-import TextareaAutosize from "react-textarea-autosize";
-import { v4 } from "uuid";
+import * as React from "react"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/server/supabase/supabase"
+import type EditorJS from "@editorjs/editorjs"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
+import { useForm } from "react-hook-form"
+import TextareaAutosize from "react-textarea-autosize"
+import { toast } from "sonner"
+import { v4 } from "uuid"
+import type { z } from "zod"
 
+import { workspaceSchema } from "@/lib/validations/workspace"
+import { EditorAttaches } from "@/components/editor/attaches"
+import { EditorCode } from "@/components/editor/code"
+import { EditorEmbed } from "@/components/editor/embed"
+import { EditorHeader } from "@/components/editor/header"
+import { EditorImage } from "@/components/editor/image"
+import { EditorInlineCode } from "@/components/editor/inline-code"
+import { EditorLink } from "@/components/editor/link"
+import { EditorList } from "@/components/editor/list"
+import { EditorTable } from "@/components/editor/table"
+import styles from "@/styles/components/editor.module.scss"
 
-
-import { EditorAttaches } from "@/components/editor/attaches";
-import { EditorCode } from "@/components/editor/code";
-import { EditorEmbed } from "@/components/editor/embed";
-import { EditorHeader } from "@/components/editor/header";
-import { EditorImage } from "@/components/editor/image";
-import { EditorInlineCode } from "@/components/editor/inline-code";
-import { EditorLink } from "@/components/editor/link";
-import { EditorList } from "@/components/editor/list";
-import { EditorTable } from "@/components/editor/table";
-// import type { z } from "zod"
-
-// import { workspaceSchema } from "@/lib/validations/workspace"
-import styles from "@/styles/components/editor.module.scss";
-
-
-
-
-
-// type WorkspaceCreationRequest = z.infer<typeof workspaceSchema>
+export type WorkspaceCreationRequest = z.infer<typeof workspaceSchema>
 
 interface EditorProps {
-  workspaceId: string
+  faculty: string
 }
 
-export function Editor({ workspaceId }: EditorProps) {
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm<WorkspaceCreationRequest>({
-  //   resolver: zodResolver(workspaceSchema),
-  //   defaultValues: {
-  //     title: "",
-  //     content: null,
-  //   },
-  // })
+export function Editor({ faculty }: EditorProps) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<WorkspaceCreationRequest>({
+    resolver: zodResolver(workspaceSchema),
+    defaultValues: {
+      title: "",
+      content: null,
+    },
+  })
 
   const [isMounted, setIsMounted] = React.useState<boolean>(false)
 
+  const router = useRouter()
+
   const ref = React.useRef<EditorJS>()
+
+  const { mutate: createWorkspace } = useMutation({
+    mutationFn: async ({ title, content }: WorkspaceCreationRequest) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const payload: WorkspaceCreationRequest = { title, content }
+      const response = await fetch("/api/workspace/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      return (await response.json()) as unknown
+    },
+    onError: () => {
+      toast.warning("Something went wrong.", {
+        description: "Your post was not published. Please try again.",
+      })
+    },
+    onSuccess: () => {
+      toast("Workspace created successfully.")
+      router.push("/faculty")
+    },
+  })
 
   const initializeEditor = React.useCallback(async () => {
     const EditorJS = (await import("@editorjs/editorjs")).default
-    // const Header = (await import("@editorjs/header")).default
-    // const Embed = (await import("@editorjs/embed")).default as never
-    // const Table = (await import("@editorjs/table")).default as never
-    // const List = (await import("@editorjs/list")).default as never
-    // const Code = (await import("@editorjs/code")).default as never
-    // const LinkTool = (await import("@editorjs/link")).default as never
-    // const InlineCode = (await import("@editorjs/inline-code")).default as never
-    // const ImageTool = (await import("@editorjs/image")).default as never
-    // const AttachesTool = (await import("@editorjs/attaches")).default as never
 
     if (!ref.current) {
       const editor = new EditorJS({
@@ -90,7 +104,7 @@ export function Editor({ workspaceId }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("images")
-                    .upload(v4(), file)
+                    .upload(`${faculty}/${v4()}`, file)
 
                   return {
                     success: 1,
@@ -112,7 +126,7 @@ export function Editor({ workspaceId }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("images")
-                    .upload(v4(), file)
+                    .upload(`${faculty}/${v4()}`, file)
 
                   return {
                     success: 1,
@@ -134,7 +148,18 @@ export function Editor({ workspaceId }: EditorProps) {
         },
       })
     }
-  }, [workspaceId])
+  }, [faculty])
+
+  React.useEffect(() => {
+    if (Object.keys(errors).length) {
+      for (const [_key, value] of Object.entries(errors)) {
+        console.log(_key)
+        toast.warning("Something went wrong.", {
+          description: (value as { message: string }).message,
+        })
+      }
+    }
+  }, [errors])
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -161,17 +186,35 @@ export function Editor({ workspaceId }: EditorProps) {
     }
   }, [isMounted, initializeEditor])
 
+  async function onSubmit(data: WorkspaceCreationRequest) {
+    const blocks = await ref.current?.save()
+
+    const payload: WorkspaceCreationRequest = {
+      title: data.title,
+      content: blocks,
+    }
+
+    createWorkspace(payload)
+  }
+
   if (!isMounted) {
     return null
   }
 
+  const { ...rest } = register("title")
+
   return (
     <div className={styles["editor-layout"]}>
-      <form id="subreddit-post-form" className={styles["editor-form"]}>
+      <form
+        id="workspace-post-form"
+        className={styles["editor-form"]}
+        onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
+      >
         <div>
           <TextareaAutosize
             placeholder="Title"
             className={styles["editor-title"]}
+            {...rest}
           />
           <div id="editor" className={styles["editor"]} />
           <p className="text-sm text-gray-500">
