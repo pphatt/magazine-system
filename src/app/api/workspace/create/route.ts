@@ -14,13 +14,14 @@ export async function POST(req: Request) {
 
     const user = await currentUser()
 
-    if (!user) {
+    if (!user || !user.id) {
       return new Response("Unauthorized", { status: 401 })
     }
 
     await db.workspace.create({
       data: {
         name: title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         content,
         faculty: user.faculty,
         creatorId: user.id,

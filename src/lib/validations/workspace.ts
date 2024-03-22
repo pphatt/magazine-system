@@ -9,5 +9,5 @@ export const workspaceSchema = z.object({
     .max(128, {
       message: "Title must be less than 128 characters long",
     }),
-  content: z.unknown(),
+  content: z.any(),
 })
