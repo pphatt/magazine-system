@@ -39,6 +39,7 @@
   "include": [
     ".eslintrc.cjs",
     "next-env.d.ts",
+    "src/types/prisma-json.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",

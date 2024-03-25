@@ -6,6 +6,7 @@ import type { User } from "next-auth"
 
 import { FacultyWorkspaceEmpty } from "@/components/faculty-workspace-empty"
 import styles from "@/styles/components/faculty-workspace.module.scss"
+import {format} from "date-fns";
 
 interface FacultyWorkspaceProps {
   user: User
@@ -26,12 +27,12 @@ export async function FacultyWorkspace({ user }: FacultyWorkspaceProps) {
 
   return (
     <ul className={styles["workspace-wrapper"]}>
-      {workspace.map(({ id, name, createdAt }, index) => (
+      {workspace.map(({ id, title, deadline }, index) => (
         <li key={index} className={styles["item-wrapper"]}>
           <Link href={`/faculty/magazine/${id}`} className={styles["item-container"]}>
-            <div className={styles["item-title"]}>{name}</div>
+            <div className={styles["item-title"]}>{title}</div>
             <div className={styles["item-datetime"]}>
-              Deadline: {new Date(createdAt).toISOString()}
+              Deadline: {format(deadline, "PPP")}
             </div>
             <div className={styles["submission-status"]}>Not submited</div>
           </Link>

@@ -1,0 +1,56 @@
+.magazine-wrapper {
+  background-color: hsl(var(--accent));
+
+  width: 100%;
+  height: fit-content;
+
+  border-radius: calc(0.5rem - 4px);
+
+  padding: 1rem;
+}
+
+.magazine-date {
+  color: rgb(107 114 128);
+
+  max-height: 10rem;
+
+  margin-top: 0.25rem;
+
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: 500;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.magazine-title {
+  color: rgb(17 24 39);
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
+
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.magazine-deadline {
+  @extend .magazine-date;
+
+  margin-bottom: 1rem;
+}
+
+.magazine-paragraph {
+  margin: 5px 0;
+
+  text-align: left;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}

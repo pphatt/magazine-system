@@ -11,10 +11,10 @@ export class EditorAttaches extends Attaches {
     }
 
     await supabase.storage
-      .from("images")
+      .from("faculty-assets")
       .remove([
         file.url.split(
-          "https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/images/"
+          "https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/faculty-assets/"
         )[1]!,
       ])
   }

@@ -6,13 +6,24 @@ import { supabase } from "@/server/supabase/supabase"
 import type EditorJS from "@editorjs/editorjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
+import { format } from "date-fns"
 import { useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "sonner"
 import { v4 } from "uuid"
 import type { z } from "zod"
 
+import { cn } from "@/lib/utils"
 import { workspaceSchema } from "@/lib/validations/workspace"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form"
+import { PopoverTrigger } from "@/components/ui/popover"
 import { EditorAttaches } from "@/components/editor/attaches"
 import { EditorCode } from "@/components/editor/code"
 import { EditorEmbed } from "@/components/editor/embed"
@@ -24,6 +35,10 @@ import { EditorList } from "@/components/editor/list"
 import { EditorTable } from "@/components/editor/table"
 import styles from "@/styles/components/editor.module.scss"
 
+import { Icons } from "../icons"
+import { Button } from "../ui/button"
+import { Popover, PopoverContent } from "../ui/popover"
+
 export type WorkspaceCreationRequest = z.infer<typeof workspaceSchema>
 
 interface EditorProps {
@@ -31,15 +46,12 @@ interface EditorProps {
 }
 
 export function Editor({ faculty }: EditorProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<WorkspaceCreationRequest>({
+  const form = useForm<WorkspaceCreationRequest>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
       title: "",
       content: null,
+      deadline: new Date(),
     },
   })
 
@@ -50,9 +62,13 @@ export function Editor({ faculty }: EditorProps) {
   const ref = React.useRef<EditorJS>()
 
   const { mutate: createWorkspace } = useMutation({
-    mutationFn: async ({ title, content }: WorkspaceCreationRequest) => {
+    mutationFn: async ({
+      title,
+      content,
+      deadline,
+    }: WorkspaceCreationRequest) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const payload: WorkspaceCreationRequest = { title, content }
+      const payload: WorkspaceCreationRequest = { title, content, deadline }
       const response = await fetch("/api/workspace/create", {
         method: "POST",
         headers: {
@@ -104,13 +120,13 @@ export function Editor({ faculty }: EditorProps) {
               uploader: {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
-                    .from("images")
+                    .from("faculty-assets")
                     .upload(`${faculty}/${v4()}`, file)
 
                   return {
                     success: 1,
                     file: {
-                      url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/images/${data?.path}`,
+                      url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/faculty-assets/${data?.path}`,
                     },
                   }
                 },
@@ -123,10 +139,11 @@ export function Editor({ faculty }: EditorProps) {
           attaches: {
             class: EditorAttaches as never,
             config: {
+              types: ".doc, .docx, .pdf",
               uploader: {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
-                    .from("images")
+                    .from("faculty-assets")
                     .upload(`${faculty}/${v4()}`, file)
 
                   return {
@@ -134,7 +151,7 @@ export function Editor({ faculty }: EditorProps) {
                     file: {
                       title: file.name,
                       name: file.name,
-                      url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/images/${data?.path}`,
+                      url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/faculty-assets/${data?.path}`,
                     },
                   }
                 },
@@ -152,15 +169,15 @@ export function Editor({ faculty }: EditorProps) {
   }, [faculty])
 
   React.useEffect(() => {
-    if (Object.keys(errors).length) {
-      for (const [_key, value] of Object.entries(errors)) {
+    if (Object.keys(form.formState.errors).length) {
+      for (const [_key, value] of Object.entries(form.formState.errors)) {
         console.log(_key)
         toast.warning("Something went wrong.", {
           description: (value as { message: string }).message,
         })
       }
     }
-  }, [errors])
+  }, [form.formState.errors])
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -193,6 +210,7 @@ export function Editor({ faculty }: EditorProps) {
     const payload: WorkspaceCreationRequest = {
       title: data.title,
       content: blocks,
+      deadline: data.deadline,
     }
 
     createWorkspace(payload)
@@ -202,31 +220,68 @@ export function Editor({ faculty }: EditorProps) {
     return null
   }
 
-  const { ...rest } = register("title")
-
   return (
     <div className={styles["editor-layout"]}>
-      <form
-        id="workspace-post-form"
-        className={styles["editor-form"]}
-        onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
-      >
-        <div>
-          <TextareaAutosize
-            placeholder="Title"
-            className={styles["editor-title"]}
-            {...rest}
-          />
-          <div id="editor" className={styles["editor"]} />
-          <p className="text-sm text-gray-500">
-            Use{" "}
-            <kbd className="rounded-md border bg-muted px-1 text-xs uppercase">
-              Tab
-            </kbd>{" "}
-            to open the command menu.
-          </p>
-        </div>
-      </form>
+      <Form {...form}>
+        <form
+          id="workspace-post-form"
+          className={styles["editor-form"]}
+          onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        >
+          <div>
+            <TextareaAutosize
+              placeholder="Title"
+              className={styles["editor-title"]}
+              {...form.register("title")}
+            />
+            <div id="editor" className={styles["editor"]} />
+          </div>
+          <div>
+            <FormField
+              control={form.control}
+              name="deadline"
+              render={({ field }) => (
+                <FormItem className={styles["form"]}>
+                  <FormLabel>Deadline</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <Icons.calendarIcon
+                            className={styles["calendar-icon"]}
+                          />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className={styles["popover-content"]}
+                      align="start"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormItem>
+              )}
+            />
+          </div>
+        </form>
+      </Form>
     </div>
   )
 }

@@ -14,6 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+  // namespace = "PrismaJson"
+  // clientOutput = "<finds it automatically>"
+  // (./ -> relative to schema, or an importable path to require() it)
+}
+
 enum UserRole {
   ADMIN
   STUDENT
@@ -48,9 +55,9 @@ model User {
   accounts      Account[]
   contributions Contributions[]
   workspace     Workspace[]     @relation("CreatedBy")
-  Comment       Comment[]
-  Vote          Vote[]
-  CommentVote   CommentVote[]
+  comment       Comment[]
+  vote          Vote[]
+  commentVote   CommentVote[]
 }
 
 model Account {
@@ -85,25 +92,27 @@ model Account {
 // }
 
 model Workspace {
-  id            String          @id @default(uuid())
-  name          String
-  content       Json?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  Contributions Contributions[]
+  id    String @id @default(uuid())
+  title String
+
+  /// [ContentType]
+  content Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deadline  DateTime
+
+  contributions Contributions[]
   faculty       FacultyEnum?
 
   creatorId String
-  Creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
+  creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
 
-  // facultyId String
-  // Faculty   Faculty @relation(fields: [facultyId], references: [id])
-  @@index([name])
+  @@index([title])
 }
 
 model Contributions {
   id        String   @id @default(cuid())
-  file      Bytes
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
