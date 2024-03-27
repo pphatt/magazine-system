@@ -12,3 +12,7 @@ export const fileEditSchema = fileSchema.and(
     contributionsId: z.string(),
   })
 )
+
+export const fileDeleteSchema = z.object({
+  contributionsId: z.string(),
+})

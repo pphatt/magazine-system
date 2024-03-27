@@ -7,6 +7,7 @@ import { type User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { formatTimeForSubmissionDiff } from "@/lib/utils"
+import { DeleteSubmission } from "@/components/delete-submission"
 import { EditSubmission } from "@/components/edit-submission"
 import { RenderWorkspace } from "@/components/render-workspace"
 import SubmitContributions from "@/components/submit-contributions"
@@ -128,7 +129,7 @@ export default async function MagazinePage({
           </table>
 
           {contributions && isBefore(new Date(), magazine.closureDate) && (
-            <>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
               <EditSubmission
                 contributionsId={contributions.id}
                 magazineId={magazine.id}
@@ -136,7 +137,13 @@ export default async function MagazinePage({
                 userId={user.id!}
                 locations={JSON.parse(contributions.location) as string[]}
               />
-            </>
+
+              <DeleteSubmission
+                contributionsId={contributions.id}
+                locations={JSON.parse(contributions.location) as string[]}
+                closureDate={magazine.closureDate}
+              />
+            </div>
           )}
 
           {/*<iframe*/}
