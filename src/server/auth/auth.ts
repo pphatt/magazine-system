@@ -26,11 +26,8 @@ export const {
     error: "/signin",
   },
   events: {
-    async linkAccount({ user }) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { emailVerified: new Date() },
-      })
+    linkAccount({ user }) {
+      console.log(user)
     },
   },
   callbacks: {

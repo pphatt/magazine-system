@@ -1,4 +1,5 @@
 import * as React from "react"
+import { redirect } from "next/navigation"
 
 import { currentUser } from "@/lib/auth/auth"
 import { Button } from "@/components/ui/button"
@@ -9,7 +10,7 @@ export default async function NewPage() {
   const user = await currentUser()
 
   if (!user || !user.faculty || user.role !== "MARKETING_COORDINATOR") {
-    return <></>
+    redirect("/faculty")
   }
 
   return (

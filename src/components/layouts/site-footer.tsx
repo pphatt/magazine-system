@@ -26,7 +26,7 @@ export function SiteFooter() {
                   </li>
                   <li className={styles["footer-information-list"]}>
                     <Icons.mail />
-                    <span>info@greenwich.cms.com</span>
+                    <span>info@test.cms.com</span>
                   </li>
                 </ul>
               </div>

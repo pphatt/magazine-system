@@ -1,6 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
+import { type User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { Button } from "@/components/ui/button"
@@ -9,11 +9,7 @@ import { Icons } from "@/components/icons"
 import styles from "@/styles/(faculty)/page.module.scss"
 
 export default async function FacultyPage() {
-  const user = await currentUser()
-
-  if (!user || !user.faculty) {
-    redirect("/")
-  }
+  const user = (await currentUser()) as User
 
   const isMarketingCoordinate = user.role === "MARKETING_COORDINATOR"
 

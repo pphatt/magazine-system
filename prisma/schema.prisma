@@ -56,8 +56,6 @@ model User {
   contributions Contributions[]
   workspace     Workspace[]     @relation("CreatedBy")
   comment       Comment[]
-  vote          Vote[]
-  commentVote   CommentVote[]
 }
 
 model Account {
@@ -98,9 +96,10 @@ model Workspace {
   /// [ContentType]
   content Json?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deadline  DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  closureDate      DateTime @db.Timestamptz(3)
+  finalClosureDate DateTime
 
   contributions Contributions[]
   faculty       FacultyEnum?
@@ -112,9 +111,13 @@ model Workspace {
 }
 
 model Contributions {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  publicized Boolean
+  isTurnIn   Boolean
+
+  location String // store as array for multi contribution string[]
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
@@ -123,7 +126,6 @@ model Contributions {
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
   comments Comment[]
-  votes    Vote[]
 }
 
 model Comment {
@@ -139,26 +141,5 @@ model Comment {
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
 
-  votes     CommentVote[]
   commentId String?
-}
-
-model Vote {
-  user            User          @relation(fields: [userId], references: [id])
-  userId          String
-  contributions   Contributions @relation(fields: [contributionsId], references: [id], onDelete: Cascade)
-  contributionsId String
-  type            VoteEnum
-
-  @@id([userId, contributionsId])
-}
-
-model CommentVote {
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
-  commentId String
-  type      VoteEnum
-
-  @@id([userId, commentId])
 }

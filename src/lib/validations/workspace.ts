@@ -10,5 +10,6 @@ export const workspaceSchema = z.object({
       message: "Title must be less than 128 characters long",
     }),
   content: z.any(),
-  deadline: z.coerce.date(),
+  closureDate: z.coerce.date(),
+  finalClosureDate: z.coerce.date(),
 })

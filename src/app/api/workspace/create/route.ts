@@ -10,7 +10,8 @@ export async function POST(req: Request) {
     const body = (await req.json()) as WorkspaceCreationRequest
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, content, deadline } = workspaceSchema.parse(body)
+    const { title, content, closureDate, finalClosureDate } =
+      workspaceSchema.parse(body)
 
     const user = await currentUser()
 
@@ -23,7 +24,8 @@ export async function POST(req: Request) {
         title,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         content,
-        deadline,
+        closureDate,
+        finalClosureDate,
         faculty: user.faculty,
         creatorId: user.id,
       },

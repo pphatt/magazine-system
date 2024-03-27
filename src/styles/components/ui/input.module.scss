@@ -32,11 +32,11 @@
     max-width: 20rem;
 
     &::file-selector-button {
-      font-weight: 600;
+      background-color: transparent;
 
-      &:hover {
-        background-color: hsl(var(--input));
-      }
+      border: 0;
+
+      font-weight: 600;
     }
   }
 }

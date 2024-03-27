@@ -1,12 +1,14 @@
 "use client"
 
 import * as React from "react"
+import type { ChangeEventHandler } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/server/supabase/supabase"
 import type EditorJS from "@editorjs/editorjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
-import { format } from "date-fns"
+import { format, set } from "date-fns"
+import type { SelectSingleEventHandler } from "react-day-picker"
 import { useForm } from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "sonner"
@@ -46,16 +48,29 @@ interface EditorProps {
 }
 
 export function Editor({ faculty }: EditorProps) {
+  const today = new Date()
+
+  const [isMounted, setIsMounted] = React.useState<boolean>(false)
+
+  const [selectedClosureDate, setSelectClosureDate] =
+    React.useState<Date>(today)
+  const [closureDateWithTime, setClosureDateWithTime] =
+    React.useState<Date>(today)
+
+  const [selectedFinalClosureDate, setSelectFinalClosureDate] =
+    React.useState<Date>(today)
+  const [finalClosureDateWithTime, setFinalClosureDateWithTime] =
+    React.useState<Date>(today)
+
   const form = useForm<WorkspaceCreationRequest>({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
       title: "",
       content: null,
-      deadline: new Date(),
+      closureDate: new Date(),
+      finalClosureDate: new Date(),
     },
   })
-
-  const [isMounted, setIsMounted] = React.useState<boolean>(false)
 
   const router = useRouter()
 
@@ -65,10 +80,16 @@ export function Editor({ faculty }: EditorProps) {
     mutationFn: async ({
       title,
       content,
-      deadline,
+      closureDate,
+      finalClosureDate,
     }: WorkspaceCreationRequest) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const payload: WorkspaceCreationRequest = { title, content, deadline }
+      const payload: WorkspaceCreationRequest = {
+        title,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        content,
+        closureDate,
+        finalClosureDate,
+      }
       const response = await fetch("/api/workspace/create", {
         method: "POST",
         headers: {
@@ -121,7 +142,7 @@ export function Editor({ faculty }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("faculty-assets")
-                    .upload(`${faculty}/${v4()}`, file)
+                    .upload(`${faculty}/${v4()}/${file.name}`, file)
 
                   return {
                     success: 1,
@@ -144,7 +165,7 @@ export function Editor({ faculty }: EditorProps) {
                 async uploadByFile(file: File) {
                   const { data } = await supabase.storage
                     .from("faculty-assets")
-                    .upload(`${faculty}/${v4()}`, file)
+                    .upload(`${faculty}/${v4()}/${file.name}`, file)
 
                   return {
                     success: 1,
@@ -210,15 +231,99 @@ export function Editor({ faculty }: EditorProps) {
     const payload: WorkspaceCreationRequest = {
       title: data.title,
       content: blocks,
-      deadline: data.deadline,
+      closureDate: closureDateWithTime,
+      finalClosureDate: finalClosureDateWithTime,
     }
 
     createWorkspace(payload)
   }
 
+  const handleClosureDateTimeChange: ChangeEventHandler<HTMLInputElement> =
+    React.useCallback(
+      (e) => {
+        const { value } = e.target
+
+        const hours = Number.parseInt(value.split(":")[0] || "00", 10)
+        const minutes = Number.parseInt(value.split(":")[1] || "00", 10)
+        const seconds = Number.parseInt(value.split(":")[2] || "00", 10)
+
+        setClosureDateWithTime(
+          set(selectedClosureDate, { hours, minutes, seconds })
+        )
+      },
+      [selectedClosureDate]
+    )
+
+  const handleClosureDateSelect: SelectSingleEventHandler = React.useCallback(
+    (_day, selected) => {
+      setSelectClosureDate(selected)
+
+      const hours = closureDateWithTime.getHours()
+      const minutes = closureDateWithTime.getMinutes()
+      const seconds = closureDateWithTime.getSeconds()
+
+      setClosureDateWithTime(set(selected, { hours, minutes, seconds }))
+    },
+    [closureDateWithTime]
+  )
+
+  const handleFinalClosureDateTimeChange: ChangeEventHandler<HTMLInputElement> =
+    React.useCallback(
+      (e) => {
+        const { value } = e.target
+
+        const hours = Number.parseInt(value.split(":")[0] || "00", 10)
+        const minutes = Number.parseInt(value.split(":")[1] || "00", 10)
+        const seconds = Number.parseInt(value.split(":")[2] || "00", 10)
+
+        setFinalClosureDateWithTime(
+          set(selectedFinalClosureDate, { hours, minutes, seconds })
+        )
+      },
+      [selectedFinalClosureDate]
+    )
+
+  const handleFinalClosureDateSelect: SelectSingleEventHandler =
+    React.useCallback(
+      (_day, selected) => {
+        setSelectFinalClosureDate(selected)
+
+        const hours = finalClosureDateWithTime.getHours()
+        const minutes = finalClosureDateWithTime.getMinutes()
+        const seconds = finalClosureDateWithTime.getSeconds()
+
+        setFinalClosureDateWithTime(set(selected, { hours, minutes, seconds }))
+      },
+      [finalClosureDateWithTime]
+    )
+
   if (!isMounted) {
     return null
   }
+
+  const closureDateTime = (
+    <div className={styles["footer"]}>
+      <label>Time: </label>
+      <input
+        type="time"
+        step="1"
+        onChange={handleClosureDateTimeChange}
+        value={format(closureDateWithTime, "HH:mm:ss")}
+      />
+    </div>
+  )
+
+  const finalClosureDateTime = (
+    <div className={styles["footer"]}>
+      <label>Time: </label>
+      <input
+        type="time"
+        step="1"
+        onChange={handleFinalClosureDateTimeChange}
+        value={format(finalClosureDateWithTime, "HH:mm:ss")}
+      />
+    </div>
+  )
 
   return (
     <div className={styles["editor-layout"]}>
@@ -239,10 +344,10 @@ export function Editor({ faculty }: EditorProps) {
           <div>
             <FormField
               control={form.control}
-              name="deadline"
-              render={({ field }) => (
+              name="closureDate"
+              render={() => (
                 <FormItem className={styles["form"]}>
-                  <FormLabel>Deadline</FormLabel>
+                  <FormLabel>Closure Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -250,11 +355,11 @@ export function Editor({ faculty }: EditorProps) {
                           variant={"outline"}
                           className={cn(
                             "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !selectedClosureDate && "text-muted-foreground"
                           )}
                         >
-                          {field.value ? (
-                            format(field.value, "PPP")
+                          {selectedClosureDate ? (
+                            format(closureDateWithTime, "PPP HH:mm:ss")
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -270,8 +375,59 @@ export function Editor({ faculty }: EditorProps) {
                     >
                       <Calendar
                         mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
+                        selected={selectedClosureDate}
+                        onSelect={handleClosureDateSelect}
+                        footer={closureDateTime}
+                        disabled={(date) =>
+                          date < new Date()
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="finalClosureDate"
+              render={() => (
+                <FormItem className={styles["form"]}>
+                  <FormLabel>Final Closure Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !selectedFinalClosureDate && "text-muted-foreground"
+                          )}
+                        >
+                          {selectedFinalClosureDate ? (
+                            format(finalClosureDateWithTime, "PPP HH:mm:ss")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <Icons.calendarIcon
+                            className={styles["calendar-icon"]}
+                          />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className={styles["popover-content"]}
+                      align="start"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={selectedFinalClosureDate}
+                        onSelect={handleFinalClosureDateSelect}
+                        footer={finalClosureDateTime}
+                        disabled={(date) =>
+                          date < new Date()
+                        }
                         initialFocus
                       />
                     </PopoverContent>
