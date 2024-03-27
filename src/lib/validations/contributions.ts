@@ -6,3 +6,9 @@ export const fileSchema = z.object({
   files: z.any().optional(),
   location: z.array(z.string()).optional(),
 })
+
+export const fileEditSchema = fileSchema.and(
+  z.object({
+    contributionsId: z.string(),
+  })
+)

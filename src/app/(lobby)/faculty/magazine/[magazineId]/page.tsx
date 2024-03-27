@@ -7,6 +7,7 @@ import { type User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { formatTimeForSubmissionDiff } from "@/lib/utils"
+import { EditSubmission } from "@/components/edit-submission"
 import { RenderWorkspace } from "@/components/render-workspace"
 import SubmitContributions from "@/components/submit-contributions"
 import styles from "@/styles/(magazine)/page.module.scss"
@@ -125,6 +126,18 @@ export default async function MagazinePage({
               </tr>
             </tbody>
           </table>
+
+          {contributions && isBefore(new Date(), magazine.closureDate) && (
+            <>
+              <EditSubmission
+                contributionsId={contributions.id}
+                magazineId={magazine.id}
+                closureDate={magazine.closureDate}
+                userId={user.id!}
+                locations={JSON.parse(contributions.location) as string[]}
+              />
+            </>
+          )}
 
           {/*<iframe*/}
           {/*  src="https://docs.google.com/gview?url=https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contribution/bf6715c7-5c0d-4951-be51-66f8eb5e705e/c760eec8-3d4f-4beb-95c8-61f19311eae6/1_Unit%202%20-%20Assignment%201%20frontsheet.docx&embedded=true"></iframe>*/}

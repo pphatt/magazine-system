@@ -100,6 +100,9 @@ export default function SubmitContributions({
 
     if (isBefore(new Date(), closureDate)) {
       submitContributions(payload)
+    } else {
+      toast.error("Submit failed. Exceed the closure date")
+      router.refresh()
     }
   }
 
