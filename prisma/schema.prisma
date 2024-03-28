@@ -54,7 +54,6 @@ model User {
 
   accounts      Account[]
   contributions Contributions[]
-  workspace     Workspace[]     @relation("CreatedBy")
   comment       Comment[]
 }
 
@@ -89,27 +88,6 @@ model Account {
 //   @@unique([faculty])
 // }
 
-model Workspace {
-  id    String @id @default(uuid())
-  title String
-
-  /// [ContentType]
-  content Json?
-
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  closureDate      DateTime @db.Timestamptz(3)
-  finalClosureDate DateTime
-
-  contributions Contributions[]
-  faculty       FacultyEnum?
-
-  creatorId String
-  creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
-
-  @@index([title])
-}
-
 model Contributions {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
@@ -121,9 +99,6 @@ model Contributions {
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id])
-
-  workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
   comments Comment[]
 }
