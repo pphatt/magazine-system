@@ -31,6 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
   TableBody,
@@ -104,7 +105,7 @@ export function UserDataTable<TData, TValue>({
     startTransition(() => {
       const newQueryString = createQueryString({
         q: debouncedQuery !== "" ? debouncedQuery : null,
-        page
+        page,
       })
 
       router.push(`${pathname}?${newQueryString}`, {
@@ -174,22 +175,39 @@ export function UserDataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  className={styles["table-row"]}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              isPending ? (
+                [...(Array(5) as number[])].map((_, index) => (
+                  <TableRow key={index} className={styles["table-row"]}>
+                    {[...(Array(5) as number[])].map((_, index) => (
+                      <TableCell key={index}>
+                        <Skeleton
+                          style={{
+                            height: "55px",
+                            width: "100%",
+                          }}
+                        />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={styles["table-row"]}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              )
             ) : (
               <TableRow>
                 <TableCell
