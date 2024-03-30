@@ -29,33 +29,20 @@ enum UserRole {
   GUEST
 }
 
-enum FacultyEnum {
-  INFOMATION_TECNOLOGY
-  BUSINESS
-  GRAPHIC_DESIGN
-}
-
-enum VoteEnum {
-  LIKE
-}
-
 model User {
-  id            String       @id @default(uuid())
+  id            String    @id @default(uuid())
   name          String?
-  email         String?      @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   password      String?
-  role          UserRole     @default(STUDENT)
-  faculty       FacultyEnum?
-  createdAt     DateTime     @default(now())
+  role          UserRole  @default(STUDENT)
+  createdAt     DateTime  @default(now())
 
-  // faculty   Faculty? @relation(fields: [facultyId], references: [id])
-  // facultyId String?
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId String?
 
-  accounts      Account[]
-  contributions Contributions[]
-  comment       Comment[]
+  accounts Account[]
 }
 
 model Account {
@@ -77,17 +64,28 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-// model Faculty {
-//   id      String      @id @default(cuid())
-//   name    String
-//   faculty FacultyEnum
-//
-//   workspace Workspace[]
-//
-//   user User[]
-//
-//   @@unique([faculty])
-// }
+model Faculty {
+  id        String   @id @default(cuid())
+  name      String
+  image     String
+  createdAt DateTime @default(now())
+
+  user User[]
+
+  @@unique([name])
+}
+
+model AcademicYear {
+  id          String   @id @default(cuid())
+  name        String
+  image       String
+  createdAt   DateTime @default(now())
+  description String
+
+  startDate        DateTime
+  closureDate      DateTime @db.Timestamptz(3)
+  finalClosureDate DateTime
+}
 
 model Contributions {
   id         String   @id @default(cuid())
@@ -98,8 +96,8 @@ model Contributions {
 
   location String // store as array for multi contribution string[]
 
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id])
+  // authorId String
+  // author   User   @relation(fields: [authorId], references: [id])
 
   comments Comment[]
 }
@@ -108,8 +106,8 @@ model Comment {
   id            String        @id @default(cuid())
   text          String
   createdAt     DateTime      @default(now())
-  author        User          @relation(fields: [authorId], references: [id])
-  authorId      String
+  // author        User          @relation(fields: [authorId], references: [id])
+  // authorId      String
   contributions Contributions @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId        String
 

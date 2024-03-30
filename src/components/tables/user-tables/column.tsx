@@ -37,10 +37,29 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "role",
     header: "Role",
+    cell: (value) => {
+      // transform from MARKETING_COORDINATOR to Marketing Coordinator
+      return value.row.original.role
+        .toLocaleLowerCase()
+        .split("_")
+        .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
+        .join(" ")
+    },
   },
   {
     accessorKey: "faculty",
     header: "Faculty",
+    cell: (value) => {
+      if (!value.row.original.faculty) {
+        return value.row.original.faculty
+      }
+
+      return value.row.original.faculty
+        .toLocaleLowerCase()
+        .split("_")
+        .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
+        .join(" ")
+    },
   },
   {
     id: "actions",
