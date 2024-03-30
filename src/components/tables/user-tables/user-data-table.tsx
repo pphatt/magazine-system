@@ -236,7 +236,7 @@ export function UserDataTable<TData, TValue>({
                   aria-disabled={!canPrevPage}
                   tabIndex={!canPrevPage ? -1 : undefined}
                   className={!canPrevPage ? styles["disabled"] : undefined}
-                  href={`${pathname}?page=${page - 1}&rows${rows}`}
+                  href={`${pathname}?page=${page - 1}&rows=${rows}`}
                 />
               </PaginationItem>
               {paginationArr[0] !== 1 && (
@@ -264,7 +264,7 @@ export function UserDataTable<TData, TValue>({
                   aria-disabled={!canNextPage}
                   tabIndex={!canNextPage ? -1 : undefined}
                   className={!canNextPage ? styles["disabled"] : undefined}
-                  href={`${pathname}?page=${page + 1}&rows${rows}`}
+                  href={`${pathname}?page=${page + 1}&rows=${rows}`}
                 />
               </PaginationItem>
             </PaginationContent>

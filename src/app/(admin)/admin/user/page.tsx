@@ -64,7 +64,13 @@ export default async function UserPage({ searchParams }: SearchPageProps) {
     })
   }
 
-  const totalUsers = await db.user.count()
+  const totalUsers = await db.user.count({
+    where: {
+      role: {
+        not: "ADMIN",
+      },
+    },
+  })
 
   return (
     <div className={styles["layout-wrapper"]}>

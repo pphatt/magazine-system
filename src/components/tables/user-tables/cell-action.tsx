@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { User } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -14,8 +15,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { AlertModal } from "@/components/modals/alert-modal"
 import styles from "@/styles/components/tables/user-tables/cell-action.module.scss"
-
-import { type User } from "./data"
 
 interface CellActionProps {
   data: User

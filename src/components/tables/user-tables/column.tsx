@@ -1,7 +1,7 @@
 "use client"
 
+import { type User } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
-import { type User } from "next-auth"
 
 import { Checkbox } from "@/components/ui/checkbox"
 import { CellAction } from "@/components/tables/user-tables/cell-action"
