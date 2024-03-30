@@ -2,6 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
+import { User } from "@prisma/client"
 
 import { parserPage } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"
@@ -24,23 +25,44 @@ interface SearchPageProps {
 }
 
 export default async function UserPage({ searchParams }: SearchPageProps) {
-  const { page, rows } = searchParamsSchema.parse(searchParams)
+  const { q, page, rows } = searchParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
   const rowsNumber = parserPage(rows)
 
-  const users = await db.user.findMany({
-    skip: (pageNumber - 1) * rowsNumber,
-    take: rowsNumber,
-    where: {
-      role: {
-        not: "ADMIN",
+  let users: User[]
+
+  if (q !== "undefined") {
+    users = await db.user.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: {
+        name: {
+          contains: q,
+          mode: "insensitive",
+        },
+        role: {
+          not: "ADMIN",
+        },
       },
-    },
-    orderBy: {
-      createdAt: "asc",
-    },
-  })
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+  } else {
+    users = await db.user.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: {
+        role: {
+          not: "ADMIN",
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+  }
 
   const totalUsers = await db.user.count()
 

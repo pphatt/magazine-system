@@ -1,7 +1,8 @@
 "use client"
 
+import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import {
   flexRender,
   getCoreRowModel,
@@ -11,6 +12,7 @@ import {
 } from "@tanstack/react-table"
 
 import { generatePagination } from "@/lib/utils"
+import { useDebounce } from "@/hooks/use-debounce"
 import { Input } from "@/components/ui/input"
 import {
   Pagination,
@@ -63,26 +65,64 @@ export function UserDataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isPending, startTransition] = React.useTransition()
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const pathname = usePathname()
 
   const canNextPage = totalUsers > rows * page
   const canPrevPage = page > 1
   const totalPages = Math.ceil(totalUsers / rows)
 
+  const q = searchParams?.get("q") ?? ""
+
   const paginationArr = generatePagination(page, totalPages)
 
-  /* this can be used to get the selectedrows 
-  console.log("value", table.getFilteredSelectedRowModel()); */
+  const createQueryString = React.useCallback(
+    (params: Record<string, string | number | null>) => {
+      const newSearchParams = new URLSearchParams(searchParams?.toString())
+
+      for (const [key, value] of Object.entries(params)) {
+        if (value === null) {
+          newSearchParams.delete(key)
+        } else {
+          newSearchParams.set(key, String(value))
+        }
+      }
+
+      return newSearchParams.toString()
+    },
+    [searchParams]
+  )
+
+  const [query, setQuery] = React.useState<string>(q)
+  const debouncedQuery = useDebounce(query, 300)
+
+  React.useEffect(() => {
+    startTransition(() => {
+      const newQueryString = createQueryString({
+        q: debouncedQuery !== "" ? debouncedQuery : null,
+        page
+      })
+
+      router.push(`${pathname}?${newQueryString}`, {
+        scroll: false,
+      })
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedQuery])
 
   return (
     <>
       <div className={styles["action-group"]}>
         <Input
           placeholder={`Search ${searchKey}...`}
-          value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn(searchKey)?.setFilterValue(event.target.value)
-          }
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value)
+          }}
           className={styles["search"]}
         />
 
