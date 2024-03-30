@@ -178,7 +178,7 @@ export function FacultyDataTable<TData, TValue>({
               isPending ? (
                 [...(Array(5) as number[])].map((_, index) => (
                   <TableRow key={index} className={styles["table-row"]}>
-                    {[...(Array(3) as number[])].map((_, index) => (
+                    {[...(Array(4) as number[])].map((_, index) => (
                       <TableCell key={index}>
                         <Skeleton
                           style={{
