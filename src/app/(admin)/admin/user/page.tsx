@@ -32,6 +32,11 @@ export default async function UserPage({ searchParams }: SearchPageProps) {
   const users = await db.user.findMany({
     skip: (pageNumber - 1) * rowsNumber,
     take: rowsNumber,
+    where: {
+      role: {
+        not: "ADMIN",
+      },
+    },
     orderBy: {
       createdAt: "asc",
     },
