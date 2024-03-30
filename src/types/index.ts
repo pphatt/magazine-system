@@ -18,6 +18,10 @@ export interface NavItemWithOptionalChildren extends NavItem {
   items?: NavItemWithChildren[]
 }
 
+export interface SearchParams {
+  [key: string]: string | string[] | undefined
+}
+
 export type SidebarNavItem = NavItemWithChildren
 
 export type MainNavItem = NavItemWithOptionalChildren

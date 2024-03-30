@@ -55,3 +55,47 @@ export function formatTimeForSubmissionDiff(day: Date, dayCompare: Date) {
 
   return result
 }
+
+export function parserPage(page: string) {
+  let pageNumber: number
+
+  try {
+    pageNumber = parseInt(page) || 1
+    if (pageNumber < 1) pageNumber = 1
+  } catch (e) {
+    pageNumber = 1
+  }
+
+  return pageNumber
+}
+
+export function parserRows(rows: string) {
+  let _rows: number
+
+  try {
+    _rows = parseInt(rows) || 50
+    if (_rows < 1) _rows = 50
+  } catch (e) {
+    _rows = 50
+  }
+
+  return _rows
+}
+
+export function generatePagination(activePage: number, totalPages: number) {
+  const paginationLength = 5
+
+  let startPage = Math.max(1, activePage - Math.floor(paginationLength / 2))
+  const endPage = Math.min(totalPages, startPage + paginationLength - 1)
+  const pagination = []
+
+  if (endPage - startPage + 1 < paginationLength) {
+    startPage = Math.max(1, endPage - paginationLength + 1)
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pagination.push(i)
+  }
+
+  return pagination
+}

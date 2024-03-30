@@ -1,0 +1,77 @@
+.add-user-btn {
+  color: hsl(var(--primary-foreground)) !important;
+  background-color: hsl(var(--primary)) !important;
+
+  height: 2rem !important;
+
+  padding: 0 0.75rem !important;
+
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  font-weight: 500;
+
+  svg {
+    width: 0.875rem;
+    height: 0.875rem;
+
+    margin-right: 0.25rem;
+  }
+
+  &:hover {
+    background-color: hsl(var(--primary) / 0.9);
+  }
+}
+
+.dialog-content {
+  max-width: 650px;
+  max-height: 700px;
+
+  overflow-y: scroll;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+
+  padding-bottom: 1rem;
+}
+
+.form-item {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  margin: 0 !important;
+
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: 500;
+
+  text-align: right;
+}
+
+.form-input {
+  max-width: 100% !important;
+  width: 100%;
+
+  &:focus-visible {
+    box-shadow:
+      0 0 #0000,
+      0 0 0 1px hsl(var(--ring)),
+      0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+.form-group {
+  display: flex;
+  gap: 0.75rem;
+
+  width: 100%;
+
+  div {
+    width: 100%;
+  }
+}

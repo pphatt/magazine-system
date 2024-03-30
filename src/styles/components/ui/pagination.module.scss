@@ -1,0 +1,70 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pagination-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination-previous {
+  gap: 0.25rem;
+
+  padding-left: 0.625rem;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.pagination-next {
+  gap: 0.25rem;
+
+  padding-right: 0.625rem;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.pagination-ellipsis {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  span {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    border-width: 0;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+  }
+}

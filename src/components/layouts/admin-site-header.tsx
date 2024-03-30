@@ -1,0 +1,125 @@
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import {type Session, User} from "next-auth"
+
+import styles from "@/styles/components/layouts/admin-site-header.module.scss"
+import {
+  DropdownMenu,
+  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Icons} from "@/components/icons";
+import {logout} from "@/lib/actions/logout";
+
+interface AdminSiteHeaderProps {
+  user: Session | null
+}
+
+export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
+  return (
+    <div className={styles["site-header-wrapper"]}>
+      <div className={styles["site-header-container"]}>
+        <div className={styles["site-header-logo"]}>
+          <Link href={"/"}>
+            <img src={"/logo_final.png"} alt={""} className={styles["logo"]}/>
+          </Link>
+        </div>
+        <div className={styles["site-header-option"]}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant={"outline"} className={styles["avatar-trigger"]}>
+                {user ? (
+                  <Avatar className={styles["avatar"]}>
+                    <AvatarImage
+                      src={user.user?.image as string | undefined}
+                      alt={""}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "top",
+                      }}
+                    />
+                    <AvatarFallback>
+                      {user.user!.name?.charAt(0) ?? ""}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Icons.user/>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align={"end"}
+              className={styles["dropdown-menu"]}
+            >
+              {user ? (
+                <>
+                  <DropdownMenuLabel className={styles["dropdown-label"]}>
+                    <div>
+                      <p>{user.user!.name}</p>
+                      <p>{user.user!.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator
+                    className={styles["dropdown-separate-line"]}
+                  />
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <Link
+                      className={styles["dropdown-item-link"]}
+                      href={"/settings/user"}
+                    >
+                      <span>Account</span>
+                      <Icons.circleUserRound/>
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <DropdownMenuItem className={styles["dropdown-item"]}>
+                  <Link
+                    className={styles["dropdown-item-link"]}
+                    href={"/signin"}
+                  >
+                    <span>Sign In</span>
+                    <Icons.login/>
+                  </Link>
+                </DropdownMenuItem>
+              )}
+
+              <DropdownMenuItem className={styles["dropdown-item"]}>
+                <Link
+                  className={styles["dropdown-item-link"]}
+                  href={"/settings/all"}
+                >
+                  <span>Settings</span>
+                  <Icons.settings/>
+                </Link>
+              </DropdownMenuItem>
+
+              {user && (
+                <>
+                  <DropdownMenuSeparator
+                    className={styles["dropdown-separate-line"]}
+                  />
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <span
+                      className={styles["sign-out"]}
+                      onClick={() => logout()}
+                    >
+                      <span>Logout</span>
+                      <Icons.logout/>
+                    </span>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    </div>
+  )
+}

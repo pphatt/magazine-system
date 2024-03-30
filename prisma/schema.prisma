@@ -48,6 +48,7 @@ model User {
   password      String?
   role          UserRole     @default(STUDENT)
   faculty       FacultyEnum?
+  createdAt     DateTime     @default(now())
 
   // faculty   Faculty? @relation(fields: [facultyId], references: [id])
   // facultyId String?

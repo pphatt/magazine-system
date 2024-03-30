@@ -188,7 +188,7 @@
 
 body {
   // README: optional global styles
-  overflow-y: scroll;
+  //overflow-y: scroll;
 }
 
 html,
@@ -237,6 +237,12 @@ ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
 }
 
 @media (prefers-color-scheme: dark) {

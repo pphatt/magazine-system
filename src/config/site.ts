@@ -46,3 +46,36 @@ export const siteConfig = {
     },
   ],
 }
+
+export const adminSiteConfig = {
+  name: "Greenwich blog",
+  description: "A blog for greenwich student to submit their work",
+  url: "",
+  image: "",
+  mainNav: [
+    {
+      title: "Dashboard",
+      href: "/admin",
+      icon: "home",
+      items: [],
+    },
+    {
+      title: "User",
+      href: "/admin/user?page=1",
+      icon: "users",
+      items: [],
+    },
+    {
+      title: "Faculty",
+      href: "/admin/faculty",
+      icon: "layers",
+      items: [],
+    },
+    {
+      title: "Academic Year",
+      href: "/admin/academic-year",
+      icon: "calendarDays",
+      items: [],
+    },
+  ] as MainNavItem[],
+}

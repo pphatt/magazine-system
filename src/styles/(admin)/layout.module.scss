@@ -1,0 +1,29 @@
+.admin-layout {
+  display: grid;
+
+  width: 100%;
+  min-height: 100vh;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 220px 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+.admin-wrapper {
+  display: flex;
+
+  width: 100dvw;
+  height: 100dvh;
+
+  padding-top: 4rem;
+
+  overflow: hidden;
+}
+
+.main {
+  width: 100%;
+}
