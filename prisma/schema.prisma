@@ -37,10 +37,15 @@ model User {
   image         String?
   password      String?
   role          UserRole  @default(STUDENT)
+  address       String?
+  city          String?
+  phoneNumber   BigInt?
   createdAt     DateTime  @default(now())
 
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
   facultyId String?
+
+  facultyCreated Faculty[] @relation("CreatedBy")
 
   accounts Account[]
 }
@@ -67,8 +72,10 @@ model Account {
 model Faculty {
   id        String   @id @default(cuid())
   name      String
-  image     String
   createdAt DateTime @default(now())
+
+  creatorId String
+  creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
 
   user User[]
 

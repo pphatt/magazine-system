@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { type Faculty } from "@prisma/client"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import type { z } from "zod"
 
-import { addUserSchema } from "@/lib/validations/add-user"
+import { addUserSchema } from "@/lib/validations/user"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -35,13 +38,18 @@ import {
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/add-user.module.scss"
 
-type AddUserInputs = z.infer<typeof addUserSchema>
+export type AddUserInputs = z.infer<typeof addUserSchema>
 
-export function AddUser() {
+interface AddUserProps {
+  faculty: Faculty[]
+}
+
+export function AddUser({ faculty }: AddUserProps) {
   const [open, setOpen] = React.useState(false)
   const [selectRole, setSelectRole] = React.useState("")
 
-  // const [isPending, startTransition] = React.useTransition()
+  const router = useRouter()
+  const [isPending, startTransition] = React.useTransition()
 
   const form = useForm<AddUserInputs>({
     resolver: zodResolver(addUserSchema),
@@ -59,14 +67,14 @@ export function AddUser() {
   })
 
   function onSubmit(data: AddUserInputs) {
-    let validate_data: AddUserInputs = data
+    let payload: AddUserInputs = { ...data }
 
     if (
-      selectRole === "admin" ||
-      selectRole === "marketing manager" ||
-      selectRole === "guest"
+      selectRole === "ADMIN" ||
+      selectRole === "MARKETING_MANAGER" ||
+      selectRole === "GUEST"
     ) {
-      validate_data = {
+      payload = {
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,
@@ -75,10 +83,28 @@ export function AddUser() {
         lastName: data.lastName,
         city: data.city,
         address: data.address,
+        phoneNumber: data.phoneNumber,
       }
     }
 
-    console.log(validate_data)
+    startTransition(async () => {
+      try {
+        await fetch("/api/user/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        })
+
+        setOpen(false)
+        router.refresh()
+
+        toast("Create new user successfully")
+      } catch (e) {
+        toast("Something went wrong. Try again!")
+      }
+    })
   }
 
   return (
@@ -104,7 +130,6 @@ export function AddUser() {
         </DialogHeader>
         <Form {...form}>
           <form
-            id="add-user-form"
             className={styles["form"]}
             onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
           >
@@ -228,15 +253,15 @@ export function AddUser() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="student">Student</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="marketing coordinator">
+                        <SelectItem value="STUDENT">Student</SelectItem>
+                        <SelectItem value="ADMIN">Admin</SelectItem>
+                        <SelectItem value="MARKETING_COORDINATOR">
                           Marketing Coordinator
                         </SelectItem>
-                        <SelectItem value="marketing manager">
+                        <SelectItem value="MARKETING_MANAGER">
                           Marketing Manager
                         </SelectItem>
-                        <SelectItem value="guest">Guest</SelectItem>
+                        <SelectItem value="GUEST">Guest</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -245,8 +270,8 @@ export function AddUser() {
               )}
             />
 
-            {(selectRole === "student" ||
-              selectRole === "marketing coordinator") && (
+            {(selectRole === "STUDENT" ||
+              selectRole === "MARKETING_COORDINATOR") && (
               <FormField
                 control={form.control}
                 name="faculty"
@@ -266,11 +291,11 @@ export function AddUser() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="it">IT</SelectItem>
-                          <SelectItem value="business">Business</SelectItem>
-                          <SelectItem value="graphic design">
-                            Graphic Design
-                          </SelectItem>
+                          {faculty.map(({ id, name }, index) => (
+                            <SelectItem key={index} value={id}>
+                              {name}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -317,14 +342,40 @@ export function AddUser() {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem className={styles["form-item"]}>
+                  <FormLabel className={styles["form-label"]}>
+                    Phone number
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Enter phone number"
+                      className={styles["form-input"]}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <DialogFooter>
+              <Button type="submit" disabled={isPending}>
+                {isPending && (
+                  <Icons.spinner
+                    className={styles["icon"]}
+                    aria-hidden="true"
+                  />
+                )}
+                <span>Save changes</span>
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
-
-        <DialogFooter>
-          <Button type="submit" form={"add-user-form"}>
-            Save changes
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

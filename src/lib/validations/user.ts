@@ -39,10 +39,21 @@ export const addUserSchema = z
     faculty: z.string().optional(),
     address: z.string().optional(),
     city: z.string().optional(),
+    phoneNumber: z
+      .string()
+      .regex(new RegExp("^[0-9]{6,15}(-[0-9])?$"), {
+        message: "Phone must be contain only number",
+      })
+      .min(10, {
+        message: "Enter a valid phone number",
+      })
+      .max(11, {
+        message: "Maximum digits of a phone number is 11",
+      }),
   })
   .refine(
     ({ role, faculty }) => {
-      if (role === "student" || role === "marketing coordinator") {
+      if (role === "STUDENT" || role === "MARKETING_COORDINATOR") {
         return faculty !== undefined && faculty.trim() !== ""
       }
 
@@ -57,3 +68,9 @@ export const addUserSchema = z
     message: "Confirm password must match password",
     path: ["confirmPassword"],
   })
+
+export const getUserWithFacultySchema = z.object({
+  query: z.string().default("undefined"),
+  pageNumber: z.number().default(1),
+  rowsNumber: z.number().default(50),
+})

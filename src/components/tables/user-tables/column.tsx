@@ -1,12 +1,13 @@
 "use client"
 
-import { type User } from "@prisma/client"
 import { type ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 
+import { type UserWithFaculty } from "@/lib/prisma"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CellAction } from "@/components/tables/user-tables/cell-action"
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserWithFaculty>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -35,6 +36,17 @@ export const columns: ColumnDef<User>[] = [
     header: "Email",
   },
   {
+    accessorKey: "phoneNumber",
+    header: "Phone number",
+    cell: (value) => {
+      if (!value.row.original.phoneNumber) {
+        return "-"
+      }
+
+      return String(value.row.original.phoneNumber)
+    },
+  },
+  {
     accessorKey: "role",
     header: "Role",
     cell: (value) => {
@@ -51,14 +63,21 @@ export const columns: ColumnDef<User>[] = [
     header: "Faculty",
     cell: (value) => {
       if (!value.row.original.faculty) {
-        return value.row.original.faculty
+        return "-"
       }
 
-      return value.row.original.faculty
+      return value.row.original.faculty.name
         .toLocaleLowerCase()
         .split("_")
         .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
         .join(" ")
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: (value) => {
+      return format(value.row.original.createdAt, "PPP")
     },
   },
   {

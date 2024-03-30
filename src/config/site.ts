@@ -61,13 +61,13 @@ export const adminSiteConfig = {
     },
     {
       title: "User",
-      href: "/admin/user?page=1",
+      href: "/admin/user?page=1&rows=50",
       icon: "users",
       items: [],
     },
     {
       title: "Faculty",
-      href: "/admin/faculty",
+      href: "/admin/faculty?page=1&rows=10",
       icon: "layers",
       items: [],
     },

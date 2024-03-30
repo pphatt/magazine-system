@@ -25,11 +25,7 @@
 }
 
 .dialog-content {
-  max-width: 650px !important;
-
-  max-height: 700px !important;
-
-  overflow-y: scroll !important;
+  max-width: 650px;
 }
 
 .form {
@@ -62,9 +58,9 @@
 
   &:focus-visible {
     box-shadow:
-      0 0 #0000,
-      0 0 0 1px hsl(var(--ring)),
-      0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+            0 0 #0000,
+            0 0 0 1px hsl(var(--ring)),
+            0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   }
 }
 

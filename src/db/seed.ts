@@ -1,5 +1,6 @@
+import { db } from "@/server/db"
 import { faker } from "@faker-js/faker"
-import { FacultyEnum, PrismaClient, UserRole } from "@prisma/client"
+import { PrismaClient, type UserRole } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
@@ -44,18 +45,17 @@ async function main() {
     "MARKETING_MANAGER",
     "GUEST",
   ]
-  const faculty = ["INFOMATION_TECNOLOGY", "BUSINESS", "GRAPHIC_DESIGN"]
 
-  for (let i = 0; i < 1000; i++) {
+  const faculty = await db.faculty.findMany()
+
+  for (let i = 0; i < 100; i++) {
     await prisma.user.create({
       data: {
         name: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
         role: role[Math.floor(Math.random() * role.length)] as UserRole,
-        faculty: faculty[
-          Math.floor(Math.random() * faculty.length)
-        ] as FacultyEnum,
+        facultyId: faculty[Math.floor(Math.random() * faculty.length)]!.id,
       },
     })
   }

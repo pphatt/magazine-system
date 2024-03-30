@@ -40,7 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import styles from "@/styles/components/tables/user-tables/user-data-table.module.scss"
+import styles from "@/styles/components/tables/faculty-tables/faculty-data-table.module.scss"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -51,7 +51,7 @@ interface DataTableProps<TData, TValue> {
   rows: number
 }
 
-export function UserDataTable<TData, TValue>({
+export function FacultyDataTable<TData, TValue>({
   columns,
   data,
   searchKey,
@@ -131,13 +131,13 @@ export function UserDataTable<TData, TValue>({
           <SelectTrigger className={styles["select-trigger"]}>
             <SelectValue
               placeholder={rows ?? "Select rows"}
-              defaultValue={rows ?? 50}
+              defaultValue={rows ?? 10}
             />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <div className={styles["select-group"]}>
-                {[20, 30, 50, 100, 200].map((value, index) => (
+                {[5, 10, 15, 20].map((value, index) => (
                   <Link
                     key={index}
                     href={`${pathname}?page=${page}&rows=${value}`}
@@ -178,7 +178,7 @@ export function UserDataTable<TData, TValue>({
               isPending ? (
                 [...(Array(5) as number[])].map((_, index) => (
                   <TableRow key={index} className={styles["table-row"]}>
-                    {[...(Array(7) as number[])].map((_, index) => (
+                    {[...(Array(3) as number[])].map((_, index) => (
                       <TableCell key={index}>
                         <Skeleton
                           style={{
@@ -239,7 +239,7 @@ export function UserDataTable<TData, TValue>({
                   href={`${pathname}?page=${page - 1}&rows=${rows}`}
                 />
               </PaginationItem>
-              {paginationArr[0] !== 1 && (
+              {paginationArr[0] && paginationArr[0] < 1 && (
                 <PaginationItem>
                   <PaginationEllipsis />
                 </PaginationItem>
@@ -254,11 +254,12 @@ export function UserDataTable<TData, TValue>({
                   </PaginationLink>
                 </PaginationItem>
               ))}
-              {paginationArr[paginationArr.length - 1] !== totalPages && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
+              {paginationArr[paginationArr.length - 1] &&
+                paginationArr[paginationArr.length - 1]! > totalPages && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
               <PaginationItem>
                 <PaginationNext
                   aria-disabled={!canNextPage}

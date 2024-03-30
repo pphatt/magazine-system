@@ -1,13 +1,9 @@
 import * as React from "react"
 import Link from "next/link"
-import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
 
-import {
-  getUserCountNotIncludeAdmin,
-  getUserWithFaculty,
-} from "@/lib/fetchers/user"
-import { type UserWithFaculty } from "@/lib/prisma"
+import { getFacultyCount, getFacultyWithUser } from "@/lib/fetchers/faculty"
+import { type FacultyWithUser } from "@/lib/prisma"
 import { parserPage } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"
 import {
@@ -19,30 +15,28 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/bread-crumb"
 import { Separator } from "@/components/ui/separator"
-import { AddUser } from "@/components/add-user"
-import { columns } from "@/components/tables/user-tables/column"
-import { UserDataTable } from "@/components/tables/user-tables/user-data-table"
-import styles from "@/styles/(admin)/user/page.module.scss"
+import { AddFaculty } from "@/components/add-faculty"
+import { columns } from "@/components/tables/faculty-tables/column"
+import { FacultyDataTable } from "@/components/tables/faculty-tables/faculty-data-table"
+import styles from "@/styles/(admin)/faculty/page.module.scss"
 
 interface SearchPageProps {
   searchParams: SearchParams
 }
 
-export default async function UserPage({ searchParams }: SearchPageProps) {
+export default async function FacultyPage({ searchParams }: SearchPageProps) {
   const { q, page, rows } = searchParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
   const rowsNumber = parserPage(rows)
 
-  const users = (await getUserWithFaculty({
+  const faculties: FacultyWithUser[] = (await getFacultyWithUser({
     query: q,
     pageNumber,
     rowsNumber,
-  })) as UserWithFaculty[]
+  })) as FacultyWithUser[]
 
-  const totalUsers = (await getUserCountNotIncludeAdmin()) as number
-
-  const getAllFaculty = await db.faculty.findMany()
+  const totalFaculties = (await getFacultyCount()) as number
 
   return (
     <div className={styles["layout-wrapper"]}>
@@ -56,23 +50,23 @@ export default async function UserPage({ searchParams }: SearchPageProps) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>User</BreadcrumbPage>
+              <BreadcrumbPage>Faculty</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <div className={styles["page-title"]}>
           <div className={styles["page-title-text"]}>
-            <h2>User ({totalUsers})</h2>
-            <p>Manage users and view their roles</p>
+            <h2>Faculty ({totalFaculties})</h2>
+            <p>Manage faculties</p>
           </div>
-          <AddUser faculty={getAllFaculty} />
+          <AddFaculty />
         </div>
         <Separator className={styles["separator"]} />
-        <UserDataTable
+        <FacultyDataTable
           searchKey="name"
           columns={columns}
-          data={users}
-          totalUsers={totalUsers}
+          data={faculties}
+          totalUsers={totalFaculties}
           page={pageNumber}
           rows={rowsNumber}
         />
