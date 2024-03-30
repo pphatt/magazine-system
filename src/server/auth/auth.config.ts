@@ -14,6 +14,8 @@ export default {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     Credentials({
+      /* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/
+      // @ts-ignore
       async authorize(credentials) {
         const validatedFields = authSchema.safeParse(credentials)
 

@@ -1,7 +1,7 @@
 import authConfig from "@/server/auth/auth.config"
 import { db } from "@/server/db"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { type FacultyEnum, type UserRole } from "@prisma/client"
+import { type UserRole } from "@prisma/client"
 import NextAuth from "next-auth"
 
 import { getUserById } from "@/lib/fetchers/user"
@@ -9,7 +9,7 @@ import { getUserById } from "@/lib/fetchers/user"
 declare module "next-auth" {
   interface User {
     role: UserRole
-    faculty: FacultyEnum | null
+    facultyId: string | null
   }
 }
 
@@ -42,7 +42,7 @@ export const {
 
       session.user.id = token.sub
       session.user.role = token.role as UserRole
-      session.user.faculty = token.faculty as FacultyEnum | null
+      session.user.facultyId = token.facultyId as string | null
 
       return session
     },
@@ -59,7 +59,7 @@ export const {
       if (!existedUser) return token
 
       token.role = existedUser.role
-      token.faculty = existedUser.faculty
+      token.facultyId = existedUser.facultyId
 
       return token
     },

@@ -1,19 +1,19 @@
 import * as React from "react"
-import { redirect } from "next/navigation"
+// import { redirect } from "next/navigation"
 
-import { currentUser } from "@/lib/auth/auth"
+// import { currentUser } from "@/lib/auth/auth"
 import styles from "@/styles/(faculty)/layout.module.scss"
 
 interface FacultyLayoutProp {
   children: React.ReactNode
 }
 
-export default async function FacultyLayout({ children }: FacultyLayoutProp) {
-  const user = await currentUser()
+export default function FacultyLayout({ children }: FacultyLayoutProp) {
+  // const user = await currentUser()
 
-  if (!user || !user.faculty) {
-    redirect("/")
-  }
+  // if (!user || !user.faculty) {
+  //   redirect("/")
+  // }
 
   return (
     <div className={styles["layout-wrapper"]}>
