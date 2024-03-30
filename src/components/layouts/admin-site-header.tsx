@@ -2,20 +2,21 @@
 
 import * as React from "react"
 import Link from "next/link"
-import {type Session, User} from "next-auth"
+import { type Session } from "next-auth"
 
-import styles from "@/styles/components/layouts/admin-site-header.module.scss"
+import { logout } from "@/lib/actions/logout"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import {Button} from "@/components/ui/button";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Icons} from "@/components/icons";
-import {logout} from "@/lib/actions/logout";
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Icons } from "@/components/icons"
+import styles from "@/styles/components/layouts/admin-site-header.module.scss"
 
 interface AdminSiteHeaderProps {
   user: Session | null
@@ -27,7 +28,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
       <div className={styles["site-header-container"]}>
         <div className={styles["site-header-logo"]}>
           <Link href={"/"}>
-            <img src={"/logo_final.png"} alt={""} className={styles["logo"]}/>
+            <img src={"/logo_final.png"} alt={""} className={styles["logo"]} />
           </Link>
         </div>
         <div className={styles["site-header-option"]}>
@@ -49,7 +50,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                     </AvatarFallback>
                   </Avatar>
                 ) : (
-                  <Icons.user/>
+                  <Icons.user />
                 )}
               </Button>
             </DropdownMenuTrigger>
@@ -74,7 +75,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                       href={"/settings/user"}
                     >
                       <span>Account</span>
-                      <Icons.circleUserRound/>
+                      <Icons.circleUserRound />
                     </Link>
                   </DropdownMenuItem>
                 </>
@@ -85,7 +86,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                     href={"/signin"}
                   >
                     <span>Sign In</span>
-                    <Icons.login/>
+                    <Icons.login />
                   </Link>
                 </DropdownMenuItem>
               )}
@@ -96,7 +97,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                   href={"/settings/all"}
                 >
                   <span>Settings</span>
-                  <Icons.settings/>
+                  <Icons.settings />
                 </Link>
               </DropdownMenuItem>
 
@@ -111,7 +112,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                       onClick={() => logout()}
                     >
                       <span>Logout</span>
-                      <Icons.logout/>
+                      <Icons.logout />
                     </span>
                   </DropdownMenuItem>
                 </>

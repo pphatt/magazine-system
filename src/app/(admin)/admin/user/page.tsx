@@ -2,7 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
-import { User } from "@prisma/client"
+import { type User } from "@prisma/client"
 
 import { parserPage } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"

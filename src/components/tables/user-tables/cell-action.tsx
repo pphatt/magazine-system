@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { User } from "@prisma/client"
+import { type User } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -25,7 +25,9 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
-  const onConfirm = async () => {}
+  const onConfirm = () => {
+    setLoading(false)
+  }
 
   return (
     <>

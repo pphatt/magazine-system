@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker"
-import { PrismaClient } from "@prisma/client"
+import { FacultyEnum, PrismaClient, UserRole } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
@@ -52,8 +52,10 @@ async function main() {
         name: faker.internet.userName(),
         email: faker.internet.email(),
         password: faker.internet.password(),
-        role: role[Math.floor(Math.random() * role.length)],
-        faculty: faculty[Math.floor(Math.random() * faculty.length)],
+        role: role[Math.floor(Math.random() * role.length)] as UserRole,
+        faculty: faculty[
+          Math.floor(Math.random() * faculty.length)
+        ] as FacultyEnum,
       },
     })
   }

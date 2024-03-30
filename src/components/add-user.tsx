@@ -41,7 +41,7 @@ export function AddUser() {
   const [open, setOpen] = React.useState(false)
   const [selectRole, setSelectRole] = React.useState("")
 
-  const [isPending, startTransition] = React.useTransition()
+  // const [isPending, startTransition] = React.useTransition()
 
   const form = useForm<AddUserInputs>({
     resolver: zodResolver(addUserSchema),
@@ -77,6 +77,8 @@ export function AddUser() {
         address: data.address,
       }
     }
+
+    console.log(validate_data)
   }
 
   return (

@@ -39,7 +39,9 @@ export function AdminMainNav() {
                     item.href.includes(
                       segment
                         ? String(segment)
-                        : item.href === "/admin" && "/admin"
+                        : item.href === "/admin"
+                          ? "/admin"
+                          : String(segment)
                     ) && styles["nav-item-active"]
                   )}
                   data-disabled={item.disabled}
