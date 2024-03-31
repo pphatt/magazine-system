@@ -8,7 +8,7 @@ import {
   getUserWithFaculty,
 } from "@/lib/fetchers/user"
 import { type UserWithFaculty } from "@/lib/prisma"
-import { parserPage } from "@/lib/utils"
+import { parserPage, parserRows } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"
 import {
   Breadcrumb,
@@ -32,7 +32,7 @@ export default async function UserPage({ searchParams }: SearchPageProps) {
   const { q, page, rows } = searchParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
-  const rowsNumber = parserPage(rows)
+  const rowsNumber = parserRows(rows, 50)
 
   const users = (await getUserWithFaculty({
     query: q,

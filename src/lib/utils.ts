@@ -69,14 +69,14 @@ export function parserPage(page: string) {
   return pageNumber
 }
 
-export function parserRows(rows: string) {
+export function parserRows(rows: string, defaultValue: number) {
   let _rows: number
 
   try {
-    _rows = parseInt(rows) || 50
-    if (_rows < 1) _rows = 50
+    _rows = parseInt(rows) || defaultValue
+    if (_rows < 1) _rows = defaultValue
   } catch (e) {
-    _rows = 50
+    _rows = defaultValue
   }
 
   return _rows

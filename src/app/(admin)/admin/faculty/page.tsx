@@ -4,7 +4,7 @@ import type { SearchParams } from "@/types"
 
 import { getFacultyCount, getFacultyWithUser } from "@/lib/fetchers/faculty"
 import { type FacultyWithUser } from "@/lib/prisma"
-import { parserPage } from "@/lib/utils"
+import { parserPage, parserRows } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"
 import {
   Breadcrumb,
@@ -28,7 +28,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   const { q, page, rows } = searchParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
-  const rowsNumber = parserPage(rows)
+  const rowsNumber = parserRows(rows, 10)
 
   const faculties: FacultyWithUser[] = (await getFacultyWithUser({
     query: q,
