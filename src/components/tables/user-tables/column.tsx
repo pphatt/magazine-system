@@ -5,7 +5,7 @@ import { format } from "date-fns"
 
 import { type UserWithFaculty } from "@/lib/prisma"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CellAction } from "@/components/tables/user-tables/cell-action"
+import { UserCellAction } from "@/components/tables/user-tables/cell-action"
 
 export const columns: ColumnDef<UserWithFaculty>[] = [
   {
@@ -82,6 +82,6 @@ export const columns: ColumnDef<UserWithFaculty>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <UserCellAction data={row.original} />,
   },
 ]

@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import * as React from "react"
 import { useRouter } from "next/navigation"
 import { type User } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,29 +14,47 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { AlertModal } from "@/components/modals/alert-modal"
+import { UserAlertModal } from "@/components/modals/user-alert-modal"
 import styles from "@/styles/components/tables/user-tables/cell-action.module.scss"
 
 interface CellActionProps {
   data: User
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useState(false)
+export const UserCellAction: React.FC<CellActionProps> = ({ data }) => {
+  const [open, setOpen] = React.useState(false)
+
   const router = useRouter()
+  const [isPending, startTransition] = React.useTransition()
 
   const onConfirm = () => {
-    setLoading(false)
+    startTransition(async () => {
+      try {
+        await fetch("/api/user/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: data.id }),
+        })
+
+        setOpen(false)
+        router.refresh()
+
+        toast("Delete user successfully")
+      } catch (e) {
+        toast("Something went wrong. Try again!")
+      }
+    })
   }
 
   return (
     <>
-      <AlertModal
+      <UserAlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
-        loading={loading}
+        loading={isPending}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>

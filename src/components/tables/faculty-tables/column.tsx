@@ -5,7 +5,7 @@ import { format } from "date-fns"
 
 import { type FacultyWithUser } from "@/lib/prisma"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CellAction } from "@/components/tables/faculty-tables/cell-action"
+import { FacultyCellAction } from "@/components/tables/faculty-tables/cell-action"
 
 export const columns: ColumnDef<FacultyWithUser>[] = [
   {
@@ -48,6 +48,6 @@ export const columns: ColumnDef<FacultyWithUser>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <FacultyCellAction data={row.original} />,
   },
 ]

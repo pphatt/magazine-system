@@ -69,6 +69,10 @@ export const addUserSchema = z
     path: ["confirmPassword"],
   })
 
+export const deleteUserSchema = z.object({
+  userId: z.string(),
+})
+
 export const getUserWithFacultySchema = z.object({
   query: z.string().default("undefined"),
   pageNumber: z.number().default(1),

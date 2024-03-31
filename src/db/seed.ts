@@ -55,7 +55,7 @@ async function main() {
         email: faker.internet.email(),
         password: faker.internet.password(),
         role: role[Math.floor(Math.random() * role.length)] as UserRole,
-        facultyId: faculty[Math.floor(Math.random() * faculty.length)]!.id,
+        facultyId: faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
       },
     })
   }

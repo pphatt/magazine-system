@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { AlertModal } from "@/components/modals/alert-modal"
+import { FacultyAlertModal } from "@/components/modals/faculty-alert-modal"
 import styles from "@/styles/components/tables/faculty-tables/cell-action.module.scss"
 
 interface CellActionProps {
@@ -25,7 +25,7 @@ interface CellActionProps {
 
 export type DeleteFacultyInputs = z.infer<typeof deleteFacultySchema>
 
-export const CellAction: React.FC<CellActionProps> = ({ data }) => {
+export const FacultyCellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = React.useState(false)
 
   const router = useRouter()
@@ -54,7 +54,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
 
   return (
     <>
-      <AlertModal
+      <FacultyAlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
@@ -69,7 +69,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
           <DropdownMenuItem
             onClick={() => router.push(`/admin/faculty/details/${data.id}`)}
           >
