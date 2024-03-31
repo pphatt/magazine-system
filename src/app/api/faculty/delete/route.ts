@@ -2,14 +2,14 @@ import { db } from "@/server/db"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import { editFacultySchema } from "@/lib/validations/faculty"
-import type { EditFacultyInputs } from "@/components/edit-faculty"
+import { deleteFacultySchema } from "@/lib/validations/faculty"
+import type { AddFacultyInputs } from "@/components/add-faculty"
 
 export async function POST(req: Request) {
   try {
-    const body = (await req.json()) as EditFacultyInputs
+    const body = (await req.json()) as AddFacultyInputs
 
-    const { name, facultyId } = editFacultySchema.parse(body)
+    const { facultyId } = deleteFacultySchema.parse(body)
 
     const user = await currentUser()
 
@@ -17,12 +17,9 @@ export async function POST(req: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    await db.faculty.update({
+    await db.faculty.delete({
       where: {
         id: facultyId,
-      },
-      data: {
-        name,
       },
     })
 
@@ -34,7 +31,7 @@ export async function POST(req: Request) {
     }
 
     return new Response(
-      JSON.stringify("Could not edit faculty at this time. Please try later"),
+      JSON.stringify("Could not delete faculty at this time. Please try later"),
       { status: 500 }
     )
   }

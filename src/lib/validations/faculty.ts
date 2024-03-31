@@ -9,6 +9,10 @@ export const editFacultySchema = z.object({
   facultyId: z.string().optional(),
 })
 
+export const deleteFacultySchema = z.object({
+  facultyId: z.string(),
+})
+
 export const getFacultyWithUserSchema = z.object({
   query: z.string().default("undefined"),
   pageNumber: z.number().default(1),

@@ -212,7 +212,7 @@ export function FacultyDataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className={styles["no-result-row"]}
                 >
                   No results.
                 </TableCell>

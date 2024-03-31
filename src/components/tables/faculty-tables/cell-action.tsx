@@ -1,10 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import * as React from "react"
 import { useRouter } from "next/navigation"
 import { type Faculty } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
+import { toast } from "sonner"
+import type { z } from "zod"
 
+import { type deleteFacultySchema } from "@/lib/validations/faculty"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -20,13 +23,33 @@ interface CellActionProps {
   data: Faculty
 }
 
+export type DeleteFacultyInputs = z.infer<typeof deleteFacultySchema>
+
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = React.useState(false)
+
   const router = useRouter()
+  const [isPending, startTransition] = React.useTransition()
 
   const onConfirm = () => {
-    setLoading(false)
+    startTransition(async () => {
+      try {
+        await fetch("/api/faculty/delete", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ facultyId: data.id }),
+        })
+
+        setOpen(false)
+        router.refresh()
+
+        toast("Delete faculty successfully")
+      } catch (e) {
+        toast("Something went wrong. Try again!")
+      }
+    })
   }
 
   return (
@@ -35,7 +58,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
-        loading={loading}
+        loading={isPending}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -47,12 +70,14 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => router.push(/admin/faculty/details/${data.id})}>
-            <Edit className="mr-2 h-4 w-4" />
+          <DropdownMenuItem
+            onClick={() => router.push(`/admin/faculty/details/${data.id}`)}
+          >
+            <Edit />
             <span>Edit</span>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" />
+            <Trash />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>

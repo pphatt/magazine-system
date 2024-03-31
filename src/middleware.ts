@@ -13,13 +13,13 @@ export default auth((req) => {
   const { nextUrl } = req
   const isLogin = !!req.auth
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
 
   // for oauth sign-in
   if (isApiAuthRoute) {
-    return;
+    return
   }
 
   if (isAuthRoute) {
@@ -27,7 +27,7 @@ export default auth((req) => {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
     }
 
-    return;
+    return
   }
 
   if (!isLogin && !isPublicRoute) {
