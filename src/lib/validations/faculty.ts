@@ -1,9 +1,13 @@
 import * as z from "zod"
 
-export const addFacultySchema = z
-  .object({
-    name: z.string().min(1, { message: "Faculty's name is required" }),
-  })
+export const addFacultySchema = z.object({
+  name: z.string().min(1, { message: "Faculty's name is required" }),
+})
+
+export const editFacultySchema = z.object({
+  name: z.string().min(1, { message: "Faculty's name is required" }),
+  facultyId: z.string().optional(),
+})
 
 export const getFacultyWithUserSchema = z.object({
   query: z.string().default("undefined"),
