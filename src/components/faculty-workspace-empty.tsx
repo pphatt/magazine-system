@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react"
 
+import { Icons } from "@/components/icons"
 import styles from "@/styles/components/faculty-workspace-empty.module.scss"
-import {Icons} from "@/components/icons";
 
 export function FacultyWorkspaceEmpty() {
   return (
@@ -12,5 +12,5 @@ export function FacultyWorkspaceEmpty() {
         <p>Create a workspace to get started.</p>
       </div>
     </div>
-  );
+  )
 }

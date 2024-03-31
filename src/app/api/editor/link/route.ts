@@ -1,9 +1,9 @@
 export async function GET(req: Request) {
   const url = new URL(req.url)
-  const href = url.searchParams.get('url')
+  const href = url.searchParams.get("url")
 
   if (!href) {
-    return new Response('Invalid href', { status: 400 })
+    return new Response("Invalid href", { status: 400 })
   }
 
   const res = await fetch(href)
@@ -11,15 +11,15 @@ export async function GET(req: Request) {
 
   // Parse the HTML using regular expressions
   const titleMatch = data.match(/<title>(.*?)<\/title>/)
-  const title = titleMatch ? titleMatch[1] : ''
+  const title = titleMatch ? titleMatch[1] : ""
 
   const descriptionMatch = data.match(
     /<meta name="description" content="(.*?)"/
   )
-  const description = descriptionMatch ? descriptionMatch[1] : ''
+  const description = descriptionMatch ? descriptionMatch[1] : ""
 
   const imageMatch = data.match(/<meta property="og:image" content="(.*?)"/)
-  const imageUrl = imageMatch ? imageMatch[1] : ''
+  const imageUrl = imageMatch ? imageMatch[1] : ""
 
   // Return the data in the format required by the editor tool
   return new Response(

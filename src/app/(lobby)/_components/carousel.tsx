@@ -35,7 +35,11 @@ export function CarouselSize() {
       <CarouselContent>
         {Array.from({ length: 2 }).map((_, index) => (
           <CarouselItem key={index}>
-            <img src={"/carousel-image-1.png"} className={styles["image"]} alt={""} />
+            <img
+              src={"/carousel-image-1.png"}
+              className={styles["image"]}
+              alt={""}
+            />
           </CarouselItem>
         ))}
       </CarouselContent>

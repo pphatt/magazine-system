@@ -1,4 +1,3 @@
 import Embed from "@editorjs/embed"
 
-export class EditorEmbed extends Embed {
-}
+export class EditorEmbed extends Embed {}
