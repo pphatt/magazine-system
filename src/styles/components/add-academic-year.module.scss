@@ -1,6 +1,6 @@
 @use "../variables" as var;
 
-.add-faculty-btn {
+.add-academic-year-btn {
   color: hsl(var(--primary-foreground)) !important;
   background-color: hsl(var(--primary)) !important;
 
@@ -25,7 +25,11 @@
 }
 
 .dialog-content {
-  max-width: 650px;
+  max-width: 650px !important;
+
+  max-height: 700px !important;
+
+  overflow-y: scroll !important;
 }
 
 .form {
@@ -58,9 +62,9 @@
 
   &:focus-visible {
     box-shadow:
-            0 0 #0000,
-            0 0 0 1px hsl(var(--ring)),
-            0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+      0 0 #0000,
+      0 0 0 1px hsl(var(--ring)),
+      0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   }
 }
 
@@ -72,6 +76,48 @@
 
   div {
     width: 100%;
+  }
+}
+
+.form-description {
+  background-color: hsl(var(--background));
+
+  width: 100%;
+
+  border-width: 1px;
+  border-color: hsl(var(--input));
+  border-radius: calc(var(--radius) - 2px);
+
+  padding: 0.5rem 0.75rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  overflow: hidden;
+  appearance: none;
+
+  resize: none;
+
+  &:focus-visible {
+    outline: 0;
+
+    box-shadow:
+      0 0 #0000,
+      0 0 0 1px hsl(var(--ring)),
+      0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+.form-date-input {
+  display: flex;
+  align-items: center;
+
+  gap: 0.5rem;
+
+  label {
+    width: 130px;
+
+    text-align: left !important;
   }
 }
 

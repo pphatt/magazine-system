@@ -40,22 +40,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import styles from "@/styles/components/tables/faculty-tables/faculty-data-table.module.scss"
+import styles from "@/styles/components/tables/academic-year-tables/academic-year-data-table.module.scss"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   searchKey: string
-  totalFaculty: number
+  totalAcademicYears: number
   page: number
   rows: number
 }
 
-export function FacultyDataTable<TData, TValue>({
+export function AcademicYearDataTable<TData, TValue>({
   columns,
   data,
   searchKey,
-  totalFaculty,
+  totalAcademicYears,
   page,
   rows,
 }: DataTableProps<TData, TValue>) {
@@ -73,9 +73,9 @@ export function FacultyDataTable<TData, TValue>({
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
-  const canNextPage = totalFaculty > rows * page
+  const canNextPage = totalAcademicYears > rows * page
   const canPrevPage = page > 1
-  const totalPages = Math.ceil(totalFaculty / rows)
+  const totalPages = Math.ceil(totalAcademicYears / rows)
 
   const q = searchParams?.get("q") ?? ""
 
@@ -178,7 +178,7 @@ export function FacultyDataTable<TData, TValue>({
               isPending ? (
                 [...(Array(5) as number[])].map((_, index) => (
                   <TableRow key={index} className={styles["table-row"]}>
-                    {[...(Array(4) as number[])].map((_, index) => (
+                    {[...(Array(6) as number[])].map((_, index) => (
                       <TableCell key={index}>
                         <Skeleton
                           style={{

@@ -2,8 +2,11 @@ import * as React from "react"
 import Link from "next/link"
 import type { SearchParams } from "@/types"
 
-import { getFacultyCount, getFacultyWithUser } from "@/lib/fetchers/faculty"
-import { type FacultyWithUser } from "@/lib/prisma"
+import {
+  getAcademicYearCount,
+  getAcademicYearWithUser,
+} from "@/lib/fetchers/academic-year"
+import { type AcademicYearWithUser } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
 import { searchParamsSchema } from "@/lib/validations/params"
 import {
@@ -15,28 +18,30 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/bread-crumb"
 import { Separator } from "@/components/ui/separator"
-import { AddFaculty } from "@/components/add-faculty"
-import { columns } from "@/components/tables/faculty-tables/column"
-import { FacultyDataTable } from "@/components/tables/faculty-tables/faculty-data-table"
-import styles from "@/styles/(admin)/faculty/page.module.scss"
+import { AddAcademicYear } from "@/components/add-academic-year"
+import { AcademicYearDataTable } from "@/components/tables/academic-year-tables/academic-year-data-table"
+import { columns } from "@/components/tables/academic-year-tables/column"
+import styles from "@/styles/(admin)/academic-year/page.module.scss"
 
 interface SearchPageProps {
   searchParams: SearchParams
 }
 
-export default async function FacultyPage({ searchParams }: SearchPageProps) {
+export default async function AcademicYearPage({
+  searchParams,
+}: SearchPageProps) {
   const { q, page, rows } = searchParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
   const rowsNumber = parserRows(rows, 10)
 
-  const faculties: FacultyWithUser[] = (await getFacultyWithUser({
+  const academicYears = (await getAcademicYearWithUser({
     query: q,
     pageNumber,
     rowsNumber,
-  })) as FacultyWithUser[]
+  })) as AcademicYearWithUser[]
 
-  const totalFaculties = (await getFacultyCount()) as number
+  const totalAcademicYears = (await getAcademicYearCount()) as number
 
   return (
     <div className={styles["layout-wrapper"]}>
@@ -50,23 +55,23 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Faculty</BreadcrumbPage>
+              <BreadcrumbPage>Academic Years</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         <div className={styles["page-title"]}>
           <div className={styles["page-title-text"]}>
-            <h2>Faculty ({totalFaculties})</h2>
-            <p>Manage faculties</p>
+            <h2>Academic Year ({totalAcademicYears})</h2>
+            <p>Manage academic year</p>
           </div>
-          <AddFaculty />
+          <AddAcademicYear />
         </div>
         <Separator className={styles["separator"]} />
-        <FacultyDataTable
-          searchKey="name"
+        <AcademicYearDataTable
           columns={columns}
-          data={faculties}
-          totalFaculty={totalFaculties}
+          data={academicYears}
+          searchKey={"name"}
+          totalAcademicYears={totalAcademicYears}
           page={pageNumber}
           rows={rowsNumber}
         />

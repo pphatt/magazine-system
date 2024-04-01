@@ -77,7 +77,7 @@ export function AddFaculty() {
       }}
     >
       <DialogTrigger asChild>
-        <Button variant="outline" className={styles["add-user-btn"]}>
+        <Button variant="outline" className={styles["add-faculty-btn"]}>
           <Icons.circlePlus />
           <span>Add Faculty</span>
         </Button>
@@ -120,7 +120,7 @@ export function AddFaculty() {
                     aria-hidden="true"
                   />
                 )}
-                <span>Save changes</span>
+                <span>Create</span>
               </Button>
             </DialogFooter>
           </form>

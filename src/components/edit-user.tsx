@@ -11,7 +11,7 @@ import type { z } from "zod"
 import type { UserWithFaculty } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import {
-  changeUserPasswordSchema,
+  type changeUserPasswordSchema,
   editUserSchema,
 } from "@/lib/validations/user"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

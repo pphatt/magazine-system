@@ -371,7 +371,7 @@ export function AddUser({ faculty }: AddUserProps) {
                     aria-hidden="true"
                   />
                 )}
-                <span>Save changes</span>
+                <span>Create</span>
               </Button>
             </DialogFooter>
           </form>

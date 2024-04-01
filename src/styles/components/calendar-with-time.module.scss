@@ -1,0 +1,31 @@
+.calender-trigger {
+  width: 300px !important;
+
+  padding-left: 0.75rem;
+
+  font-weight: 400;
+  text-align: left;
+}
+
+.not-selected {
+  color: hsl(var(--muted-foreground)) !important
+}
+
+.popover-content {
+  width: auto !important;
+
+  padding: 0 !important;
+}
+
+.calendar-icon {
+  width: 1rem;
+  height: 1rem;
+
+  margin-left: 0.3rem;
+
+  opacity: 0.5;
+}
+
+.calender-footer {
+  padding: 0.5rem;
+}
