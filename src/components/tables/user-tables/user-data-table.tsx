@@ -105,7 +105,7 @@ export function UserDataTable<TData, TValue>({
     startTransition(() => {
       const newQueryString = createQueryString({
         q: debouncedQuery !== "" ? debouncedQuery : null,
-        page: q !== "" ? page : 1,
+        page: query !== "" ? page : 1,
         rows,
       })
 
@@ -114,15 +114,18 @@ export function UserDataTable<TData, TValue>({
       })
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuery])
+  }, [debouncedQuery, query])
 
-  const queryURL = React.useMemo(() => {
-    return createQueryString({
-      q: debouncedQuery !== "" ? debouncedQuery : null,
-      page: null,
-      rows,
-    })
-  }, [createQueryString, debouncedQuery, rows])
+  const queryURL = React.useCallback(
+    (_rows?: number) => {
+      return createQueryString({
+        q: debouncedQuery !== "" ? debouncedQuery : null,
+        page: null,
+        rows: _rows ?? rows,
+      })
+    },
+    [createQueryString, debouncedQuery, rows]
+  )
 
   return (
     <>
@@ -149,7 +152,7 @@ export function UserDataTable<TData, TValue>({
                 {[20, 30, 50, 100, 200].map((value, index) => (
                   <Link
                     key={index}
-                    href={`${pathname}?page=${page}&rows=${value}`}
+                    href={`${pathname}?page=1&${queryURL(value)}`}
                     className={styles["select-item"]}
                     data-select={value === rows}
                   >
@@ -245,7 +248,7 @@ export function UserDataTable<TData, TValue>({
                   aria-disabled={!canPrevPage}
                   tabIndex={!canPrevPage ? -1 : undefined}
                   className={!canPrevPage ? styles["disabled"] : undefined}
-                  href={`${pathname}?page=${page - 1}&${queryURL}`}
+                  href={`${pathname}?page=${page - 1}&${queryURL()}`}
                 />
               </PaginationItem>
               {paginationArr[0] !== 1 && (
@@ -256,7 +259,7 @@ export function UserDataTable<TData, TValue>({
               {paginationArr.map((value, index) => (
                 <PaginationItem key={index}>
                   <PaginationLink
-                    href={`${pathname}?page=${value}&${queryURL}`}
+                    href={`${pathname}?page=${value}&${queryURL()}`}
                     isActive={value === page}
                   >
                     {value}
@@ -273,7 +276,7 @@ export function UserDataTable<TData, TValue>({
                   aria-disabled={!canNextPage}
                   tabIndex={!canNextPage ? -1 : undefined}
                   className={!canNextPage ? styles["disabled"] : undefined}
-                  href={`${pathname}?page=${page + 1}&${queryURL}`}
+                  href={`${pathname}?page=${page + 1}&${queryURL()}`}
                 />
               </PaginationItem>
             </PaginationContent>

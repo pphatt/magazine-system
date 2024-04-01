@@ -48,7 +48,7 @@ async function main() {
 
   const faculty = await db.faculty.findMany()
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 1000; i++) {
     await prisma.user.create({
       data: {
         name: faker.internet.userName(),
@@ -56,9 +56,7 @@ async function main() {
         password: await bcrypt.hash(faker.internet.password(), 10),
         address: faker.location.streetAddress(),
         city: faker.location.city(),
-        phoneNumber: parseInt(
-          faker.string.numeric({ length: { min: 10, max: 11 } })
-        ),
+        phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),
         role: role[Math.floor(Math.random() * role.length)] as UserRole,
         facultyId:
           faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
