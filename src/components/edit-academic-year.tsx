@@ -77,7 +77,6 @@ export function EditAcademicYear({ academicYear }: EditAcademicYearProps) {
           body: JSON.stringify({ academicYearId: academicYear.id, ...data }),
         })
 
-        router.push("/admin/academic-year?page=1")
         router.refresh()
 
         toast("Edit academic year successfully")

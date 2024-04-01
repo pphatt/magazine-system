@@ -57,7 +57,6 @@ export function EditFaculty({ faculty }: EditFacultyProps) {
           body: JSON.stringify({ facultyId: faculty.id, name }),
         })
 
-        router.push("/admin/faculty?page=1")
         router.refresh()
 
         toast("Edit faculty successfully")

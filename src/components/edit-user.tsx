@@ -97,7 +97,6 @@ export function EditUser({ user }: EditUserProps) {
           body: formData,
         })
 
-        router.push("/admin/user")
         router.refresh()
 
         toast("Edit user successfully")
