@@ -105,7 +105,7 @@ export function UserDataTable<TData, TValue>({
     startTransition(() => {
       const newQueryString = createQueryString({
         q: debouncedQuery !== "" ? debouncedQuery : null,
-        page: query !== "" ? page : 1,
+        page: 1,
         rows,
       })
 
@@ -114,7 +114,7 @@ export function UserDataTable<TData, TValue>({
       })
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedQuery, query])
+  }, [debouncedQuery])
 
   const queryURL = React.useCallback(
     (_rows?: number) => {
