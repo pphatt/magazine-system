@@ -1,12 +1,22 @@
 import { db } from "@/server/db"
 import type { z } from "zod"
 
-import type { FacultyWithUser } from "@/lib/prisma"
 import type { getFacultyWithUserSchema } from "@/lib/validations/faculty"
 
-export async function getFacultyCount() {
+export async function getFacultyCount(query: string) {
   try {
-    return await db.faculty.count()
+    if (query !== "undefined") {
+      return await db.faculty.count({
+        where: {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      })
+    } else {
+      return await db.faculty.count()
+    }
   } catch (err) {
     console.log(err)
     return null
@@ -19,10 +29,8 @@ export async function getFacultyWithUser({
   rowsNumber,
 }: z.infer<typeof getFacultyWithUserSchema>) {
   try {
-    let faculties: FacultyWithUser[]
-
     if (query !== "undefined") {
-      faculties = await db.faculty.findMany({
+      return await db.faculty.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -39,7 +47,7 @@ export async function getFacultyWithUser({
         },
       })
     } else {
-      faculties = await db.faculty.findMany({
+      return await db.faculty.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         include: {
@@ -50,8 +58,6 @@ export async function getFacultyWithUser({
         },
       })
     }
-
-    return faculties
   } catch (err) {
     console.log(err)
     return null

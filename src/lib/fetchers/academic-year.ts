@@ -2,11 +2,21 @@ import { db } from "@/server/db"
 import type { z } from "zod"
 
 import type { getAcademicYearSchema } from "@/lib/validations/academic-year"
-import {type AcademicYearWithUser} from "@/lib/prisma";
 
-export async function getAcademicYearCount() {
+export async function getAcademicYearCount(query: string) {
   try {
-    return await db.academicYear.count()
+    if (query === "undefined") {
+      return await db.academicYear.count({
+        where: {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      })
+    } else {
+      return await db.academicYear.count()
+    }
   } catch (err) {
     console.log(err)
     return null
@@ -19,10 +29,8 @@ export async function getAcademicYearWithUser({
   rowsNumber,
 }: z.infer<typeof getAcademicYearSchema>) {
   try {
-    let academicYears: AcademicYearWithUser[]
-
     if (query !== "undefined") {
-      academicYears = await db.academicYear.findMany({
+      return await db.academicYear.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -32,26 +40,24 @@ export async function getAcademicYearWithUser({
           },
         },
         include: {
-          creator: true
+          creator: true,
         },
         orderBy: {
           createdAt: "asc",
         },
       })
     } else {
-      academicYears = await db.academicYear.findMany({
+      return await db.academicYear.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         include: {
-          creator: true
+          creator: true,
         },
         orderBy: {
           createdAt: "asc",
         },
       })
     }
-
-    return academicYears
   } catch (err) {
     console.log(err)
     return null

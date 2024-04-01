@@ -41,7 +41,7 @@ export default async function AcademicYearPage({
     rowsNumber,
   })) as AcademicYearWithUser[]
 
-  const totalAcademicYears = (await getAcademicYearCount()) as number
+  const totalAcademicYears = (await getAcademicYearCount(q)) as number
 
   return (
     <div className={styles["layout-wrapper"]}>

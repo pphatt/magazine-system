@@ -36,7 +36,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
     rowsNumber,
   })) as FacultyWithUser[]
 
-  const totalFaculties = (await getFacultyCount()) as number
+  const totalFaculties = (await getFacultyCount(q)) as number
 
   return (
     <div className={styles["layout-wrapper"]}>
