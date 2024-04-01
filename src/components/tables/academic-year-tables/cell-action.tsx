@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { FacultyAlertModal } from "@/components/modals/faculty-alert-modal"
+import { AcademicYearAlertModal } from "@/components/modals/academic-year-alert-modal"
 import styles from "@/styles/components/tables/academic-year-tables/cell-action.module.scss"
 
 interface CellActionProps {
@@ -30,18 +30,18 @@ export const AcademicYearCellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = () => {
     startTransition(async () => {
       try {
-        await fetch("/api/faculty/delete", {
+        await fetch("/api/academic-year/delete", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ facultyId: data.id }),
+          body: JSON.stringify({ academicYearId: data.id }),
         })
 
         setOpen(false)
         router.refresh()
 
-        toast("Delete faculty successfully")
+        toast("Delete academic year successfully")
       } catch (e) {
         toast("Something went wrong. Try again!")
       }
@@ -50,7 +50,7 @@ export const AcademicYearCellAction: React.FC<CellActionProps> = ({ data }) => {
 
   return (
     <>
-      <FacultyAlertModal
+      <AcademicYearAlertModal
         isOpen={open}
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}

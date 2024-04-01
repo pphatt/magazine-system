@@ -53,6 +53,10 @@ export const editAcademicYearSchema = z
     }
   )
 
+export const deleteAcademicYearSchema = z.object({
+  academicYearId: z.string(),
+})
+
 export const getAcademicYearSchema = z.object({
   query: z.string().default("undefined"),
   pageNumber: z.number().default(1),
