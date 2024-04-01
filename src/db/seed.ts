@@ -1,6 +1,7 @@
 import { db } from "@/server/db"
 import { faker } from "@faker-js/faker"
 import { PrismaClient, type UserRole } from "@prisma/client"
+import bcrypt from "bcryptjs"
 
 const prisma = new PrismaClient()
 
@@ -39,7 +40,6 @@ async function main() {
   // })
 
   const role = [
-    "ADMIN",
     "STUDENT",
     "MARKETING_COORDINATOR",
     "MARKETING_MANAGER",
@@ -53,9 +53,15 @@ async function main() {
       data: {
         name: faker.internet.userName(),
         email: faker.internet.email(),
-        password: faker.internet.password(),
+        password: await bcrypt.hash(faker.internet.password(), 10),
+        address: faker.location.streetAddress(),
+        city: faker.location.city(),
+        phoneNumber: parseInt(
+          faker.string.numeric({ length: { min: 10, max: 11 } })
+        ),
         role: role[Math.floor(Math.random() * role.length)] as UserRole,
-        facultyId: faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
+        facultyId:
+          faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
       },
     })
   }

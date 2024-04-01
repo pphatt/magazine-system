@@ -25,3 +25,57 @@
 
   @include var.spin();
 }
+
+.form-wrapper {
+  width: 100%;
+
+  button {
+    height: 32px !important;
+  }
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  width: 100%;
+}
+
+.form-item {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  margin: 0 !important;
+
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: 500;
+
+  text-align: right;
+}
+
+.form-input {
+  max-width: 100% !important;
+  width: 100%;
+
+  &:focus-visible {
+    box-shadow:
+            0 0 rgba(0, 0, 0, 0),
+            0 0 0 1px hsl(var(--ring)),
+            0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+}
