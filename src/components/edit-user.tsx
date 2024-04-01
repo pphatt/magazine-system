@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import type { z } from "zod"
 
 import type { UserWithFaculty } from "@/lib/prisma"
+import { cn } from "@/lib/utils"
 import {
   changeUserPasswordSchema,
   editUserSchema,
@@ -399,7 +400,12 @@ export function EditUser({ user }: EditUserProps) {
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         field: { value, onChange, ...fieldProps },
                       }) => (
-                        <FormItem className={styles["form-item"]}>
+                        <FormItem
+                          className={cn(
+                            styles["form-item"],
+                            styles["image-input"]
+                          )}
+                        >
                           <FormControl>
                             <Input
                               {...fieldProps}

@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/bread-crumb"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import { EditUser } from "@/components/edit-user"
 import styles from "@/styles/(admin)/user/details/page.module.scss"
-import {EditUser} from "@/components/edit-user";
 
 export default async function FacultyDetailsPage({
   params,

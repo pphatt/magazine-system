@@ -10,8 +10,7 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as ChangeUserPasswordInputs
 
-    const { userId, newPassword } =
-      changeUserPasswordSchema.parse(body)
+    const { userId, newPassword } = changeUserPasswordSchema.parse(body)
 
     const user = await currentUser()
 
