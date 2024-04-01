@@ -43,7 +43,7 @@ export const columns: ColumnDef<UserWithFaculty>[] = [
         return "-"
       }
 
-      return String(value.row.original.phoneNumber)
+      return value.row.original.phoneNumber
     },
   },
   {

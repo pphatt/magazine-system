@@ -11,8 +11,8 @@ import type { z } from "zod"
 import type { UserWithFaculty } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import {
-  type changeUserPasswordSchema,
   editUserSchema,
+  type changeUserPasswordSchema,
 } from "@/lib/validations/user"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -275,7 +275,7 @@ export function EditUser({ user }: EditUserProps) {
                       <Input
                         disabled={true}
                         className={styles["disabled-input"]}
-                        value={user.email ?? ""}
+                        value={user.email ?? "-"}
                       />
                     </div>
 
@@ -308,7 +308,10 @@ export function EditUser({ user }: EditUserProps) {
                             Role
                           </FormLabel>
                           <FormControl>
-                            <Select defaultValue={field.value}>
+                            <Select
+                              defaultValue={field.value}
+                              onValueChange={(value) => field.onChange(value)}
+                            >
                               <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Select user's role" />
@@ -331,6 +334,17 @@ export function EditUser({ user }: EditUserProps) {
                         </FormItem>
                       )}
                     />
+
+                    <div className={styles["disabled-input-container"]}>
+                      <label className={styles["disabled-input-label"]}>
+                        Faculty
+                      </label>
+                      <Input
+                        disabled={true}
+                        className={styles["disabled-input"]}
+                        value={user.faculty?.name ?? "-"}
+                      />
+                    </div>
 
                     <FormField
                       control={form.control}

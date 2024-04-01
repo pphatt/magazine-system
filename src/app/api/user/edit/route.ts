@@ -1,6 +1,7 @@
 import { env } from "@/env"
 import { db } from "@/server/db"
 import { supabase } from "@/server/supabase/supabase"
+import { type UserRole } from "@prisma/client"
 import { v4 } from "uuid"
 import { z } from "zod"
 
@@ -11,9 +12,10 @@ export async function POST(request: Request) {
   try {
     const formData = await request.formData()
 
-    const { userId, prevImage, name, address, city, phoneNumber } = JSON.parse(
-      formData.get("data") as string
-    ) as z.infer<typeof editUserSchema>
+    const { userId, prevImage, name, role, address, city, phoneNumber } =
+      JSON.parse(formData.get("data") as string) as z.infer<
+        typeof editUserSchema
+      >
 
     const image = formData.get("image") as Blob | null
 
@@ -46,7 +48,8 @@ export async function POST(request: Request) {
           name,
           address,
           city,
-          phoneNumber: parseInt(phoneNumber),
+          role: role as UserRole,
+          phoneNumber: phoneNumber,
           image: `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/avatar-assets/${data?.path}`,
         },
       })
@@ -59,7 +62,8 @@ export async function POST(request: Request) {
           name,
           address,
           city,
-          phoneNumber: parseInt(phoneNumber),
+          role: role as UserRole,
+          phoneNumber: phoneNumber,
         },
       })
     }

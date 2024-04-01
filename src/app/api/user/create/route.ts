@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         facultyId: faculty ? faculty : null,
         address,
         city,
-        phoneNumber: parseInt(phoneNumber),
+        phoneNumber: phoneNumber,
       },
     })
 

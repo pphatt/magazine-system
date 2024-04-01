@@ -39,7 +39,7 @@ model User {
   role          UserRole  @default(STUDENT)
   address       String?
   city          String?
-  phoneNumber   BigInt?
+  phoneNumber   String?
   createdAt     DateTime  @default(now())
 
   faculty   Faculty? @relation(fields: [facultyId], references: [id])

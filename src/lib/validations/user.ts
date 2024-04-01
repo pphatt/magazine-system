@@ -93,7 +93,7 @@ export const editUserSchema = z.object({
       message: "Phone must be contain only number",
     })
     .min(10, {
-      message: "Enter a valid phone number",
+      message: "Minimum digits of a phone number is 11",
     })
     .max(11, {
       message: "Maximum digits of a phone number is 11",
