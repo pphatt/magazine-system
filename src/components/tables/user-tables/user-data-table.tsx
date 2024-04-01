@@ -105,7 +105,7 @@ export function UserDataTable<TData, TValue>({
     startTransition(() => {
       const newQueryString = createQueryString({
         q: debouncedQuery !== "" ? debouncedQuery : null,
-        page,
+        page: 1,
       })
 
       router.push(`${pathname}?${newQueryString}`, {

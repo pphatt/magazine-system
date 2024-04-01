@@ -26,15 +26,29 @@ export async function getUserById(id: string) {
   }
 }
 
-export async function getUserCountNotIncludeAdmin() {
+export async function getUserCountNotIncludeAdmin(query: string) {
   try {
-    return await db.user.count({
-      where: {
-        role: {
-          not: "ADMIN",
+    if (query !== "undefined") {
+      return await db.user.count({
+        where: {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+          role: {
+            not: "ADMIN",
+          },
         },
-      },
-    })
+      })
+    } else {
+      return await db.user.count({
+        where: {
+          role: {
+            not: "ADMIN",
+          },
+        },
+      })
+    }
   } catch (err) {
     console.error(err)
     return null
@@ -47,10 +61,8 @@ export async function getUserWithFaculty({
   rowsNumber,
 }: z.infer<typeof getUserWithFacultySchema>) {
   try {
-    let users: UserWithFaculty[]
-
     if (query !== "undefined") {
-      users = await db.user.findMany({
+      return await db.user.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -70,7 +82,7 @@ export async function getUserWithFaculty({
         },
       })
     } else {
-      users = await db.user.findMany({
+      return await db.user.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -86,8 +98,6 @@ export async function getUserWithFaculty({
         },
       })
     }
-
-    return users
   } catch (err) {
     console.log(err)
     return null

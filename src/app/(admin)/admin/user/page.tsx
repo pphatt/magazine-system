@@ -40,7 +40,7 @@ export default async function UserPage({ searchParams }: SearchPageProps) {
     rowsNumber,
   })) as UserWithFaculty[]
 
-  const totalUsers = (await getUserCountNotIncludeAdmin()) as number
+  const totalUsers = (await getUserCountNotIncludeAdmin(q)) as number
 
   const getAllFaculty = await db.faculty.findMany()
 
