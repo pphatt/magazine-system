@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { type Session } from "next-auth"
+import { User } from "next-auth"
 
 import { logout } from "@/lib/actions/logout"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -19,7 +19,7 @@ import { Icons } from "@/components/icons"
 import styles from "@/styles/components/layouts/admin-site-header.module.scss"
 
 interface AdminSiteHeaderProps {
-  user: Session | null
+  user: User | null
 }
 
 export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
@@ -38,7 +38,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                 {user ? (
                   <Avatar className={styles["avatar"]}>
                     <AvatarImage
-                      src={user.user?.image as string | undefined}
+                      src={user?.image as string | undefined}
                       alt={""}
                       style={{
                         objectFit: "cover",
@@ -46,7 +46,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                       }}
                     />
                     <AvatarFallback>
-                      {user.user!.name?.charAt(0) ?? ""}
+                      {user.name?.charAt(0) ?? ""}
                     </AvatarFallback>
                   </Avatar>
                 ) : (
@@ -62,8 +62,8 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                 <>
                   <DropdownMenuLabel className={styles["dropdown-label"]}>
                     <div>
-                      <p>{user.user!.name}</p>
-                      <p>{user.user!.email}</p>
+                      <p>{user.name}</p>
+                      <p>{user.email}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator

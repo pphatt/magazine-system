@@ -1,6 +1,7 @@
 import * as React from "react"
-import { auth } from "@/server/auth/auth"
+import { redirect } from "next/navigation"
 
+import { currentUser } from "@/lib/auth/auth"
 import { AdminMainNav } from "@/components/layouts/admin-main-nav"
 import { AdminSiteHeader } from "@/components/layouts/admin-site-header"
 import styles from "@/styles/(admin)/layout.module.scss"
@@ -10,7 +11,11 @@ interface AdminLayoutProps {
 }
 
 export default async function AdminLayout({ children }: AdminLayoutProps) {
-  const user = await auth()
+  const user = await currentUser()
+
+  if (!user || user.role !== "ADMIN") {
+    redirect("/")
+  }
 
   return (
     <div className={styles["admin-layout"]}>
