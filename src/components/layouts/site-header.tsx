@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import type { Session } from "next-auth"
+import { type User } from "next-auth"
 
 import { siteConfig } from "@/config/site"
 import { logout } from "@/lib/actions/logout"
@@ -22,7 +22,7 @@ import styles from "@/styles/components/layouts/site-header.module.scss"
 import { Icons } from "../icons"
 
 interface SideHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: Session | null
+  user: User | undefined
 }
 
 export const SiteHeader = ({ user, style }: SideHeaderProps) => {
@@ -37,7 +37,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                 {user ? (
                   <Avatar className={styles["avatar"]}>
                     <AvatarImage
-                      src={user.user?.image as string | undefined}
+                      src={user?.image as string | undefined}
                       alt={""}
                       style={{
                         objectFit: "cover",
@@ -45,7 +45,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                       }}
                     />
                     <AvatarFallback>
-                      {user.user!.name?.charAt(0) ?? ""}
+                      {user.name?.charAt(0) ?? ""}
                     </AvatarFallback>
                   </Avatar>
                 ) : (
@@ -61,8 +61,8 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                 <>
                   <DropdownMenuLabel className={styles["dropdown-label"]}>
                     <div>
-                      <p>{user.user!.name}</p>
-                      <p>{user.user!.email}</p>
+                      <p>{user.name}</p>
+                      <p>{user.email}</p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator
@@ -74,9 +74,20 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                       href={"/settings/user"}
                     >
                       <span>Account</span>
-                      <Icons.circleUserRound />
+                      <Icons.settings />
                     </Link>
                   </DropdownMenuItem>
+                  {user.role === "ADMIN" && (
+                    <DropdownMenuItem className={styles["dropdown-item"]}>
+                      <Link
+                        className={styles["dropdown-item-link"]}
+                        href={"/admin"}
+                      >
+                        <span>Admin</span>
+                        <Icons.circleUserRound />
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                 </>
               ) : (
                 <DropdownMenuItem className={styles["dropdown-item"]}>
@@ -89,16 +100,6 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                   </Link>
                 </DropdownMenuItem>
               )}
-
-              <DropdownMenuItem className={styles["dropdown-item"]}>
-                <Link
-                  className={styles["dropdown-item-link"]}
-                  href={"/settings/all"}
-                >
-                  <span>Settings</span>
-                  <Icons.settings />
-                </Link>
-              </DropdownMenuItem>
 
               {user && (
                 <>

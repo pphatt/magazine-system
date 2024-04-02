@@ -1,0 +1,22 @@
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 2rem !important;
+
+  width: 100%;
+
+  padding: 1.5rem 2rem 2rem !important;
+  margin-right: auto;
+  margin-left: auto;
+
+  @media (min-width: 768px) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  @media (min-width: 1400px) {
+    max-width: 1400px !important;
+  }
+}

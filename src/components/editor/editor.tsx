@@ -1,443 +1,321 @@
-// "use client"
-//
-// import * as React from "react"
-// import type { ChangeEventHandler } from "react"
-// import { useRouter } from "next/navigation"
-// import { supabase } from "@/server/supabase/supabase"
-// import type EditorJS from "@editorjs/editorjs"
-// import { zodResolver } from "@hookform/resolvers/zod"
-// import { useMutation } from "@tanstack/react-query"
-// import { format, set } from "date-fns"
-// import type { SelectSingleEventHandler } from "react-day-picker"
-// import { useForm } from "react-hook-form"
-// import TextareaAutosize from "react-textarea-autosize"
-// import { toast } from "sonner"
-// import { v4 } from "uuid"
-// // import type { z } from "zod"
-//
-// import { cn } from "@/lib/utils"
-// // import { workspaceSchema } from "@/lib/validations/workspace"
-// import { Calendar } from "@/components/ui/calendar"
-// import {
-//   Form,
-//   FormControl,
-//   FormField,
-//   FormItem,
-//   FormLabel,
-// } from "@/components/ui/form"
-// import { PopoverTrigger } from "@/components/ui/popover"
-// import { EditorAttaches } from "@/components/editor/attaches"
-// import { EditorCode } from "@/components/editor/code"
-// import { EditorEmbed } from "@/components/editor/embed"
-// import { EditorHeader } from "@/components/editor/header"
-// import { EditorImage } from "@/components/editor/image"
-// import { EditorInlineCode } from "@/components/editor/inline-code"
-// import { EditorLink } from "@/components/editor/link"
-// import { EditorList } from "@/components/editor/list"
-// import { EditorTable } from "@/components/editor/table"
-// import styles from "@/styles/components/editor.module.scss"
-//
-// import { Icons } from "../icons"
-// import { Button } from "../ui/button"
-// import { Popover, PopoverContent } from "../ui/popover"
-//
-// // export type WorkspaceCreationRequest = z.infer<typeof workspaceSchema>
-//
-// interface EditorProps {
-//   faculty: string
-// }
-//
-// export function Editor({ faculty }: EditorProps) {
-//   const today = new Date()
-//
-//   const [isMounted, setIsMounted] = React.useState<boolean>(false)
-//
-//   const [selectedClosureDate, setSelectClosureDate] =
-//     React.useState<Date>(today)
-//   const [closureDateWithTime, setClosureDateWithTime] =
-//     React.useState<Date>(today)
-//
-//   const [selectedFinalClosureDate, setSelectFinalClosureDate] =
-//     React.useState<Date>(today)
-//   const [finalClosureDateWithTime, setFinalClosureDateWithTime] =
-//     React.useState<Date>(today)
-//
-//   const form = useForm<WorkspaceCreationRequest>({
-//     resolver: zodResolver(workspaceSchema),
-//     defaultValues: {
-//       title: "",
-//       content: null,
-//       closureDate: new Date(),
-//       finalClosureDate: new Date(),
-//     },
-//   })
-//
-//   const router = useRouter()
-//
-//   const ref = React.useRef<EditorJS>()
-//
-//   const { mutate: createWorkspace } = useMutation({
-//     mutationFn: async ({
-//       title,
-//       content,
-//       closureDate,
-//       finalClosureDate,
-//     }: WorkspaceCreationRequest) => {
-//       const payload: WorkspaceCreationRequest = {
-//         title,
-//         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-//         content,
-//         closureDate,
-//         finalClosureDate,
-//       }
-//       const response = await fetch("/api/workspace/create", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(payload),
-//       })
-//
-//       return (await response.json()) as unknown
-//     },
-//     onError: () => {
-//       toast.warning("Something went wrong.", {
-//         description: "Your post was not published. Please try again.",
-//       })
-//     },
-//     onSuccess: () => {
-//       toast("Workspace created successfully.")
-//       router.push("/faculty")
-//       router.refresh()
-//     },
-//   })
-//
-//   const initializeEditor = React.useCallback(async () => {
-//     const EditorJS = (await import("@editorjs/editorjs")).default
-//
-//     if (!ref.current) {
-//       const editor = new EditorJS({
-//         holder: "editor",
-//         onReady() {
-//           ref.current = editor
-//         },
-//         placeholder:
-//           "Workspace descriptions (accept text, image, file, code snippet, ...)",
-//         inlineToolbar: true,
-//         data: {
-//           blocks: [],
-//         },
-//         tools: {
-//           header: EditorHeader,
-//           linkTool: {
-//             class: EditorLink,
-//             config: {
-//               endpoint: "/api/editor/link",
-//             },
-//           },
-//           image: {
-//             class: EditorImage as never,
-//             config: {
-//               uploader: {
-//                 async uploadByFile(file: File) {
-//                   const { data } = await supabase.storage
-//                     .from("faculty-assets")
-//                     .upload(`${faculty}/${v4()}/${file.name}`, file)
-//
-//                   return {
-//                     success: 1,
-//                     file: {
-//                       url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/faculty-assets/${data?.path}`,
-//                     },
-//                   }
-//                 },
-//               },
-//               endpoints: {
-//                 byFile: "/api/upload",
-//               },
-//             },
-//           },
-//           attaches: {
-//             class: EditorAttaches as never,
-//             config: {
-//               types: ".doc, .docx, .pdf",
-//               uploader: {
-//                 async uploadByFile(file: File) {
-//                   const { data } = await supabase.storage
-//                     .from("faculty-assets")
-//                     .upload(`${faculty}/${v4()}/${file.name}`, file)
-//
-//                   return {
-//                     success: 1,
-//                     file: {
-//                       title: file.name,
-//                       name: file.name,
-//                       url: `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/faculty-assets/${data?.path}`,
-//                     },
-//                   }
-//                 },
-//               },
-//             },
-//           },
-//           list: EditorList,
-//           code: EditorCode,
-//           inlineCode: EditorInlineCode,
-//           table: EditorTable,
-//           embed: EditorEmbed,
-//         },
-//       })
-//     }
-//   }, [faculty])
-//
-//   React.useEffect(() => {
-//     if (Object.keys(form.formState.errors).length) {
-//       for (const [_key, value] of Object.entries(form.formState.errors)) {
-//         console.log(_key)
-//         toast.warning("Something went wrong.", {
-//           description: (value as { message: string }).message,
-//         })
-//       }
-//     }
-//   }, [form.formState.errors])
-//
-//   React.useEffect(() => {
-//     if (typeof window !== "undefined") {
-//       setIsMounted(true)
-//     }
-//   }, [])
-//
-//   React.useEffect(() => {
-//     const init = async () => {
-//       await initializeEditor()
-//
-//       setTimeout(() => {
-//         // _titleRef?.current?.focus()
-//       }, 0)
-//     }
-//
-//     if (isMounted) {
-//       void init()
-//
-//       return () => {
-//         // ref.current?.destroy()
-//         // ref.current = undefined
-//       }
-//     }
-//   }, [isMounted, initializeEditor])
-//
-//   async function onSubmit(data: WorkspaceCreationRequest) {
-//     const blocks = await ref.current?.save()
-//
-//     const payload: WorkspaceCreationRequest = {
-//       title: data.title,
-//       content: blocks,
-//       closureDate: closureDateWithTime,
-//       finalClosureDate: finalClosureDateWithTime,
-//     }
-//
-//     createWorkspace(payload)
-//   }
-//
-//   const handleClosureDateTimeChange: ChangeEventHandler<HTMLInputElement> =
-//     React.useCallback(
-//       (e) => {
-//         const { value } = e.target
-//
-//         const hours = Number.parseInt(value.split(":")[0] || "00", 10)
-//         const minutes = Number.parseInt(value.split(":")[1] || "00", 10)
-//         const seconds = Number.parseInt(value.split(":")[2] || "00", 10)
-//
-//         setClosureDateWithTime(
-//           set(selectedClosureDate, { hours, minutes, seconds })
-//         )
-//       },
-//       [selectedClosureDate]
-//     )
-//
-//   const handleClosureDateSelect: SelectSingleEventHandler = React.useCallback(
-//     (_day, selected) => {
-//       setSelectClosureDate(selected)
-//
-//       const hours = closureDateWithTime.getHours()
-//       const minutes = closureDateWithTime.getMinutes()
-//       const seconds = closureDateWithTime.getSeconds()
-//
-//       setClosureDateWithTime(set(selected, { hours, minutes, seconds }))
-//     },
-//     [closureDateWithTime]
-//   )
-//
-//   const handleFinalClosureDateTimeChange: ChangeEventHandler<HTMLInputElement> =
-//     React.useCallback(
-//       (e) => {
-//         const { value } = e.target
-//
-//         const hours = Number.parseInt(value.split(":")[0] || "00", 10)
-//         const minutes = Number.parseInt(value.split(":")[1] || "00", 10)
-//         const seconds = Number.parseInt(value.split(":")[2] || "00", 10)
-//
-//         setFinalClosureDateWithTime(
-//           set(selectedFinalClosureDate, { hours, minutes, seconds })
-//         )
-//       },
-//       [selectedFinalClosureDate]
-//     )
-//
-//   const handleFinalClosureDateSelect: SelectSingleEventHandler =
-//     React.useCallback(
-//       (_day, selected) => {
-//         setSelectFinalClosureDate(selected)
-//
-//         const hours = finalClosureDateWithTime.getHours()
-//         const minutes = finalClosureDateWithTime.getMinutes()
-//         const seconds = finalClosureDateWithTime.getSeconds()
-//
-//         setFinalClosureDateWithTime(set(selected, { hours, minutes, seconds }))
-//       },
-//       [finalClosureDateWithTime]
-//     )
-//
-//   if (!isMounted) {
-//     return null
-//   }
-//
-//   const closureDateTime = (
-//     <div className={styles["footer"]}>
-//       <label>Time: </label>
-//       <input
-//         type="time"
-//         step="1"
-//         onChange={handleClosureDateTimeChange}
-//         value={format(closureDateWithTime, "HH:mm:ss")}
-//       />
-//     </div>
-//   )
-//
-//   const finalClosureDateTime = (
-//     <div className={styles["footer"]}>
-//       <label>Time: </label>
-//       <input
-//         type="time"
-//         step="1"
-//         onChange={handleFinalClosureDateTimeChange}
-//         value={format(finalClosureDateWithTime, "HH:mm:ss")}
-//       />
-//     </div>
-//   )
-//
-//   return (
-//     <div className={styles["editor-layout"]}>
-//       <Form {...form}>
-//         <form
-//           id="workspace-post-form"
-//           className={styles["editor-form"]}
-//           onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
-//         >
-//           <div>
-//             <TextareaAutosize
-//               placeholder="Title"
-//               className={styles["editor-title"]}
-//               {...form.register("title")}
-//             />
-//             <div id="editor" className={styles["editor"]} />
-//           </div>
-//           <div>
-//             <FormField
-//               control={form.control}
-//               name="closureDate"
-//               render={() => (
-//                 <FormItem className={styles["form"]}>
-//                   <FormLabel>Closure Date</FormLabel>
-//                   <Popover>
-//                     <PopoverTrigger asChild>
-//                       <FormControl>
-//                         <Button
-//                           variant={"outline"}
-//                           className={cn(
-//                             "w-[240px] pl-3 text-left font-normal",
-//                             !selectedClosureDate && "text-muted-foreground"
-//                           )}
-//                         >
-//                           {selectedClosureDate ? (
-//                             format(closureDateWithTime, "PPP HH:mm:ss")
-//                           ) : (
-//                             <span>Pick a date</span>
-//                           )}
-//                           <Icons.calendarIcon
-//                             className={styles["calendar-icon"]}
-//                           />
-//                         </Button>
-//                       </FormControl>
-//                     </PopoverTrigger>
-//                     <PopoverContent
-//                       className={styles["popover-content"]}
-//                       align="start"
-//                     >
-//                       <Calendar
-//                         mode="single"
-//                         selected={selectedClosureDate}
-//                         onSelect={handleClosureDateSelect}
-//                         footer={closureDateTime}
-//                         disabled={(date) =>
-//                           date < new Date()
-//                         }
-//                         initialFocus
-//                       />
-//                     </PopoverContent>
-//                   </Popover>
-//                 </FormItem>
-//               )}
-//             />
-//
-//             <FormField
-//               control={form.control}
-//               name="finalClosureDate"
-//               render={() => (
-//                 <FormItem className={styles["form"]}>
-//                   <FormLabel>Final Closure Date</FormLabel>
-//                   <Popover>
-//                     <PopoverTrigger asChild>
-//                       <FormControl>
-//                         <Button
-//                           variant={"outline"}
-//                           className={cn(
-//                             "w-[240px] pl-3 text-left font-normal",
-//                             !selectedFinalClosureDate && "text-muted-foreground"
-//                           )}
-//                         >
-//                           {selectedFinalClosureDate ? (
-//                             format(finalClosureDateWithTime, "PPP HH:mm:ss")
-//                           ) : (
-//                             <span>Pick a date</span>
-//                           )}
-//                           <Icons.calendarIcon
-//                             className={styles["calendar-icon"]}
-//                           />
-//                         </Button>
-//                       </FormControl>
-//                     </PopoverTrigger>
-//                     <PopoverContent
-//                       className={styles["popover-content"]}
-//                       align="start"
-//                     >
-//                       <Calendar
-//                         mode="single"
-//                         selected={selectedFinalClosureDate}
-//                         onSelect={handleFinalClosureDateSelect}
-//                         footer={finalClosureDateTime}
-//                         disabled={(date) =>
-//                           date < new Date()
-//                         }
-//                         initialFocus
-//                       />
-//                     </PopoverContent>
-//                   </Popover>
-//                 </FormItem>
-//               )}
-//             />
-//           </div>
-//         </form>
-//       </Form>
-//     </div>
-//   )
-// }
+"use client"
+
+import * as React from "react"
+import type EditorJS from "@editorjs/editorjs"
+import { zodResolver } from "@hookform/resolvers/zod"
+// Import React FilePond
+import { FilePond, registerPlugin } from "react-filepond"
+import { useForm } from "react-hook-form"
+import TextareaAutosize from "react-textarea-autosize"
+import { toast } from "sonner"
+import type { z } from "zod"
+
+import { uploadBlogSchema } from "@/lib/validations/blog"
+import { Button } from "@/components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { EditorCode } from "@/components/editor/code"
+import { EditorEmbed } from "@/components/editor/embed"
+import { EditorHeader } from "@/components/editor/header"
+import { EditorInlineCode } from "@/components/editor/inline-code"
+import { EditorLink } from "@/components/editor/link"
+import { EditorList } from "@/components/editor/list"
+import { EditorTable } from "@/components/editor/table"
+import styles from "@/styles/components/editor/editor.module.scss"
+
+// Import FilePond styles
+import "filepond/dist/filepond.min.css"
+
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type"
+// Import the Image EXIF Orientation and Image Preview plugins
+// Note: These need to be installed separately
+// `npm i filepond-plugin-image-preview filepond-plugin-image-exif-orientation --save`
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation"
+import FilePondPluginImagePreview from "filepond-plugin-image-preview"
+
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+
+import { useRouter } from "next/navigation"
+import { useMutation } from "@tanstack/react-query"
+import { type FilePondFile } from "filepond"
+
+import { Icons } from "@/components/icons"
+
+// Register the plugins
+registerPlugin(
+  FilePondPluginImageExifOrientation,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateType
+)
+
+export type BlogInputs = z.infer<typeof uploadBlogSchema>
+
+interface EditorProps {
+  academicYearId: string
+  facultyId: string
+}
+
+export default function Editor({ academicYearId, facultyId }: EditorProps) {
+  const [files, setFiles] = React.useState<FilePondFile[]>([])
+
+  const [previewImage, setPreviewImage] = React.useState<string>()
+
+  const router = useRouter()
+
+  const [isMounted, setIsMounted] = React.useState<boolean>(false)
+
+  const form = useForm<BlogInputs>({
+    resolver: zodResolver(uploadBlogSchema),
+    defaultValues: {
+      title: "",
+      content: null,
+      academicYearId: "",
+      facultyId: "",
+    },
+  })
+
+  const { mutate: uploadBlog, isPending } = useMutation({
+    mutationFn: async ({ image, files, ...data }: BlogInputs) => {
+      const formData = new FormData()
+
+      formData.set("data", JSON.stringify(data))
+
+      for (const file of files) {
+        formData.append("files[]", file.file)
+      }
+
+      if (image) {
+        formData.set("image", image)
+      }
+
+      const response = await fetch("/api/blog/create", {
+        method: "POST",
+        body: formData,
+      })
+
+      return (await response.json()) as unknown
+    },
+    onError: () => {
+      toast.warning("Something went wrong.", {
+        description: "Your blog was not published. Please try again.",
+      })
+    },
+    onSuccess: () => {
+      toast("Upload blog successfully.")
+      router.push("/faculty")
+      router.refresh()
+    },
+  })
+
+  const ref = React.useRef<EditorJS>()
+
+  const initializeEditor = React.useCallback(async () => {
+    const EditorJS = (await import("@editorjs/editorjs")).default
+
+    if (!ref.current) {
+      const editor = new EditorJS({
+        holder: "editor",
+        onReady() {
+          ref.current = editor
+        },
+        placeholder: "Blog descriptions (accept text, code snippet, ...)",
+        inlineToolbar: true,
+        data: {
+          blocks: [],
+        },
+        tools: {
+          header: EditorHeader,
+          linkTool: {
+            class: EditorLink,
+            config: {
+              endpoint: "/api/editor/link",
+            },
+          },
+          list: EditorList,
+          code: EditorCode,
+          inlineCode: EditorInlineCode,
+          table: EditorTable,
+          embed: EditorEmbed,
+        },
+      })
+    }
+  }, [])
+
+  React.useEffect(() => {
+    if (Object.keys(form.formState.errors).length) {
+      for (const [_key, value] of Object.entries(form.formState.errors)) {
+        console.log(_key)
+        toast.warning("Something went wrong.", {
+          description: (value as { message: string }).message,
+        })
+      }
+    }
+  }, [form.formState.errors])
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMounted(true)
+    }
+  }, [])
+
+  React.useEffect(() => {
+    const init = async () => {
+      await initializeEditor()
+
+      setTimeout(() => {
+        // _titleRef?.current?.focus()
+      }, 0)
+    }
+
+    if (isMounted) {
+      void init()
+
+      return () => {
+        // ref.current?.destroy()
+        // ref.current = undefined
+      }
+    }
+  }, [isMounted, initializeEditor])
+
+  const handleSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target
+
+    if (!files) {
+      return
+    }
+
+    const file = files[0]
+
+    if (!file) {
+      return
+    }
+
+    if (file.size > 5000000) {
+      toast.warning("Max image size is 5MB.")
+      return
+    }
+
+    const fileReader = new FileReader()
+
+    fileReader.addEventListener("load", () => {
+      setPreviewImage(fileReader.result as string)
+    })
+
+    fileReader.readAsDataURL(file)
+  }
+
+  async function onSubmit(data: BlogInputs) {
+    if (!files.length) {
+      toast.warning("No submit files were recorded")
+      return
+    }
+
+    const blocks = await ref.current?.save()
+
+    const payload: BlogInputs = {
+      ...data,
+      content: blocks,
+      academicYearId,
+      facultyId,
+      files,
+    }
+
+    uploadBlog(payload)
+  }
+
+  return (
+    <div className={styles["editor-layout"]}>
+      <Form {...form}>
+        <form
+          id={"blog-post-form"}
+          className={styles["editor-form"]}
+          onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
+        >
+          <div>
+            <TextareaAutosize
+              placeholder="Title"
+              className={styles["editor-title"]}
+              {...form.register("title")}
+            />
+
+            <div id="editor" className={styles["editor"]} />
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={({
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                field: { value, onChange, ...fieldProps },
+              }) => (
+                <FormItem className={styles["image-input"]}>
+                  <FormControl>
+                    <Input
+                      {...fieldProps}
+                      type={"file"}
+                      accept={"image/png, image/jpg, image/jpeg"}
+                      className={styles["cover-image-input"]}
+                      id={"image"}
+                      onChange={(event) => {
+                        handleSelectImage(event)
+                        onChange(event.target.files && event.target.files[0])
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className={styles["background-image-wrapper"]}>
+            <Button variant={"outline"} type={"button"} asChild>
+              <label htmlFor={"image"}>Add cover image</label>
+            </Button>
+
+            {previewImage && (
+              <img
+                alt={""}
+                className={styles["background-image-cover"]}
+                src={previewImage}
+              />
+            )}
+          </div>
+
+          <FilePond
+            className={styles["upload-files"]}
+            // @ts-expect-error @ts-ignore
+            files={files}
+            onupdatefiles={setFiles}
+            allowMultiple={true}
+            name="files"
+            // set allowed file types with image/*, .doc, .docx, .pdf
+            acceptedFileTypes={[
+              "image/jpeg",
+              "image/jpg",
+              "image/png",
+              "application/msword",
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "application/pdf",
+            ]}
+            labelIdle='Drag & Drop your submit files or <span class="filepond--label-action">Browse</span>'
+          />
+
+          <div className={styles["submit-btn"]}>
+            <Button type="submit" disabled={isPending}>
+              {isPending && (
+                <Icons.spinner className={styles["icon"]} aria-hidden="true" />
+              )}
+              Post
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
+  )
+}

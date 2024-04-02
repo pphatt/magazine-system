@@ -50,6 +50,7 @@ model User {
   academicYearCreated AcademicYear[] @relation("AcademicYearCreatedBy")
 
   accounts Account[]
+  Blogs    Blogs[]
 }
 
 model Account {
@@ -79,7 +80,8 @@ model Faculty {
   creatorId String
   creator   User   @relation("FacultyCreatedBy", fields: [creatorId], references: [id])
 
-  user User[]
+  user  User[]
+  blogs Blogs[]
 
   @@unique([name])
 }
@@ -90,36 +92,46 @@ model AcademicYear {
   createdAt   DateTime @default(now())
   description String
 
-  creatorId String
-  creator   User   @relation("AcademicYearCreatedBy", fields: [creatorId], references: [id])
-
   startDate        DateTime
   closureDate      DateTime @db.Timestamptz(3)
   finalClosureDate DateTime
+
+  creatorId String
+  creator   User   @relation("AcademicYearCreatedBy", fields: [creatorId], references: [id])
+
+  blogs Blogs[]
 }
 
-model Contributions {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  publicized Boolean
-  isTurnIn   Boolean
+model Blogs {
+  id              String   @id @default(cuid())
+  title           String
+  content         Json
+  backgroundImage String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  publicized      Boolean  @default(false)
 
-  location String // store as array for multi contribution string[]
+  location String[] // store as array for multi contribution string[]
 
-  // authorId String
-  // author   User   @relation(fields: [authorId], references: [id])
+  facultyId String
+  faculty   Faculty @relation(fields: [facultyId], references: [id])
+
+  academicYearId String
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 
   comments Comment[]
 }
 
 model Comment {
-  id            String        @id @default(cuid())
+  id            String   @id @default(cuid())
   text          String
-  createdAt     DateTime      @default(now())
+  createdAt     DateTime @default(now())
   // author        User          @relation(fields: [authorId], references: [id])
   // authorId      String
-  contributions Contributions @relation(fields: [postId], references: [id], onDelete: Cascade)
+  contributions Blogs    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId        String
 
   replyToId String?

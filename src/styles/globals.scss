@@ -169,7 +169,7 @@
 
 .ce-toolbar__content,
 .ce-block__content {
-  max-width: 71rem !important;
+  max-width: 77.5rem !important;
 }
 
 .ce-block__content {
@@ -178,6 +178,10 @@
 
 .ce-toolbar {
   left: initial !important;
+}
+
+.filepond--credits {
+  display: none;
 }
 
 //.codex-editor__redactor {

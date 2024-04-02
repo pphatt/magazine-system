@@ -1,6 +1,4 @@
-import { auth } from "@/server/auth/auth"
-
-import { SiteFooter } from "@/components/layouts/site-footer"
+import { currentUser } from "@/lib/auth/auth"
 import { SiteHeader } from "@/components/layouts/site-header"
 import styles from "@/styles/(lobby)/layout.module.scss"
 
@@ -9,22 +7,13 @@ interface LobbyLayoutProps {
 }
 
 export default async function LobbyLayout({ children }: LobbyLayoutProps) {
-  const user = await auth()
+  const user = await currentUser()
 
   return (
     <>
       <div className={styles["layout"]}>
         <SiteHeader user={user} />
-        <main
-          style={{
-            flex: "1",
-            height: "100%",
-            minHeight: "calc(100vh - 85px)",
-          }}
-        >
-          {children}
-        </main>
-        <SiteFooter />
+        <main>{children}</main>
       </div>
     </>
   )

@@ -3,7 +3,6 @@
 import { db } from "@/server/db"
 import type { z } from "zod"
 
-import type { UserWithFaculty } from "@/lib/prisma"
 import type { getUserWithFacultySchema } from "@/lib/validations/user"
 
 export async function getUserByEmail(email: string) {

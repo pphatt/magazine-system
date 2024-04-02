@@ -1,8 +1,6 @@
 import * as React from "react"
 
-// import { redirect } from "next/navigation"
-
-// import { currentUser } from "@/lib/auth/auth"
+import { Shell } from "@/components/shells/shell"
 import styles from "@/styles/(faculty)/layout.module.scss"
 
 interface FacultyLayoutProp {
@@ -10,15 +8,5 @@ interface FacultyLayoutProp {
 }
 
 export default function FacultyLayout({ children }: FacultyLayoutProp) {
-  // const user = await currentUser()
-
-  // if (!user || !user.faculty) {
-  //   redirect("/")
-  // }
-
-  return (
-    <div className={styles["layout-wrapper"]}>
-      <div className={styles["layout-container"]}>{children}</div>
-    </div>
-  )
+  return <Shell className={styles["layout-wrapper"]}>{children}</Shell>
 }

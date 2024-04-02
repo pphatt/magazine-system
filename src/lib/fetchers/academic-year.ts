@@ -5,7 +5,7 @@ import type { getAcademicYearSchema } from "@/lib/validations/academic-year"
 
 export async function getAcademicYearCount(query: string) {
   try {
-    if (query === "undefined") {
+    if (query !== "undefined") {
       return await db.academicYear.count({
         where: {
           name: {
