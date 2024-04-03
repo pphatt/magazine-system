@@ -116,7 +116,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
           <MarketingCoorBlogsList
             page={pageNumber}
             rows={rowsNumber}
-            status={status as StatusEnum}
+            status={status.toLowerCase() as StatusEnum}
             facultyId={user.facultyId ?? ""}
             academicYearId={academicYear?.id ?? ""}
           />
