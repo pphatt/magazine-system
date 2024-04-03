@@ -33,3 +33,8 @@ export const getBlogsWithUserSchema = z.object({
   facultyId: z.coerce.string(),
   academicYearId: z.coerce.string(),
 })
+
+export const blogGradingSchema = z.object({
+  blogId: z.coerce.string(),
+  status: z.coerce.string(),
+})

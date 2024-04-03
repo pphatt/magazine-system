@@ -35,7 +35,7 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, publicized: false, status: "APPROVE" },
+        where: { facultyId, academicYearId, status: "APPROVE" },
         include: {
           author: true,
         },
@@ -49,7 +49,7 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, publicized: false, status: "PENDING" },
+        where: { facultyId, academicYearId, status: "PENDING" },
         include: {
           author: true,
         },
@@ -63,7 +63,7 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, publicized: false, status: "REJECT" },
+        where: { facultyId, academicYearId, status: "REJECT" },
         include: {
           author: true,
         },
@@ -76,7 +76,7 @@ export async function getBlogsWithUser({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { facultyId, academicYearId, publicized: false },
+      where: { facultyId, academicYearId },
       include: {
         author: true,
       },

@@ -1,0 +1,36 @@
+@use "../variables" as var;
+
+.article-action-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 0.5rem;
+
+  @media (min-width: 768px) {
+    padding-left: calc(40px + 0.5rem);
+  }
+}
+
+.accept-btn {
+  color: hsl(180.54, 100%, 21.96%) !important;
+  background-color: hsl(180, 38.78%, 90.39%) !important;
+}
+
+.reject-btn {
+  //color: hsl(0 70% 40%) !important;
+  //background-color: hsl(0 100% 97%) !important;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+
+  margin-right: 0.5rem;
+
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  @include var.spin();
+}
