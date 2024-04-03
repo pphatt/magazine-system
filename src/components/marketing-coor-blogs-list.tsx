@@ -45,36 +45,43 @@ export async function MarketingCoorBlogsList({
 
       {!!blogs?.length && (
         <div>
-          {blogs.map(({ id, title, author, createdAt, updatedAt }, index) => (
+          {blogs.map(({ id, title, author, createdAt, updatedAt, status }, index) => (
             <article className={styles["article-wrapper"]} key={index}>
               <div className={styles["article-container"]}>
                 <div className={styles["article-header-wrapper"]}>
-                  <div className={styles["author-avatar-wrapper"]}>
-                    <Avatar className={styles["avatar"]}>
-                      <AvatarImage
-                        src={author.image ?? ""}
-                        alt={""}
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "top",
-                        }}
-                      />
-                      <AvatarFallback>
-                        <Icons.user />
-                      </AvatarFallback>
-                    </Avatar>
+                  <div className={styles["article-header-container"]}>
+                    <div className={styles["author-avatar-wrapper"]}>
+                      <Avatar className={styles["avatar"]}>
+                        <AvatarImage
+                            src={author.image ?? ""}
+                            alt={""}
+                            style={{
+                              objectFit: "cover",
+                              objectPosition: "top",
+                            }}
+                        />
+                        <AvatarFallback>
+                          <Icons.user/>
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                    <div>
+                      <div className={styles["author-name"]}>{author.name}</div>
+                      <div>Created at: {format(createdAt, "PPP")}</div>
+                      <div>Updated at: {format(updatedAt, "PPP")}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className={styles["author-name"]}>{author.name}</div>
-                    <div>Created at: {format(createdAt, "PPP")}</div>
-                    <div>Updated at: {format(updatedAt, "PPP")}</div>
+                  <div className={styles["status-wrapper"]}>
+                    <div className={styles["upload-status"]} data-submit={status.toLowerCase()}>
+                        {status.toLowerCase()}
+                    </div>
                   </div>
                 </div>
                 <div className={styles["article-content-wrapper"]}>
                   <h3 className={styles["article-title"]}>
                     <Link
-                      href={`/faculty/blog/${id}`}
-                      className={styles["article-link"]}
+                        href={`/faculty/blog/${id}`}
+                        className={styles["article-link"]}
                     >
                       {title}
                     </Link>
@@ -82,7 +89,7 @@ export async function MarketingCoorBlogsList({
                   <p className={styles["article-description"]}>-</p>
                   <div className={styles["article-comments-wrapper"]}>
                     <Button variant={"ghost"} className={styles["comment-btn"]}>
-                      <Icons.messageCircle />
+                      <Icons.messageCircle/>
                       69 comments
                     </Button>
                   </div>
@@ -94,10 +101,10 @@ export async function MarketingCoorBlogsList({
       )}
 
       <PaginationGroupList
-        page={page}
-        rows={rows}
-        status={status}
-        totalBlogs={totalBlogs}
+          page={page}
+          rows={rows}
+          status={status}
+          totalBlogs={totalBlogs}
       />
     </div>
   )
