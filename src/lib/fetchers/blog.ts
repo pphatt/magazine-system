@@ -4,19 +4,23 @@ import type { z } from "zod"
 
 import type { getBlogsWithUserSchema } from "@/lib/validations/blog"
 
-export async function getBlogCount(status: string) {
+export async function getBlogCount(academicYearId: string, status: string) {
   try {
     if (status === "all blogs") {
-      return await db.blogs.count()
+      return await db.blogs.count({
+        where: { academicYearId },
+      })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
-        where: { status: status.toUpperCase() as StatusEnum },
+        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
       })
     }
 
-    return await db.blogs.count()
+    return await db.blogs.count({
+      where: { academicYearId },
+    })
   } catch (err) {
     console.log(err)
     return null
@@ -28,7 +32,7 @@ export async function getBlogsWithUser({
   rowsNumber,
   status,
   facultyId,
-  academicYearId
+  academicYearId,
 }: z.infer<typeof getBlogsWithUserSchema>) {
   try {
     if (status === "approve") {

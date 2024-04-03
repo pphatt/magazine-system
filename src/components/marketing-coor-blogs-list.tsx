@@ -36,7 +36,7 @@ export async function MarketingCoorBlogsList({
     academicYearId,
   })) as BlogWithUser[]
 
-  const totalBlogs = (await getBlogCount(status)) as number
+  const totalBlogs = (await getBlogCount(academicYearId, status)) as number
 
   return (
     <div>
