@@ -49,13 +49,30 @@ export function EditFaculty({ faculty }: EditFacultyProps) {
 
     startTransition(async () => {
       try {
-        await fetch("/api/faculty/edit", {
+        const req = await fetch("/api/faculty/edit", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ facultyId: faculty.id, name }),
         })
+
+        if (!req.ok) {
+          let errorMessage = "Some went wrong try again later."
+
+          try {
+            const responseText = await req.text()
+
+            errorMessage = responseText || errorMessage
+          } catch (error) {
+            toast.warning("Error parsing response text", {
+              description: String(error),
+            })
+          }
+
+          toast.warning(errorMessage)
+          return
+        }
 
         router.refresh()
 

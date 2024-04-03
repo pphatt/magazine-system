@@ -60,7 +60,7 @@ export function StudentSubmissionGrading({
         })
 
         if (!req.ok) {
-          let errorMessage = "An error occurred"
+          let errorMessage = "Some went wrong try again later."
 
           try {
             const responseText = await req.text()

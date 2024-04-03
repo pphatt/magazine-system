@@ -92,10 +92,27 @@ export function EditUser({ user }: EditUserProps) {
 
     startTransition(async () => {
       try {
-        await fetch("/api/user/edit", {
+        const req = await fetch("/api/user/edit", {
           method: "POST",
           body: formData,
         })
+
+        if (!req.ok) {
+          let errorMessage = "Some went wrong try again later."
+
+          try {
+            const responseText = await req.text()
+
+            errorMessage = responseText || errorMessage
+          } catch (error) {
+            toast.warning("Error parsing response text", {
+              description: String(error),
+            })
+          }
+
+          toast.warning(errorMessage)
+          return
+        }
 
         router.refresh()
 

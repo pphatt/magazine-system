@@ -89,13 +89,30 @@ export function AddUser({ faculty }: AddUserProps) {
 
     startTransition(async () => {
       try {
-        await fetch("/api/user/create", {
+        const req = await fetch("/api/user/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(payload),
         })
+
+        if (!req.ok) {
+          let errorMessage = "Some went wrong try again later."
+
+          try {
+            const responseText = await req.text()
+
+            errorMessage = responseText || errorMessage
+          } catch (error) {
+            toast.warning("Error parsing response text", {
+              description: String(error),
+            })
+          }
+
+          toast.warning(errorMessage)
+          return
+        }
 
         setOpen(false)
         router.refresh()

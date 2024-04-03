@@ -75,13 +75,30 @@ export function AddAcademicYear() {
   function onSubmit(data: AddAcademicYearInputs) {
     startTransition(async () => {
       try {
-        await fetch("/api/academic-year/create", {
+        const req = await fetch("/api/academic-year/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ ...data }),
         })
+
+        if (!req.ok) {
+          let errorMessage = "Some went wrong try again later."
+
+          try {
+            const responseText = await req.text()
+
+            errorMessage = responseText || errorMessage
+          } catch (error) {
+            toast.warning("Error parsing response text", {
+              description: String(error),
+            })
+          }
+
+          toast.warning(errorMessage)
+          return
+        }
 
         setOpen(false)
         router.refresh()

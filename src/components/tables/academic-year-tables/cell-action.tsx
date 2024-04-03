@@ -30,13 +30,30 @@ export const AcademicYearCellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = () => {
     startTransition(async () => {
       try {
-        await fetch("/api/academic-year/delete", {
+        const req = await fetch("/api/academic-year/delete", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ academicYearId: data.id }),
         })
+
+        if (!req.ok) {
+          let errorMessage = "Some went wrong try again later."
+
+          try {
+            const responseText = await req.text()
+
+            errorMessage = responseText || errorMessage
+          } catch (error) {
+            toast.warning("Error parsing response text", {
+              description: String(error),
+            })
+          }
+
+          toast.warning(errorMessage)
+          return
+        }
 
         setOpen(false)
         router.refresh()

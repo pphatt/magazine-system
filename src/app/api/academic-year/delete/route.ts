@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const user = await currentUser()
 
-    if (!user || !user.id) {
+    if (!user || !user.id || user.role !== "ADMIN") {
       return new Response("Unauthorized", { status: 401 })
     }
 
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     }
 
     return new Response(
-      JSON.stringify("Could not delete faculty at this time. Please try later"),
+      JSON.stringify("Could not delete academic year at this time. Please try later"),
       { status: 500 }
     )
   }
