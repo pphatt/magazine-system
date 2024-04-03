@@ -69,6 +69,8 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
             <CardTitle>Academic Year</CardTitle>
             <CardContent className={styles["card-content"]}>
               <SelectAcademicYear
+                rows={rowsNumber}
+                status={status}
                 academicYear={academicYear}
                 academicYears={academicYears}
               />
