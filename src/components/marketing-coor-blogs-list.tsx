@@ -73,7 +73,7 @@ export async function MarketingCoorBlogsList({
                   </div>
                   <div className={styles["status-wrapper"]}>
                     <div className={styles["upload-status"]} data-submit={status.toLowerCase()}>
-                        {status.toLowerCase()}
+                      {status.toLowerCase()}
                     </div>
                   </div>
                 </div>
@@ -94,6 +94,12 @@ export async function MarketingCoorBlogsList({
                     </Button>
                   </div>
                 </div>
+                {status.toLowerCase() === "pending" && (
+                  <div className={styles["article-action-wrapper"]}>
+                    <Button className={styles["accept-btn"]}>Accept</Button>
+                    <Button className={styles["reject-btn"]} variant={"destructive"}>Reject</Button>
+                  </div>
+                )}
               </div>
             </article>
           ))}
