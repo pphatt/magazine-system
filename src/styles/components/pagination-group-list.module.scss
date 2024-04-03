@@ -1,0 +1,16 @@
+.pagination-group-list {
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
+}
+
+.pagination {
+  justify-content: flex-end;
+}
+
+.disabled {
+  opacity: 0.5;
+
+  pointer-events: none;
+}

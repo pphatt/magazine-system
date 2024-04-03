@@ -29,6 +29,12 @@ enum UserRole {
   GUEST
 }
 
+enum StatusEnum {
+  APPROVE
+  PENDING
+  REJECT
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String?
@@ -103,13 +109,14 @@ model AcademicYear {
 }
 
 model Blogs {
-  id              String   @id @default(cuid())
+  id              String     @id @default(cuid())
   title           String
   content         Json
   backgroundImage String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  publicized      Boolean  @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  publicized      Boolean    @default(false)
+  status          StatusEnum @default(PENDING)
 
   location String[] // store as array for multi contribution string[]
 

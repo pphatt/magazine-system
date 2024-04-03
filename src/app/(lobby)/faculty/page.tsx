@@ -2,10 +2,12 @@ import * as React from "react"
 import Link from "next/link"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
+import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
-import { User } from "next-auth"
+import { type User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
+import { parserPage, parserRows } from "@/lib/utils"
 import { facultyParamsSchema } from "@/lib/validations/params"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { MarketingCoorBlogsList } from "@/components/marketing-coor-blogs-list"
 import { SelectAcademicYear } from "@/components/select-academic-year"
 import { StudentBlogsList } from "@/components/student-blogs-list"
 import styles from "@/styles/(faculty)/page.module.scss"
@@ -24,16 +27,21 @@ interface SearchPageProps {
 }
 
 export default async function FacultyPage({ searchParams }: SearchPageProps) {
-  const { academicYearId } = facultyParamsSchema.parse(searchParams)
+  const { academicYearId, status, page, rows } =
+    facultyParamsSchema.parse(searchParams)
 
+  // get search query
+  const pageNumber = parserPage(page)
+  const rowsNumber = parserRows(rows, 10)
+
+  // get user info
   const user = (await currentUser()) as User
-
-  // const faculties = await db.faculty.findMany()
 
   const faculty = await db.faculty.findUnique({
     where: { id: user?.facultyId ?? "" },
   })
 
+  // get total academic years and current selected academic year
   const academicYears = await db.academicYear.findMany()
   const academicYear =
     academicYears.find((value) => value.id === academicYearId) ??
@@ -82,17 +90,19 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
                   <span>{format(academicYear?.closureDate ?? "-", "PPP")}</span>
                 </div>
               </div>
-              <Button
-                variant={"outline"}
-                className={styles["add-new-blog"]}
-                asChild
-              >
-                <Link
-                  href={`/faculty/blog/create?academicYearId=${academicYearId ? academicYear?.id : "empty"}`}
+              {user.role === "STUDENT" && (
+                <Button
+                  variant={"outline"}
+                  className={styles["add-new-blog"]}
+                  asChild
                 >
-                  Add new blog
-                </Link>
-              </Button>
+                  <Link
+                    href={`/faculty/blog/create?academicYearId=${academicYearId ? academicYear?.id : "empty"}`}
+                  >
+                    Add new blog
+                  </Link>
+                </Button>
+              )}
             </CardContent>
           </CardHeader>
         </Card>
@@ -100,6 +110,16 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
       <div className={styles["blogs-list"]}>
         {user?.role === "STUDENT" && (
           <StudentBlogsList facultyId={user.facultyId ?? ""} />
+        )}
+
+        {user?.role === "MARKETING_COORDINATOR" && (
+          <MarketingCoorBlogsList
+            page={pageNumber}
+            rows={rowsNumber}
+            status={status as StatusEnum}
+            facultyId={user.facultyId ?? ""}
+            academicYearId={academicYear?.id ?? ""}
+          />
         )}
       </div>
     </div>

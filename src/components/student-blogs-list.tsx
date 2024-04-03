@@ -15,7 +15,7 @@ interface StudentBlogsListProps {
 
 export async function StudentBlogsList({ facultyId }: StudentBlogsListProps) {
   const blogs = (await db.blogs.findMany({
-    where: { facultyId, publicized: true },
+    where: { facultyId, publicized: true, status: "APPROVE" },
     include: {
       author: true,
     },
@@ -23,9 +23,7 @@ export async function StudentBlogsList({ facultyId }: StudentBlogsListProps) {
 
   return (
     <>
-      {!blogs.length && (
-        <div className={styles["no-results"]}>No results</div>
-      )}
+      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
 
       {blogs.map(({ id, title, author, createdAt, updatedAt }, index) => (
         <article className={styles["article-wrapper"]} key={index}>

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { type AcademicYear } from "@prisma/client"
 
 import {
@@ -23,7 +23,6 @@ export function SelectAcademicYear({
   academicYear,
   academicYears,
 }: SelectAcademicYearProps) {
-  const searchParams = useSearchParams()
   const pathname = usePathname()
 
   return (

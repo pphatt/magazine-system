@@ -31,6 +31,10 @@ export default async function CreateBlogPage({
 
   const user = (await currentUser()) as User
 
+  if (user.role !== "STUDENT") {
+    redirect("/faculty")
+  }
+
   const faculty = (await db.faculty.findUnique({
     where: { id: user.facultyId ?? "" },
   })) as Faculty
@@ -72,7 +76,10 @@ export default async function CreateBlogPage({
         </div>
 
         <Suspense>
-          <Editor academicYearId={academicYearId} facultyId={user.facultyId ?? ""} />
+          <Editor
+            academicYearId={academicYearId}
+            facultyId={user.facultyId ?? ""}
+          />
         </Suspense>
       </div>
     </div>

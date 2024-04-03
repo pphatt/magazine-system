@@ -25,3 +25,11 @@ export const uploadBlogSchema = z.object({
   academicYearId: z.string(),
   facultyId: z.string(),
 })
+
+export const getBlogsWithUserSchema = z.object({
+  pageNumber: z.number().default(1),
+  rowsNumber: z.number().default(50),
+  status: z.coerce.string(),
+  facultyId: z.coerce.string(),
+  academicYearId: z.coerce.string(),
+})
