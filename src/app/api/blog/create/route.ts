@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     for (const file of files) {
       const { data } = await supabase.storage
         .from("student-contributions")
-        .upload(`${facultyId}/${academicYearId}/${user.id}/${v4()}`, file)
+        .upload(`${facultyId}/${academicYearId}/${user.id}/${v4()}/${file.name}`, file)
 
       filesUrl.push(data?.path ?? "")
     }

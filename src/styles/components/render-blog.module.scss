@@ -1,0 +1,99 @@
+.paragraph {
+  margin: 5px 0;
+
+  font-size: 1rem;
+  line-height: 1.25rem;
+
+  text-align: left;
+
+  a {
+    border-bottom: 1px solid black;
+  }
+}
+
+.heading {
+  margin: 0.6rem 0 3px;
+
+  line-height: 1.25em;
+  font-weight: 800;
+
+  outline: none;
+}
+
+.heading-1 {
+  font-size: 2.25rem;
+}
+
+.heading-2 {
+  font-size: 1.5em;
+}
+
+.heading-3 {
+  font-size: 1.25em;
+}
+
+.ordered-list {
+  padding: 0.4rem 0 0 35px;
+  margin: 0;
+
+  outline: none;
+
+  list-style: decimal;
+}
+
+.unordered-list {
+  padding: 0.4rem 0 0 35px;
+  margin: 0;
+
+  outline: none;
+
+  list-style: disc;
+}
+
+.list-item {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+
+  line-height: 1.6em;
+}
+
+.link {
+  display: block;
+
+  background: #fff;
+
+  border: 1px solid rgba(201, 201, 204, 0.48);
+  border-radius: 6px;
+
+  padding: 25px;
+
+  box-shadow: 0 1px 3px #0000001a;
+}
+
+.link-title {
+  margin: 0 0 10px;
+
+  font-size: 17px;
+  line-height: 1.5em;
+  font-weight: 600;
+}
+
+.link-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  margin: 0 0 20px;
+
+  font-size: 15px;
+  line-height: 1.55em;
+
+  overflow: hidden;
+}
+
+.link-anchor {
+  color: #888;
+
+  font-size: 15px;
+  line-height: 1rem;
+}
