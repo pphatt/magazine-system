@@ -2,7 +2,10 @@ import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
-import type { getBlogsWithUserSchema } from "@/lib/validations/blog"
+import type {
+  getBlogsWithUserByStudentSchema,
+  getBlogsWithUserSchema,
+} from "@/lib/validations/blog"
 
 export async function getBlogCount(academicYearId: string, status: string) {
   try {
@@ -81,6 +84,41 @@ export async function getBlogsWithUser({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: { facultyId, academicYearId },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogCountByStudent(academicYearId: string) {
+  try {
+    return await db.blogs.count({
+      where: { academicYearId, publicized: true, status: "APPROVE" },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogsWithUserByStudent({
+  pageNumber,
+  rowsNumber,
+  facultyId,
+  academicYearId,
+}: z.infer<typeof getBlogsWithUserByStudentSchema>) {
+  try {
+    return await db.blogs.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: { facultyId, academicYearId, publicized: true, status: "APPROVE" },
       include: {
         author: true,
       },

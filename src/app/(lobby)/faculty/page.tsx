@@ -111,7 +111,12 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
       </div>
       <div className={styles["blogs-list"]}>
         {user?.role === "STUDENT" && (
-          <StudentBlogsList facultyId={user.facultyId ?? ""} />
+          <StudentBlogsList
+            page={pageNumber}
+            rows={rowsNumber}
+            facultyId={user.facultyId ?? ""}
+            academicYearId={academicYear?.id ?? ""}
+          />
         )}
 
         {user?.role === "MARKETING_COORDINATOR" && (
