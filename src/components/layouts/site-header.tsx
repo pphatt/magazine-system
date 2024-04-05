@@ -71,7 +71,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                   <DropdownMenuItem className={styles["dropdown-item"]}>
                     <Link
                       className={styles["dropdown-item-link"]}
-                      href={"/settings/user"}
+                      href={"/settings/profile"}
                     >
                       <span>Account</span>
                       <Icons.settings />

@@ -1,4 +1,4 @@
-import type { MainNavItem } from "@/types"
+import type { MainNavItem, SidebarNavItem } from "@/types"
 
 export type SiteConfig = typeof siteConfig
 
@@ -78,4 +78,25 @@ export const adminSiteConfig = {
       items: [],
     },
   ] as MainNavItem[],
+}
+
+export interface DashboardConfig {
+  sidebarNav: SidebarNavItem[]
+}
+
+export const userConfig: DashboardConfig = {
+  sidebarNav: [
+    {
+      title: "Profile",
+      href: "/settings/profile",
+      icon: "user",
+      items: [],
+    },
+    {
+      title: "Recent blogs",
+      href: "/settings/recent-blogs",
+      icon: "layers",
+      items: [],
+    },
+  ],
 }

@@ -77,9 +77,7 @@ export type LinkMeta = {
   description: string
 }
 
-export type Block = BlockType<
-  "paragraph" | "header" | "list" | "linkTool"
->
+export type Block = BlockType<"paragraph" | "header" | "list" | "linkTool">
 
 export type ContentType = {
   content: Block[]

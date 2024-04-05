@@ -1,0 +1,52 @@
+@import "../shared-panel-styles.module";
+
+.settings-block {
+  @extend .settings-block;
+}
+
+.setting-block-header {
+  @extend .setting-block-header;
+}
+
+.setting-block-content {
+  @extend .setting-block-content;
+}
+
+.setting-block-content-description {
+  @extend .setting-block-content-description;
+}
+
+.content-explicit-description {
+  @extend .content-explicit-description;
+}
+
+.setting-block-content-option {
+  @extend .setting-block-content-option;
+
+  button,
+  a {
+    width: 100%;
+  }
+}
+
+.check-option {
+  @extend .check-option;
+}
+
+.checkbox-label-description {
+  @extend .checkbox-label-description;
+}
+
+.checkbox-description {
+  @extend .checkbox-description;
+}
+
+.settings-block-avatar {
+  @extend .settings-block;
+
+  display: block;
+
+  @media (min-width: 580px) {
+    padding-right: 24px;
+  }
+}

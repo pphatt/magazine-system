@@ -11,11 +11,18 @@ import type { z } from "zod"
 import type { UserWithFaculty } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import {
-  editUserSchema,
+  editProfileSchema,
   type changeUserPasswordSchema,
 } from "@/lib/validations/user"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import {
   Form,
   FormControl,
@@ -25,27 +32,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Icons } from "@/components/icons"
-import { UserAlertModal } from "@/components/modals/user-alert-modal"
 import { UserChangePassword } from "@/components/modals/user-change-password"
-import styles from "@/styles/components/edit-user.module.scss"
+import styles from "@/styles/(settings)/_components/edit-profile.module.scss"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card"
-
-export type EditUserInputs = z.infer<typeof editUserSchema>
+export type EditProfileInputs = z.infer<typeof editProfileSchema>
 
 export type ChangeUserPasswordInputs = z.infer<typeof changeUserPasswordSchema>
 
@@ -53,8 +44,7 @@ interface EditUserProps {
   user: UserWithFaculty
 }
 
-export function EditUser({ user }: EditUserProps) {
-  const [openDelete, setOpenDelete] = React.useState(false)
+export function EditProfile({ user }: EditUserProps) {
   const [openChangePassword, setOpenChangePassword] = React.useState(false)
 
   const [previewImage, setPreviewImage] = React.useState<string | null>(
@@ -64,19 +54,17 @@ export function EditUser({ user }: EditUserProps) {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
-  const form = useForm<EditUserInputs>({
-    resolver: zodResolver(editUserSchema),
+  const form = useForm<EditProfileInputs>({
+    resolver: zodResolver(editProfileSchema),
     defaultValues: {
       name: user.name ?? "",
-      role: user.role ?? "",
-      faculty: user.faculty?.name ?? "",
       address: user.address ?? "",
       city: user.city ?? "",
       phoneNumber: user.phoneNumber ?? "",
     },
   })
 
-  function onSubmit(data: EditUserInputs) {
+  function onSubmit(data: EditProfileInputs) {
     const { image } = data
 
     const formData = new FormData()
@@ -92,7 +80,7 @@ export function EditUser({ user }: EditUserProps) {
 
     startTransition(async () => {
       try {
-        const req = await fetch("/api/user/edit", {
+        const req = await fetch("/api/user/edit-profile", {
           method: "POST",
           body: formData,
         })
@@ -116,29 +104,7 @@ export function EditUser({ user }: EditUserProps) {
 
         router.refresh()
 
-        toast("Edit user successfully")
-      } catch (e) {
-        toast("Something went wrong. Try again!")
-      }
-    })
-  }
-
-  const onConfirmDelete = () => {
-    startTransition(async () => {
-      try {
-        await fetch("/api/user/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        })
-
-        setOpenDelete(false)
-        router.push("/admin/user")
-        router.refresh()
-
-        toast("Delete user successfully")
+        toast("Edit user profile successfully")
       } catch (e) {
         toast("Something went wrong. Try again!")
       }
@@ -201,13 +167,6 @@ export function EditUser({ user }: EditUserProps) {
 
   return (
     <div className={styles["edit-user-wrapper"]}>
-      <UserAlertModal
-        isOpen={openDelete}
-        onClose={() => setOpenDelete(false)}
-        onConfirm={onConfirmDelete}
-        loading={isPending}
-      />
-
       <UserChangePassword
         isOpen={openChangePassword}
         onClose={() => setOpenChangePassword(false)}
@@ -257,14 +216,6 @@ export function EditUser({ user }: EditUserProps) {
               <Icons.lock />
               <span>Change password</span>
             </Button>
-            <Button
-              variant={"destructive"}
-              className={styles["delete-user-btn"]}
-              onClick={() => setOpenDelete(true)}
-            >
-              <Icons.trash />
-              <span>Delete user</span>
-            </Button>
           </div>
           <div className={styles["created-at"]}>
             Joined on <span>{format(user.createdAt, "PPP")}</span>
@@ -310,42 +261,6 @@ export function EditUser({ user }: EditUserProps) {
                               placeholder={"Enter Faculty's name"}
                               className={styles["form-input"]}
                             />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="role"
-                      render={({ field }) => (
-                        <FormItem className={styles["form-item"]}>
-                          <FormLabel className={styles["form-label"]}>
-                            Role
-                          </FormLabel>
-                          <FormControl>
-                            <Select
-                              defaultValue={field.value}
-                              onValueChange={(value) => field.onChange(value)}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select user's role" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="STUDENT">Student</SelectItem>
-                                <SelectItem value="ADMIN">Admin</SelectItem>
-                                <SelectItem value="MARKETING_COORDINATOR">
-                                  Marketing Coordinator
-                                </SelectItem>
-                                <SelectItem value="MARKETING_MANAGER">
-                                  Marketing Manager
-                                </SelectItem>
-                                <SelectItem value="GUEST">Guest</SelectItem>
-                              </SelectContent>
-                            </Select>
                           </FormControl>
                           <FormMessage />
                         </FormItem>

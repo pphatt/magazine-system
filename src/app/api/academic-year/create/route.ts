@@ -37,7 +37,9 @@ export async function POST(req: Request) {
     }
 
     return new Response(
-      JSON.stringify("Could not create academic year at this time. Please try later"),
+      JSON.stringify(
+        "Could not create academic year at this time. Please try later"
+      ),
       { status: 500 }
     )
   }

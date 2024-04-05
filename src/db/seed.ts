@@ -39,11 +39,7 @@ async function main() {
   //   graphicDesignFaculty,
   // })
 
-  const role = [
-    "STUDENT",
-    "MARKETING_MANAGER",
-    "GUEST",
-  ]
+  const role = ["STUDENT", "MARKETING_MANAGER", "GUEST"]
 
   const faculty = await db.faculty.findMany()
 

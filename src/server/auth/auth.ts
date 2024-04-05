@@ -41,6 +41,8 @@ export const {
       }
 
       session.user.id = token.sub
+      session.user.email = token.email as string
+      session.user.image = token.image as string | null
       session.user.role = token.role as UserRole
       session.user.facultyId = token.facultyId as string | null
 
@@ -61,7 +63,7 @@ export const {
       token.role = existedUser.role
       token.facultyId = existedUser.facultyId
 
-      return token
+      return { ...token, ...existedUser }
     },
   },
   ...authConfig,
