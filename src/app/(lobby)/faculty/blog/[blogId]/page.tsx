@@ -1,4 +1,5 @@
 import * as React from "react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { env } from "@/env"
@@ -14,6 +15,10 @@ import { BlogSubmissionGrading } from "@/components/blog-submission-grading"
 import { Icons } from "@/components/icons"
 import { RenderBlog } from "@/components/render-blog"
 import styles from "@/styles/(blog)/page.module.scss"
+
+const DownloadZip = dynamic(() => import("@/components/download-zip"), {
+  ssr: false,
+})
 
 export default async function BlogPage({
   params,
@@ -103,6 +108,9 @@ export default async function BlogPage({
           </div>
           <div className={styles["file-upload-wrapper"]}>
             <h3>File upload</h3>
+            <div className={styles["files"]}>
+              <DownloadZip location={blog.location} />
+            </div>
             <div className={styles["files"]}>
               {blog.location.map((value) => {
                 const _split = value.split("/")
