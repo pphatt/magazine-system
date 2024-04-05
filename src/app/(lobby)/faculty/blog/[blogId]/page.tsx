@@ -43,10 +43,6 @@ export default async function BlogPage({
     }
   }
 
-  if (user.role === "ADMIN" && blog.status !== "APPROVE") {
-    redirect("/faculty")
-  }
-
   if (user.role === "GUEST" && !blog.publicized) {
     redirect("/faculty")
   }

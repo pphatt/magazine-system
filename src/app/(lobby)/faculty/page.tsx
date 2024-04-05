@@ -18,6 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { MarketingCoorBlogsList } from "@/components/marketing-coor-blogs-list"
+import { MarketingManagerBlogList } from "@/components/marketing-manager-blog-list"
 import { SelectAcademicYear } from "@/components/select-academic-year"
 import { StudentBlogsList } from "@/components/student-blogs-list"
 import styles from "@/styles/(faculty)/page.module.scss"
@@ -53,17 +54,19 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   return (
     <div className={styles["page-wrapper"]}>
       <div className={styles["filter-wrapper"]}>
-        <Card className={styles["faculty-card"]}>
-          <CardHeader>
-            <CardTitle>Faculty</CardTitle>
-            <CardDescription>
-              Faculty&apos;s name:{" "}
-              <span className={styles["faculty-text"]}>
-                {faculty?.name ?? "-"}
-              </span>
-            </CardDescription>
-          </CardHeader>
-        </Card>
+        {user.role !== "ADMIN" && user.role !== "MARKETING_MANAGER" && (
+          <Card className={styles["faculty-card"]}>
+            <CardHeader>
+              <CardTitle>Faculty</CardTitle>
+              <CardDescription>
+                Faculty&apos;s name:{" "}
+                <span className={styles["faculty-text"]}>
+                  {faculty?.name ?? "-"}
+                </span>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        )}
         <Card className={styles["faculty-card"]}>
           <CardHeader>
             <CardTitle>Academic Year</CardTitle>
@@ -125,6 +128,15 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
             rows={rowsNumber}
             status={status.toLowerCase() as StatusEnum}
             facultyId={user.facultyId ?? ""}
+            academicYearId={academicYear?.id ?? ""}
+          />
+        )}
+
+        {(user?.role === "ADMIN" || user.role === "MARKETING_MANAGER") && (
+          <MarketingManagerBlogList
+            page={pageNumber}
+            rows={rowsNumber}
+            status={status.toLowerCase() as StatusEnum}
             academicYearId={academicYear?.id ?? ""}
           />
         )}

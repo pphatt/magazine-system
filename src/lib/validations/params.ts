@@ -13,7 +13,7 @@ export const facultyParamsSchema = z.object({
   page: z.coerce.string().default("1"),
   rows: z.coerce.string(),
   // STUDENT, MC => blog status
-  status: z.coerce.string().default("PENDING"),
+  status: z.coerce.string().default("ALL BLOGS"),
 })
 
 export const recentBlogParamsSchema = z.object({

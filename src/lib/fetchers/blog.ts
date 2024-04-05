@@ -3,6 +3,7 @@ import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
 import type {
+  getBlogsWithUserByMarketingManagerSchema,
   getBlogsWithUserByStudentSchema,
   getBlogsWithUserSchema,
   getRecentBlogsSchema,
@@ -214,6 +215,84 @@ export async function getRecentBlogs({
       },
       orderBy: {
         createdAt: "asc",
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogCountByMarketingManager(
+  academicYearId: string,
+  status: string
+) {
+  try {
+    if (status === "all blogs") {
+      return await db.blogs.count({
+        where: { academicYearId },
+      })
+    }
+
+    if (status !== "undefined") {
+      return await db.blogs.count({
+        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
+      })
+    }
+
+    return await db.blogs.count({
+      where: { academicYearId },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogsWithUserByMarketingManager({
+  pageNumber,
+  rowsNumber,
+  status,
+  academicYearId,
+}: z.infer<typeof getBlogsWithUserByMarketingManagerSchema>) {
+  try {
+    if (status === "all blogs") {
+      return await db.blogs.findMany({
+        skip: (pageNumber - 1) * rowsNumber,
+        take: rowsNumber,
+        where: { academicYearId },
+        include: {
+          author: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
+    }
+
+    if (status !== "undefined") {
+      return await db.blogs.findMany({
+        skip: (pageNumber - 1) * rowsNumber,
+        take: rowsNumber,
+        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
+        include: {
+          author: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      })
+    }
+
+    return await db.blogs.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: { academicYearId },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     })
   } catch (err) {
