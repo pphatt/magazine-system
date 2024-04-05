@@ -1,9 +1,11 @@
 import { db } from "@/server/db"
 import { supabase } from "@/server/supabase/supabase"
+import { User } from "@prisma/client"
 import { v4 } from "uuid"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
+import { resend } from "@/lib/resend"
 import type { uploadBlogSchema } from "@/lib/validations/blog"
 
 export async function POST(req: Request) {
@@ -34,7 +36,10 @@ export async function POST(req: Request) {
     for (const file of files) {
       const { data } = await supabase.storage
         .from("student-contributions")
-        .upload(`${facultyId}/${academicYearId}/${user.id}/${v4()}/${file.name}`, file)
+        .upload(
+          `${facultyId}/${academicYearId}/${user.id}/${v4()}/${file.name}`,
+          file
+        )
 
       filesUrl.push(data?.path ?? "")
     }
@@ -62,6 +67,26 @@ export async function POST(req: Request) {
         authorId: user.id,
         location: filesUrl,
       },
+    })
+
+    const mc = (await db.user.findFirst({
+      where: { facultyId, role: "MARKETING_COORDINATOR" },
+    })) as User
+
+    // one email for student who submit the blog
+    await resend.emails.send({
+      from: "noreply <onboarding@mangado.org>",
+      to: [user.email!],
+      subject: "You have submitted",
+      html: `<strong>yea</strong>`,
+    })
+
+    // one email for marketing coordinator who will grading the blog
+    await resend.emails.send({
+      from: "noreply <onboarding@mangado.org>",
+      to: [mc.email!],
+      subject: "Student submit blog",
+      html: `<strong>Have to grade this within 14 days</strong>`,
     })
 
     return new Response(JSON.stringify("OK"), { status: 200 })

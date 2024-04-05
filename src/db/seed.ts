@@ -41,7 +41,6 @@ async function main() {
 
   const role = [
     "STUDENT",
-    "MARKETING_COORDINATOR",
     "MARKETING_MANAGER",
     "GUEST",
   ]
