@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
     const user = await currentUser()
 
-    if (!user || !user.id || user.role !== "ADMIN") {
+    if (!user || !user.id) {
       return new Response("Unauthorized", { status: 401 })
     }
 

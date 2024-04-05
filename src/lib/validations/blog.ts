@@ -41,6 +41,13 @@ export const getBlogsWithUserByStudentSchema = z.object({
   academicYearId: z.coerce.string(),
 })
 
+export const getRecentBlogsSchema = z.object({
+  userId: z.string(),
+  pageNumber: z.number().default(1),
+  rowsNumber: z.number().default(50),
+  status: z.coerce.string(),
+})
+
 export const blogGradingSchema = z.object({
   blogId: z.coerce.string(),
   status: z.coerce.string(),

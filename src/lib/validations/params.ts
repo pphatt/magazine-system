@@ -15,3 +15,9 @@ export const facultyParamsSchema = z.object({
   // STUDENT, MC => blog status
   status: z.coerce.string().default("PENDING"),
 })
+
+export const recentBlogParamsSchema = z.object({
+  page: z.coerce.string().default("1"),
+  rows: z.coerce.string(),
+  status: z.coerce.string().default("pending"),
+})

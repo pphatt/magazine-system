@@ -1,0 +1,155 @@
+.no-results {
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+
+  border-width: 1px;
+  border-radius: 0.5rem;
+
+  padding: 4rem;
+
+  text-align: center;
+
+  overflow-wrap: anywhere;
+
+  box-shadow: 0 0 #000,
+  0 0 #000,
+  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.article-wrapper {
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+
+  border-width: 1px;
+  border-radius: 0.5rem;
+
+  margin: 0 0 0.5rem;
+
+  box-shadow: 0 0 #000,
+  0 0 #000,
+  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.article-container {
+  padding: 1.25rem;
+}
+
+.article-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.article-header-container {
+  display: flex;
+  //align-items: center;
+
+  margin-bottom: 0.5rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.author-avatar-wrapper {
+  margin-right: 0.5rem;
+}
+
+.author-name {
+  font-weight: 600;
+}
+
+.status-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  text-transform: capitalize;
+}
+
+.upload-status {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  border-radius: calc(0.5rem - 2px);
+
+  padding: 0.125rem 0.625rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+
+  text-transform: capitalize;
+
+  &[data-submit="pending"] {
+    color: hsl(var(--muted-foreground));
+    background-color: hsl(var(--muted));
+  }
+
+  &[data-submit="approve"] {
+    color: hsl(180.54, 100%, 21.96%);
+    background-color: hsl(180, 38.78%, 90.39%);
+  }
+
+  &[data-submit="reject"] {
+    color: hsl(0 70% 40%);
+    background-color: hsl(0 100% 97%);
+  }
+}
+
+.article-content-wrapper {
+  @media (min-width: 768px) {
+    padding-left: calc(40px + 0.5rem);
+  }
+}
+
+.article-title {
+  color: hsl(var(--foreground));
+
+  margin-bottom: 0.25rem;
+
+  overflow-wrap: anywhere;
+
+  word-break: break-word;
+}
+
+.article-link {
+  &:hover {
+    color: rgb(47, 58, 178);
+  }
+}
+
+.article-description {
+  margin-bottom: 0.5rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.article-comments-wrapper {
+  display: flex;
+}
+
+.comment-btn {
+  height: 36px !important;
+
+  background-color: transparent !important;
+
+  padding: 0 0.5rem !important;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+
+    margin-right: 0.5rem;
+  }
+
+  &:hover {
+    background-color: hsl(var(--accent)) !important;
+  }
+}
