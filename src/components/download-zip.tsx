@@ -7,10 +7,16 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/download-zip.module.scss"
 
-export default function DownloadZip({ location }: { location: string[] }) {
+export default function DownloadZip({
+  name,
+  location,
+}: {
+  name: string
+  location: string[]
+}) {
   const [isPending, startTransition] = React.useTransition()
 
-  const handleDownload = () => {
+  const handleDownload = React.useCallback(() => {
     startTransition(async () => {
       const files = location.map(
         (value) =>
@@ -34,11 +40,11 @@ export default function DownloadZip({ location }: { location: string[] }) {
 
         const link = document.createElement("a")
         link.href = window.URL.createObjectURL(zipData)
-        link.download = "test.zip"
+        link.download = `${name}.zip`
         link.click()
       }
     })
-  }
+  }, [location, name])
 
   return (
     <Button onClick={handleDownload} disabled={isPending}>

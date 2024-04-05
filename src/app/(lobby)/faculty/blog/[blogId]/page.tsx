@@ -109,7 +109,7 @@ export default async function BlogPage({
           <div className={styles["file-upload-wrapper"]}>
             <h3>File upload</h3>
             <div className={styles["files"]}>
-              <DownloadZip location={blog.location} />
+              <DownloadZip name={blog.title} location={blog.location} />
             </div>
             <div className={styles["files"]}>
               {blog.location.map((value) => {
