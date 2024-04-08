@@ -47,6 +47,7 @@ export async function getBlogsWithUser({
         where: { facultyId, academicYearId, status: "APPROVE" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -61,6 +62,7 @@ export async function getBlogsWithUser({
         where: { facultyId, academicYearId, status: "PENDING" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -75,6 +77,7 @@ export async function getBlogsWithUser({
         where: { facultyId, academicYearId, status: "REJECT" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -88,6 +91,7 @@ export async function getBlogsWithUser({
       where: { facultyId, academicYearId },
       include: {
         author: true,
+        comments: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -123,6 +127,7 @@ export async function getBlogsWithUserByStudent({
       where: { facultyId, academicYearId, publicized: true, status: "APPROVE" },
       include: {
         author: true,
+        comments: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -171,6 +176,7 @@ export async function getRecentBlogs({
         where: { authorId: userId, status: "APPROVE" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -185,6 +191,7 @@ export async function getRecentBlogs({
         where: { authorId: userId, status: "PENDING" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -199,6 +206,7 @@ export async function getRecentBlogs({
         where: { authorId: userId, status: "REJECT" },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -212,6 +220,7 @@ export async function getRecentBlogs({
       where: { authorId: userId },
       include: {
         author: true,
+        comments: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -263,6 +272,7 @@ export async function getBlogsWithUserByMarketingManager({
         where: { academicYearId },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -277,6 +287,7 @@ export async function getBlogsWithUserByMarketingManager({
         where: { academicYearId, status: status.toUpperCase() as StatusEnum },
         include: {
           author: true,
+          comments: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -290,6 +301,7 @@ export async function getBlogsWithUserByMarketingManager({
       where: { academicYearId },
       include: {
         author: true,
+        comments: true,
       },
       orderBy: {
         createdAt: "desc",

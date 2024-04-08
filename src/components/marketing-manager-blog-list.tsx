@@ -49,7 +49,10 @@ export async function MarketingManagerBlogList({
       {!!blogs?.length && (
         <div>
           {blogs.map(
-            ({ id, title, author, createdAt, updatedAt, status }, index) => (
+            (
+              { id, title, author, createdAt, updatedAt, status, comments },
+              index
+            ) => (
               <article className={styles["article-wrapper"]} key={index}>
                 <div className={styles["article-container"]}>
                   <div className={styles["article-header-wrapper"]}>
@@ -102,7 +105,7 @@ export async function MarketingManagerBlogList({
                         className={styles["comment-btn"]}
                       >
                         <Icons.messageCircle />
-                        69 comments
+                        {comments.filter((comment) => !comment.replyToId).length} comments
                       </Button>
                     </div>
                   </div>
