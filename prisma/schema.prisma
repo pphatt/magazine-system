@@ -57,6 +57,7 @@ model User {
 
   accounts Account[]
   Blogs    Blogs[]
+  Comment  Comment[]
 }
 
 model Account {
@@ -133,17 +134,15 @@ model Blogs {
 }
 
 model Comment {
-  id            String   @id @default(cuid())
-  text          String
-  createdAt     DateTime @default(now())
-  // author        User          @relation(fields: [authorId], references: [id])
-  // authorId      String
-  contributions Blogs    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId        String
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  blog      Blogs    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId    String
 
   replyToId String?
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   replies   Comment[] @relation("ReplyTo")
-
-  commentId String?
 }

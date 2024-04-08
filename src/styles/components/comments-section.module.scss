@@ -1,0 +1,61 @@
+.comment-section-wrapper {
+  border-top-width: 1px;
+  border-color: #efefef;
+
+  padding: 2rem 4rem;
+  margin-bottom: 1rem;
+}
+
+.header-wrapper {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 1.5rem;
+}
+
+.header-text-wrapper {
+  display: flex;
+  align-items: center;
+
+  h2 {
+    color: #242424;
+
+    font-size: 1.25rem;
+    line-height: 1.25;
+    font-weight: 700;
+
+    @media (min-width: 640px) {
+      font-size: 1.5rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+
+  margin-top: 1rem;
+}
+
+.comment-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-comment-wrapper {
+}
+
+.reply-comment-wrapper {
+  border-color: rgb(228 228 231);
+  border-left-width: 2px;
+
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-left: 0.5rem;
+}

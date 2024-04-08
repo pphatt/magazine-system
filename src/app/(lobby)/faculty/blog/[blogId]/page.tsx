@@ -12,6 +12,7 @@ import { currentUser } from "@/lib/auth/auth"
 import type { BlogWithInclude } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { BlogSubmissionGrading } from "@/components/blog-submission-grading"
+import { CommentsSection } from "@/components/comments-section"
 import { Icons } from "@/components/icons"
 import { RenderBlog } from "@/components/render-blog"
 import styles from "@/styles/(blog)/page.module.scss"
@@ -129,6 +130,8 @@ export default async function BlogPage({
             </div>
           </div>
         </div>
+
+        <CommentsSection blogId={blog.id} />
       </article>
       <div className={styles["blog-detail-wrapper"]}>
         <div className={styles["blog-detail"]}>

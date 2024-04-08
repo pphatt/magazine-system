@@ -1,0 +1,30 @@
+.comment-wrapper {
+  display: flex;
+
+  margin-bottom: 1rem;
+}
+
+.avatar {
+  position: relative;
+
+  display: inline-block;
+  flex-shrink: 0;
+
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+
+  border-radius: 100%;
+
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+
+  overflow: hidden;
+
+  vertical-align: middle;
+
+  @media (min-width: 768px)
+   {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+}
