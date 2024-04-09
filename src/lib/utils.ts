@@ -6,8 +6,8 @@ import {
   differenceInSeconds,
   formatDistanceToNowStrict,
 } from "date-fns"
+import locale from "date-fns/locale/en-US"
 import { toast } from "sonner"
-import locale from 'date-fns/locale/en-US'
 
 export function cn(...inputs: ArgumentArray) {
   return classNames(inputs)
@@ -103,44 +103,46 @@ export function generatePagination(activePage: number, totalPages: number) {
 }
 
 const formatDistanceLocale = {
-  lessThanXSeconds: 'just now',
-  xSeconds: 'just now',
-  halfAMinute: 'just now',
-  lessThanXMinutes: '{{count}}m',
-  xMinutes: '{{count}}m',
-  aboutXHours: '{{count}}h',
-  xHours: '{{count}}h',
-  xDays: '{{count}}d',
-  aboutXWeeks: '{{count}}w',
-  xWeeks: '{{count}}w',
-  aboutXMonths: '{{count}}m',
-  xMonths: '{{count}}m',
-  aboutXYears: '{{count}}y',
-  xYears: '{{count}}y',
-  overXYears: '{{count}}y',
-  almostXYears: '{{count}}y',
+  lessThanXSeconds: "just now",
+  xSeconds: "just now",
+  halfAMinute: "just now",
+  lessThanXMinutes: "{{count}}m",
+  xMinutes: "{{count}}m",
+  aboutXHours: "{{count}}h",
+  xHours: "{{count}}h",
+  xDays: "{{count}}d",
+  aboutXWeeks: "{{count}}w",
+  xWeeks: "{{count}}w",
+  aboutXMonths: "{{count}}m",
+  xMonths: "{{count}}m",
+  aboutXYears: "{{count}}y",
+  xYears: "{{count}}y",
+  overXYears: "{{count}}y",
+  almostXYears: "{{count}}y",
 }
 
-function formatDistance(token: string, count: number, options?: never): string {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  options = options || {}
+interface FormatDistanceOptions {
+  addSuffix?: boolean;
+  comparison?: number;
+}
+
+function formatDistance(token: string, count: number, options?: FormatDistanceOptions): string {
+  options = options || {};
 
   const result = formatDistanceLocale[
     token as keyof typeof formatDistanceLocale
-    ].replace('{{count}}', count.toString())
+    ].replace('{{count}}', count.toString());
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (options.addSuffix) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (options.comparison > 0) {
-      return 'in ' + result
+    if (options.comparison && options.comparison > 0) {
+      return 'in ' + result;
     } else {
-      if (result === 'just now') return result
-      return result + ' ago'
+      if (result === 'just now') return result;
+      return result + ' ago';
     }
   }
 
-  return result
+  return result;
 }
 
 export function formatTimeToNow(date: Date): string {

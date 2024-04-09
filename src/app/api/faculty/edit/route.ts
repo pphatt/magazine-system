@@ -1,4 +1,5 @@
 import { db } from "@/server/db"
+import type { ActiveStatusEnum } from "@prisma/client"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
@@ -9,7 +10,7 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as EditFacultyInputs
 
-    const { name, facultyId } = editFacultySchema.parse(body)
+    const { name, facultyId, status } = editFacultySchema.parse(body)
 
     const user = await currentUser()
 
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
       },
       data: {
         name,
+        status: status as ActiveStatusEnum,
       },
     })
 

@@ -37,7 +37,7 @@ export default async function BlogPage({
     },
   })) as BlogWithInclude
 
-  if (!blog) {
+  if (!blog || blog.faculty.status === "SUSPENDED") {
     redirect("/faculty")
   }
 

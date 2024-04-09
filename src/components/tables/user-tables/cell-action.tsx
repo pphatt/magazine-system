@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { type User } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
@@ -83,11 +84,11 @@ export const UserCellAction: React.FC<CellActionProps> = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem
-            onClick={() => router.push(`/admin/user/details/${data.id}`)}
-          >
-            <Edit className="mr-2 h-4 w-4" />
-            <span>Edit</span>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/user/details/${data.id}`}>
+              <Edit className="mr-2 h-4 w-4" />
+              <span>Edit</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" />

@@ -6,6 +6,7 @@ import { format } from "date-fns"
 import { type FacultyWithUser } from "@/lib/prisma"
 import { Checkbox } from "@/components/ui/checkbox"
 import { FacultyCellAction } from "@/components/tables/faculty-tables/cell-action"
+import { StatusColumn } from "@/components/tables/status"
 
 export const columns: ColumnDef<FacultyWithUser>[] = [
   {
@@ -45,6 +46,11 @@ export const columns: ColumnDef<FacultyWithUser>[] = [
     cell: (value) => {
       return format(value.row.original.createdAt, "PPpp")
     },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => <StatusColumn status={row.original.status} />,
   },
   {
     id: "actions",

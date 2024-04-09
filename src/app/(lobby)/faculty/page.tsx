@@ -31,7 +31,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   const { academicYearId, status, page, rows } =
     facultyParamsSchema.parse(searchParams)
 
-  // get search query
+  // get a search query
   const pageNumber = parserPage(page)
   const rowsNumber = parserRows(rows, 10)
 
@@ -50,6 +50,30 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
   // user === student || guest || mc => user.facultyId, searchParams.academicYearId
   // user === admin || mm => searchParams.facultyId, searchParams.academicYearId
+
+  if (faculty && faculty.status === "SUSPENDED") {
+    return (
+      <Card className={styles["faculty-card"]}>
+        <CardHeader
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CardTitle>Faculty Maintaining</CardTitle>
+        </CardHeader>
+        <CardContent
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h1>Faculty is under maintaining</h1>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <div className={styles["page-wrapper"]}>

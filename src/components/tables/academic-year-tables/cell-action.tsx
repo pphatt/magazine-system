@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { type AcademicYear } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
@@ -82,13 +83,11 @@ export const AcademicYearCellAction: React.FC<CellActionProps> = ({ data }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem
-            onClick={() =>
-              router.push(`/admin/academic-year/details/${data.id}`)
-            }
-          >
-            <Edit />
-            <span>Edit</span>
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/academic-year/details/${data.id}`}>
+              <Edit />
+              <span>Edit</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Trash />

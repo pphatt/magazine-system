@@ -35,6 +35,11 @@ enum StatusEnum {
   REJECT
 }
 
+enum ActiveStatusEnum {
+  ACTIVE
+  SUSPENDED
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String?
@@ -80,9 +85,10 @@ model Account {
 }
 
 model Faculty {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   name      String
-  createdAt DateTime @default(now())
+  createdAt DateTime         @default(now())
+  status    ActiveStatusEnum @default(ACTIVE)
 
   creatorId String
   creator   User   @relation("FacultyCreatedBy", fields: [creatorId], references: [id])
@@ -94,10 +100,11 @@ model Faculty {
 }
 
 model AcademicYear {
-  id          String   @id @default(cuid())
+  id          String           @id @default(cuid())
   name        String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime         @default(now())
   description String
+  status      ActiveStatusEnum @default(ACTIVE)
 
   startDate        DateTime
   closureDate      DateTime @db.Timestamptz(3)
