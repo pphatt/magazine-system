@@ -27,7 +27,7 @@ import { EditorInlineCode } from "@/components/editor/inline-code"
 import { EditorLink } from "@/components/editor/link"
 import { EditorList } from "@/components/editor/list"
 import { EditorTable } from "@/components/editor/table"
-import styles from "@/styles/components/editor/editor.module.scss"
+import styles from "@/styles/components/editor/edit-blog-editor.module.scss"
 
 // Import FilePond styles
 import "filepond/dist/filepond.min.css"

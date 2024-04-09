@@ -45,6 +45,7 @@ import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { type FilePondFile } from "filepond"
 
+import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
 
 // Register the plugins
@@ -62,6 +63,7 @@ interface EditorProps {
 }
 
 export default function Editor({ academicYearId, facultyId }: EditorProps) {
+  const [agree, setAgree] = React.useState(false)
   const [files, setFiles] = React.useState<FilePondFile[]>([])
 
   const [previewImage, setPreviewImage] = React.useState<string>()
@@ -306,8 +308,21 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
             labelIdle='Drag & Drop your submit files or <span class="filepond--label-action">Browse</span>'
           />
 
-          <div className={styles["submit-btn"]}>
-            <Button type="submit" disabled={isPending}>
+          <div className={styles["submit-group"]}>
+            <div className={styles["checkbox-term"]}>
+              <Checkbox
+                id="terms"
+                checked={agree}
+                onCheckedChange={() => setAgree(!agree)}
+              />
+              <label htmlFor="terms">Accept terms and conditions</label>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isPending || !agree}
+              className={styles["submit-btn"]}
+            >
               {isPending && (
                 <Icons.spinner className={styles["icon"]} aria-hidden="true" />
               )}
