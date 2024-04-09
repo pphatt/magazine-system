@@ -213,6 +213,11 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
   }
 
   async function onSubmit(data: BlogInputs) {
+    if (!agree) {
+      toast.warning("Must check accept to term and conditions")
+      return
+    }
+
     if (!files.length) {
       toast.warning("No submit files were recorded")
       return

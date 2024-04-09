@@ -1,5 +1,4 @@
-import type { FilePondFile, FilePondInitialFile } from "filepond"
-import { FilePond } from "react-filepond"
+import type { FilePondFile } from "filepond"
 import * as z from "zod"
 
 const MAX_FILE_SIZE = 5000000
