@@ -78,6 +78,7 @@ export default function EditBlogEditor({
   academicYearId,
   facultyId,
 }: EditorProps) {
+  const [newFilesCount, setNewFilesCount] = React.useState(0)
   const [files, setFiles] = React.useState<
     FilePondInitialFile[] | FilePondFile[]
   >(
@@ -104,6 +105,7 @@ export default function EditBlogEditor({
       content: content,
       academicYearId: "",
       facultyId: "",
+      newFilesCount,
     },
   })
 
@@ -175,7 +177,7 @@ export default function EditBlogEditor({
         },
       })
     }
-  }, [])
+  }, [content])
 
   React.useEffect(() => {
     if (Object.keys(form.formState.errors).length) {
@@ -258,6 +260,7 @@ export default function EditBlogEditor({
         `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/student-contributions/`
       )[1]!,
       prevFiles,
+      newFilesCount,
     }
 
     uploadBlog(payload)
@@ -326,7 +329,15 @@ export default function EditBlogEditor({
             className={styles["upload-files"]}
             // @ts-expect-error @ts-ignore
             files={files}
-            onupdatefiles={setFiles}
+            onupdatefiles={(files) => {
+              setFiles(files)
+              setNewFilesCount(newFilesCount + 1)
+            }}
+            onremovefile={() => {
+              if (newFilesCount > 0) {
+                setNewFilesCount(newFilesCount - 1)
+              }
+            }}
             allowMultiple={true}
             name="files"
             server={{
@@ -366,7 +377,7 @@ export default function EditBlogEditor({
               {isPending && (
                 <Icons.spinner className={styles["icon"]} aria-hidden="true" />
               )}
-              Post
+              Confirm
             </Button>
           </div>
         </form>

@@ -1,11 +1,9 @@
 import { db } from "@/server/db"
 import { supabase } from "@/server/supabase/supabase"
-import type { User } from "@prisma/client"
 import { v4 } from "uuid"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import { resend } from "@/lib/resend"
 import type { uploadEditBlogSchema } from "@/lib/validations/blog"
 
 export async function POST(req: Request) {
@@ -21,6 +19,7 @@ export async function POST(req: Request) {
       academicYearId,
       prevImage,
       prevFiles,
+      newFilesCount,
     } = JSON.parse(formData.get("data") as string) as z.infer<
       typeof uploadEditBlogSchema
     >
@@ -39,21 +38,23 @@ export async function POST(req: Request) {
       })
     }
 
-    const filesUrl: string[] = []
+    let filesUrl: string[] = prevFiles!
 
-    for (const file of files) {
-      await supabase.storage
-        .from("student-contributions")
-        .remove([...prevFiles!])
+    if (newFilesCount > 0) {
+      filesUrl = []
 
-      const { data } = await supabase.storage
-        .from("student-contributions")
-        .upload(
-          `${facultyId}/${academicYearId}/${user.id}/${v4()}/${file.name}`,
-          file
-        )
+      for (const file of files) {
+        await supabase.storage.from("student-contributions").remove(prevFiles!)
 
-      filesUrl.push(data?.path ?? "")
+        const { data } = await supabase.storage
+          .from("student-contributions")
+          .upload(
+            `${facultyId}/${academicYearId}/${user.id}/${v4()}/${file.name}`,
+            file
+          )
+
+        filesUrl.push(data?.path ?? "")
+      }
     }
 
     const image = formData.get("image") as Blob | null
@@ -84,26 +85,6 @@ export async function POST(req: Request) {
         authorId: user.id,
         location: filesUrl,
       },
-    })
-
-    const mc = (await db.user.findFirst({
-      where: { facultyId, role: "MARKETING_COORDINATOR" },
-    })) as User
-
-    // one email for student who submit the blog
-    await resend.emails.send({
-      from: "noreply <onboarding@mangado.org>",
-      to: [user.email!],
-      subject: "You have submitted",
-      html: `<strong>yea</strong>`,
-    })
-
-    // one email for marketing coordinator who will grading the blog
-    await resend.emails.send({
-      from: "noreply <onboarding@mangado.org>",
-      to: [mc.email!],
-      subject: "Student submit blog",
-      html: `<strong>Have to grade this within 14 days</strong>`,
     })
 
     return new Response(JSON.stringify({ blogId: id }), { status: 200 })

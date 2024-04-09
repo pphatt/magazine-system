@@ -81,6 +81,7 @@ export const uploadEditBlogSchema = z.object({
     .optional(),
   prevImage: z.string().optional(),
   files: z.custom<FilePondFile[]>(),
+  newFilesCount: z.number(),
   prevFiles: z.string().array().optional(),
   academicYearId: z.string(),
   facultyId: z.string(),
