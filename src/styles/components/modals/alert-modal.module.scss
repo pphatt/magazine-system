@@ -65,9 +65,9 @@
 
   &:focus-visible {
     box-shadow:
-            0 0 rgba(0, 0, 0, 0),
-            0 0 0 1px hsl(var(--ring)),
-            0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+      0 0 rgba(0, 0, 0, 0),
+      0 0 0 1px hsl(var(--ring)),
+      0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   }
 }
 
@@ -78,4 +78,9 @@
   gap: 0.5rem;
 
   margin-top: 1rem;
+}
+
+.accept {
+  color: hsl(180.54, 100%, 21.96%) !important;
+  background-color: hsl(180, 38.78%, 90.39%) !important;
 }

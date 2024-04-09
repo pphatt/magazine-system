@@ -10,7 +10,6 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { facultyParamsSchema } from "@/lib/validations/params"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import styles from "@/styles/(lobby)/faculty/blog/create/page.module.scss"
 
 const Editor = dynamic(() => import("@/components/editor/editor"), {

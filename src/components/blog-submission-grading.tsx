@@ -2,15 +2,14 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
-import { blogGradingSchema } from "@/lib/validations/blog"
+import type { blogGradingSchema } from "@/lib/validations/blog"
 import { Button } from "@/components/ui/button"
-import { Form } from "@/components/ui/form"
 import { Icons } from "@/components/icons"
+import { AcceptGradingAlertModal } from "@/components/modals/accept-grading-blog"
+import { RejectGradingAlertModal } from "@/components/modals/reject-grading-blog"
 import styles from "@/styles/components/blog-submission-grading.module.scss"
 
 interface BlogSubmissionGradingProps {
@@ -24,22 +23,11 @@ export function BlogSubmissionGrading({
   blogId,
   status,
 }: BlogSubmissionGradingProps) {
+  const [openAccept, setOpenAccept] = React.useState(false)
+  const [openReject, setOpenReject] = React.useState(false)
+
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
-
-  const acceptForm = useForm<BlogGradingFormInputs>({
-    resolver: zodResolver(blogGradingSchema),
-    defaultValues: {
-      blogId: blogId,
-    },
-  })
-
-  const rejectForm = useForm<BlogGradingFormInputs>({
-    resolver: zodResolver(blogGradingSchema),
-    defaultValues: {
-      blogId: blogId,
-    },
-  })
 
   const onAcceptSubmit = () => {
     if (status !== "PENDING") {
@@ -130,39 +118,42 @@ export function BlogSubmissionGrading({
 
   return (
     <div className={styles["article-action-wrapper"]}>
-      <Form {...acceptForm}>
-        <form
-          onSubmit={(...args) =>
-            void acceptForm.handleSubmit(onAcceptSubmit)(...args)
-          }
-        >
-          <Button className={styles["accept-btn"]} disabled={isPending}>
-            {isPending && (
-              <Icons.spinner className={styles["icon"]} aria-hidden="true" />
-            )}
-            Accept
-          </Button>
-        </form>
-      </Form>
+      <AcceptGradingAlertModal
+        isOpen={openAccept}
+        onClose={() => setOpenAccept(false)}
+        onConfirm={onAcceptSubmit}
+        loading={isPending}
+      />
 
-      <Form {...rejectForm}>
-        <form
-          onSubmit={(...args) =>
-            void rejectForm.handleSubmit(onRejectSubmit)(...args)
-          }
-        >
-          <Button
-            className={styles["reject-btn"]}
-            variant={"destructive"}
-            disabled={isPending}
-          >
-            {isPending && (
-              <Icons.spinner className={styles["icon"]} aria-hidden="true" />
-            )}
-            Reject
-          </Button>
-        </form>
-      </Form>
+      <RejectGradingAlertModal
+        isOpen={openReject}
+        onClose={() => setOpenReject(false)}
+        onConfirm={onRejectSubmit}
+        loading={isPending}
+      />
+
+      <Button
+        className={styles["accept-btn"]}
+        disabled={isPending}
+        onClick={() => setOpenAccept(true)}
+      >
+        {isPending && (
+          <Icons.spinner className={styles["icon"]} aria-hidden="true" />
+        )}
+        Accept
+      </Button>
+
+      <Button
+        className={styles["reject-btn"]}
+        variant={"destructive"}
+        disabled={isPending}
+        onClick={() => setOpenReject(true)}
+      >
+        {isPending && (
+          <Icons.spinner className={styles["icon"]} aria-hidden="true" />
+        )}
+        Reject
+      </Button>
     </div>
   )
 }
