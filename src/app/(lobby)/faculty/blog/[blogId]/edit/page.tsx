@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { env } from "@/env"
 import { db } from "@/server/db"
 import type { Block } from "@/types"
-import { format } from "date-fns"
+import { format, isAfter } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
@@ -33,7 +33,7 @@ export default async function EditBlogPage({
     },
   })) as BlogWithInclude
 
-  if (!blog) {
+  if (!blog || isAfter(Date.now(), blog.academicYear.finalClosureDate)) {
     redirect("/faculty")
   }
 
