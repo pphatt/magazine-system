@@ -1,11 +1,10 @@
 "use client"
 
 import * as React from "react"
+import { env } from "@/env"
 import JSZip from "jszip"
 
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/icons"
-import styles from "@/styles/components/download-zip.module.scss"
 
 export default function DownloadZip({
   name,
@@ -14,43 +13,39 @@ export default function DownloadZip({
   name: string
   location: string[]
 }) {
-  const [isPending, startTransition] = React.useTransition()
+  const handleDownload = async () => {
+    const files = location.map(
+      (value) =>
+        `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/student-contributions/${value}`
+    )
 
-  const handleDownload = React.useCallback(() => {
-    startTransition(async () => {
-      const files = location.map(
-        (value) =>
-          `https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contributions/${value}`
-      )
+    if (!!files.length) {
+      const zip = new JSZip()
 
-      if (!!files.length) {
-        const zip = new JSZip()
+      // Add Files to the zip file
+      for (let i = 0; i < files.length; i++) {
+        const response = await fetch(files[i]!)
+        const blob = await response.blob()
 
-        // Add Files to the zip file
-        for (let i = 0; i < files.length; i++) {
-          zip.file(files[i]!.split("/").pop()!, files[i]!, { binary: true })
-        }
-
-        // Generate the zip file
-        const zipData = await zip.generateAsync({
-          type: "blob",
-          streamFiles: true,
-          compression: "DEFLATE",
-        })
-
-        const link = document.createElement("a")
-        link.href = window.URL.createObjectURL(zipData)
-        link.download = `${name}.zip`
-        link.click()
+        zip.file(files[i]!.split("/").pop()!, blob, { binary: true })
       }
-    })
-  }, [location, name])
+
+      // Generate the zip file
+      const zipData = await zip.generateAsync({
+        type: "blob",
+        streamFiles: true,
+        compression: "DEFLATE",
+      })
+
+      const link = document.createElement("a")
+      link.href = window.URL.createObjectURL(zipData)
+      link.download = `${name}.zip`
+      link.click()
+    }
+  }
 
   return (
-    <Button onClick={handleDownload} disabled={isPending}>
-      {isPending && (
-        <Icons.spinner className={styles["icon"]} aria-hidden="true" />
-      )}
+    <Button onClick={handleDownload}>
       <span>Download as ZIP</span>
     </Button>
   )
