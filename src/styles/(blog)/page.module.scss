@@ -69,6 +69,13 @@
 
 .blog-author-container {
   display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.blog-author-details {
+  display: flex;
   flex: 1;
   align-items: flex-start;
 
@@ -94,6 +101,25 @@
 
   &:hover {
     color: rgb(47, 58, 178);
+  }
+}
+
+.manage-blog-wrapper {
+  background: rgba(245, 158, 11, 0.1);
+
+  height: 42px;
+
+  border-radius: calc(0.5rem - 2px);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+
+  padding: 0.25rem;
+
+  a {
+    height: 100% !important;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.035) !important;
+    }
   }
 }
 

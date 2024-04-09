@@ -11,6 +11,7 @@ import type { User } from "next-auth"
 import { currentUser } from "@/lib/auth/auth"
 import type { BlogWithInclude } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 import { BlogSubmissionGrading } from "@/components/blog-submission-grading"
 import { CommentsSection } from "@/components/comments-section"
 import { Icons } from "@/components/icons"
@@ -81,25 +82,34 @@ export default async function BlogPage({
           <div className={styles["blog-header"]}>
             <div className={styles["blog-author-wrapper"]}>
               <div className={styles["blog-author-container"]}>
-                <Avatar className={styles["avatar"]}>
-                  <AvatarImage
-                    src={blog.author.image ?? ""}
-                    alt={""}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "top",
-                    }}
-                  />
-                  <AvatarFallback>
-                    {blog.author.name?.charAt(0).toUpperCase() ?? ""}
-                  </AvatarFallback>
-                </Avatar>
-                <div className={styles["author-name-wrapper"]}>
-                  <div className={styles["author-name"]}>
-                    {blog.author.name}
+                <div className={styles["blog-author-details"]}>
+                  <Avatar className={styles["avatar"]}>
+                    <AvatarImage
+                      src={blog.author.image ?? ""}
+                      alt={""}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "top",
+                      }}
+                    />
+                    <AvatarFallback>
+                      {blog.author.name?.charAt(0).toUpperCase() ?? ""}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className={styles["author-name-wrapper"]}>
+                    <div className={styles["author-name"]}>
+                      {blog.author.name}
+                    </div>
+                    <p>Posted on {format(blog.createdAt, "LLLL do")}</p>
                   </div>
-                  <p>Posted on {format(blog.createdAt, "LLLL do")}</p>
                 </div>
+                {blog.status === "PENDING" && blog.authorId === user.id && (
+                  <div className={styles["manage-blog-wrapper"]}>
+                    <Button asChild variant={"ghost"}>
+                      <Link href={`/faculty/blog/${blogId}/edit`}>Edit</Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
             <h1 className={styles["blog-title"]}>{blog.title ?? "-"}</h1>

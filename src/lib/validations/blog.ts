@@ -1,4 +1,5 @@
-import { type FilePondFile } from "filepond"
+import type { FilePondFile, FilePondInitialFile } from "filepond"
+import { FilePond } from "react-filepond"
 import * as z from "zod"
 
 const MAX_FILE_SIZE = 5000000
@@ -58,4 +59,29 @@ export const getRecentBlogsSchema = z.object({
 export const blogGradingSchema = z.object({
   blogId: z.coerce.string(),
   status: z.coerce.string(),
+})
+
+export const uploadEditBlogSchema = z.object({
+  blogId: z.string(),
+  title: z
+    .string()
+    .min(3, {
+      message: "Title must be at least 3 characters long",
+    })
+    .max(128, {
+      message: "Title must be less than 128 characters long",
+    }),
+  content: z.any(),
+  image: z
+    .custom<File>((val) => val instanceof File, "Please upload a file")
+    .refine((file) => file?.size <= MAX_FILE_SIZE)
+    .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), {
+      message: "Please choose .jpg, .jpeg and .png format files only",
+    })
+    .optional(),
+  prevImage: z.string().optional(),
+  files: z.custom<FilePondFile[]>(),
+  prevFiles: z.string().array().optional(),
+  academicYearId: z.string(),
+  facultyId: z.string(),
 })

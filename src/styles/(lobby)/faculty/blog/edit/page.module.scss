@@ -1,0 +1,69 @@
+.layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+}
+
+.inner-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+
+  color: #111827;
+
+  margin-bottom: 0.5rem;
+}
+
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  margin-bottom: 1rem;
+}
+
+.faculty-detail-wrapper {
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+
+  width: fit-content;
+
+  border-width: 1px;
+  border-radius: 0.5rem;
+
+  box-shadow:
+    0 0 #000,
+    0 0 #000,
+    0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.faculty-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  padding: 0.5rem;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.submit-btn {
+  margin-top: 1rem;
+}
