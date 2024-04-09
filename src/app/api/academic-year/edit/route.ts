@@ -1,4 +1,5 @@
 import { db } from "@/server/db"
+import { ActiveStatusEnum } from "@prisma/client"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
@@ -16,6 +17,7 @@ export async function POST(req: Request) {
       startDate,
       closureDate,
       finalClosureDate,
+      status,
     } = editAcademicYearSchema.parse(body)
 
     const user = await currentUser()
@@ -34,6 +36,7 @@ export async function POST(req: Request) {
         startDate,
         closureDate,
         finalClosureDate,
+        status: status as ActiveStatusEnum,
       },
     })
 

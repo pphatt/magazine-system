@@ -44,7 +44,7 @@ export default async function CreateBlogPage({
     where: { id: academicYearId },
   })) as AcademicYear
 
-  if (faculty.status === "SUSPENDED") {
+  if (faculty.status === "SUSPENDED" || academicYear.status === "SUSPENDED") {
     redirect("/faculty")
   }
 

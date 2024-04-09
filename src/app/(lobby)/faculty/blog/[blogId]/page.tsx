@@ -37,11 +37,21 @@ export default async function BlogPage({
     },
   })) as BlogWithInclude
 
-  if (!blog || blog.faculty.status === "SUSPENDED") {
+  if (!blog) {
     redirect("/faculty")
   }
 
   const user = (await currentUser()) as User
+
+  // check if the faculty and academic of the blog is suspense or not
+  // the author allow viewing it in recent blog even though the academic year or faculty is still suspense
+  if (
+    (blog.faculty.status === "SUSPENDED" ||
+      blog.academicYear.status === "SUSPENDED") &&
+    blog.authorId !== user.id
+  ) {
+    redirect("/faculty")
+  }
 
   if (user.role === "STUDENT") {
     if (blog.authorId !== user.id && blog.status !== "APPROVE") {

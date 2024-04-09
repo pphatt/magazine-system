@@ -32,6 +32,7 @@ export const editAcademicYearSchema = z
     name: z.string().min(1, {
       message: "Name is required",
     }),
+    status: z.string(),
     description: z.string().optional(),
     startDate: z.coerce.date(),
     closureDate: z.coerce.date(),

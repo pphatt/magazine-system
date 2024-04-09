@@ -14,6 +14,13 @@ import { editAcademicYearSchema } from "@/lib/validations/academic-year"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { CalendarWithTime } from "@/components/calendar-with-time"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/edit-academic-year.module.scss"
@@ -42,6 +49,7 @@ export function EditAcademicYear({ academicYear }: EditAcademicYearProps) {
     defaultValues: {
       name: academicYear.name,
       description: academicYear.description,
+      status: academicYear.status as string,
     },
   })
 
@@ -127,6 +135,35 @@ export function EditAcademicYear({ academicYear }: EditAcademicYearProps) {
                           placeholder={"Enter Faculty's name"}
                           className={styles["form-input"]}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem className={styles["form-item"]}>
+                      <FormLabel className={styles["form-label"]}>
+                        Status
+                      </FormLabel>
+                      <FormControl>
+                        <Select
+                          defaultValue={field.value}
+                          onValueChange={(value) => field.onChange(value)}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select academic year's status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="ACTIVE">Active</SelectItem>
+                            <SelectItem value="SUSPENDED">Suspended</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -135,7 +135,6 @@ export function EditFaculty({ faculty }: EditFacultyProps) {
                       <Select
                         defaultValue={field.value}
                         onValueChange={(value) => {
-                          console.log(value)
                           field.onChange(value)
                           setSelectStatus(value)
                         }}

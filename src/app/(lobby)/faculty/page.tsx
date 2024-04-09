@@ -43,7 +43,13 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   })
 
   // get total academic years and current selected academic year
-  const academicYears = await db.academicYear.findMany()
+  const academicYears = await db.academicYear.findMany({
+    where: { status: "ACTIVE" },
+    orderBy: {
+      createdAt: "asc"
+    }
+  })
+
   const academicYear =
     academicYears.find((value) => value.id === academicYearId) ??
     academicYears[0]
