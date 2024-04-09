@@ -1,6 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
 import type { SearchParams } from "@/types"
+import type { StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
 import type { User } from "next-auth"
 
@@ -15,7 +16,6 @@ import { Icons } from "@/components/icons"
 import { PaginationGroupList } from "@/components/pagination-group-list"
 import { SelectGroupList } from "@/components/select-group-list"
 import styles from "@/styles/(settings)/recent-blogs/page.module.scss"
-import type {StatusEnum} from "@prisma/client";
 
 interface SearchPageProps {
   searchParams: SearchParams
@@ -52,7 +52,10 @@ export default async function RecentBlogsPage({
       {!!blogs?.length && (
         <div>
           {blogs.map(
-            ({ id, title, author, createdAt, updatedAt, status }, index) => (
+            (
+              { id, title, author, createdAt, updatedAt, status, comments },
+              index
+            ) => (
               <article className={styles["article-wrapper"]} key={index}>
                 <div className={styles["article-container"]}>
                   <div className={styles["article-header-wrapper"]}>
@@ -105,7 +108,11 @@ export default async function RecentBlogsPage({
                         className={styles["comment-btn"]}
                       >
                         <Icons.messageCircle />
-                        69 comments
+                        {
+                          comments.filter((comment) => !comment.replyToId)
+                            .length
+                        }{" "}
+                        comments
                       </Button>
                     </div>
                   </div>
