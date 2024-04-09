@@ -99,7 +99,8 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
         body: formData,
       })
 
-      return (await response.json()) as unknown
+      const json = (await response.json()) as { blogId: string }
+      router.push(`/faculty/blog/${json.blogId}`)
     },
     onError: () => {
       toast.warning("Something went wrong.", {
@@ -108,7 +109,6 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
     },
     onSuccess: () => {
       toast("Upload blog successfully.")
-      router.push("/faculty")
       router.refresh()
     },
   })

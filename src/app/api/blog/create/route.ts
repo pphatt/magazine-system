@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       imageUrl = data?.path ?? ""
     }
 
-    await db.blogs.create({
+    const { id } = await db.blogs.create({
       data: {
         title,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
       html: `<strong>Have to grade this within 14 days</strong>`,
     })
 
-    return new Response(JSON.stringify("OK"), { status: 200 })
+    return new Response(JSON.stringify({ blogId: id }), { status: 200 })
   } catch (error) {
     console.log(error)
     if (error instanceof z.ZodError) {
