@@ -3,7 +3,7 @@ import Link from "next/link"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
 import { type StatusEnum } from "@prisma/client"
-import { format } from "date-fns"
+import { format, isBefore } from "date-fns"
 import { type User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
@@ -46,8 +46,8 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   const academicYears = await db.academicYear.findMany({
     where: { status: "ACTIVE" },
     orderBy: {
-      createdAt: "asc"
-    }
+      createdAt: "asc",
+    },
   })
 
   const academicYear =
@@ -125,19 +125,23 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
                   <span>{format(academicYear?.closureDate ?? "-", "PPP")}</span>
                 </div>
               </div>
-              {user.role === "STUDENT" && (
-                <Button
-                  variant={"outline"}
-                  className={styles["add-new-blog"]}
-                  asChild
-                >
-                  <Link
-                    href={`/faculty/blog/create?academicYearId=${academicYearId ? academicYear?.id : "empty"}`}
+              {user.role === "STUDENT" &&
+                isBefore(
+                  Date.now(),
+                  academicYear?.closureDate ?? Date.now()
+                ) && (
+                  <Button
+                    variant={"outline"}
+                    className={styles["add-new-blog"]}
+                    asChild
                   >
-                    Add new blog
-                  </Link>
-                </Button>
-              )}
+                    <Link
+                      href={`/faculty/blog/create?academicYearId=${academicYearId ? academicYear?.id : "empty"}`}
+                    >
+                      Add new blog
+                    </Link>
+                  </Button>
+                )}
             </CardContent>
           </CardHeader>
         </Card>

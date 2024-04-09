@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
 import type { AcademicYear, Faculty } from "@prisma/client"
-import { format } from "date-fns"
+import {format, isAfter} from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
@@ -42,6 +42,10 @@ export default async function CreateBlogPage({
   const academicYear = (await db.academicYear.findUnique({
     where: { id: academicYearId },
   })) as AcademicYear
+
+  if (isAfter(Date.now(), academicYear.closureDate)) {
+    redirect("/faculty")
+  }
 
   if (faculty.status === "SUSPENDED" || academicYear.status === "SUSPENDED") {
     redirect("/faculty")
