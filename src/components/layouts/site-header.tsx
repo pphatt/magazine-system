@@ -29,7 +29,20 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
   return (
     <header className={styles["nav-layout"]} style={style}>
       <div className={styles["inner-nav-layout"]}>
-        <MainNav items={siteConfig.mainNav} />
+        <MainNav />
+        <div className={styles["outer-nav-action"]}>
+          <nav className={styles["nav-action"]}>
+            <Button variant="outline" className={styles["search"]} asChild>
+              <Link href={"/contribution"}>
+                <Icons.layers aria-hidden="true" />
+                <span className={styles["search-span-metadata"]}>
+                  Contribution
+                </span>
+                <span className={styles["search-span"]}>Contribution</span>
+              </Link>
+            </Button>
+          </nav>
+        </div>
         <div className={styles["nav-option"]}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

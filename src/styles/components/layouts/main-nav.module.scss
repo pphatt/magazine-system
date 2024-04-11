@@ -1,7 +1,8 @@
 .main-nav-layout {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
+  flex: 1;
 
   height: 100%;
 }
@@ -9,6 +10,8 @@
 .main-nav {
   display: flex;
   gap: 1.5rem;
+
+  height: 40px;
 
   @media (min-width: 768px) {
     gap: 2.5rem;
@@ -19,17 +22,8 @@
   display: flex;
   align-items: center;
 
-  svg {
-    width: fit-content;
-    height: 90%;
-  }
-
   img {
-    height: 2.5rem;
-
-    @media (min-width: 90em) {
-      height: 4rem;
-    }
+    height: 3.5rem;
   }
 
   span {
@@ -136,7 +130,7 @@
   cursor: pointer;
 
   transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke;
+  text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 0.15s;
 
