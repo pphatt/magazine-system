@@ -1,14 +1,16 @@
 @use "../../variables" as var;
 
 .nav-layout {
-  //position: sticky;
-  //top: 0;
+  position: sticky;
+  top: 0;
 
   background-color: hsl(var(--background));
 
   border-bottom-width: 1px;
 
   width: 100%;
+
+  z-index: 49;
 }
 
 .inner-nav-layout {

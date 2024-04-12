@@ -10,7 +10,7 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import type { BlogWithInclude } from "@/lib/prisma"
-import styles from "@/styles/(lobby)/faculty/blog/edit/page.module.scss"
+import styles from "@/styles/(lobby)/contribution/blog/edit/page.module.scss"
 
 const EditBlogEditor = dynamic(
   () => import("@/components/editor/edit-blog-editor"),

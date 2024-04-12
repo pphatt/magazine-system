@@ -1,9 +1,8 @@
 .select-wrapper {
   display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
 
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .select-trigger {
@@ -65,5 +64,21 @@
   &:focus {
     color: hsl(var(--accent-foreground));
     background-color: hsl(var(--accent));
+  }
+}
+
+.add-new-blog-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.add-new-blog {
+  svg {
+    width: 1rem !important;
+    height: 1rem !important;
+
+    margin-right: 0.5rem;
   }
 }

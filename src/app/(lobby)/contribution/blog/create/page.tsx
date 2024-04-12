@@ -5,12 +5,12 @@ import { redirect } from "next/navigation"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
 import type { AcademicYear, Faculty } from "@prisma/client"
-import {format, isAfter} from "date-fns"
+import { format, isAfter } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import { facultyParamsSchema } from "@/lib/validations/params"
-import styles from "@/styles/(lobby)/faculty/blog/create/page.module.scss"
+import { contributionParamsSchema } from "@/lib/validations/params"
+import styles from "@/styles/(lobby)/contribution/blog/create/page.module.scss"
 
 const Editor = dynamic(() => import("@/components/editor/editor"), {
   ssr: false,
@@ -23,7 +23,7 @@ interface SearchPageProps {
 export default async function CreateBlogPage({
   searchParams,
 }: SearchPageProps) {
-  const { academicYearId } = facultyParamsSchema.parse(searchParams)
+  const { academicYearId } = contributionParamsSchema.parse(searchParams)
 
   if (academicYearId === "undefined") {
     redirect("/faculty")

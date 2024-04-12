@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MainNav } from "@/components/layouts/main-nav"
+import { ThemeToggle } from "@/components/layouts/theme-toggle"
 import styles from "@/styles/components/layouts/site-header.module.scss"
 
 import { Icons } from "../icons"
@@ -36,7 +37,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
               <Link href={"/contribution"}>
                 <Icons.layers aria-hidden="true" />
                 <span className={styles["search-span-metadata"]}>
-                  Contribution
+                  Contributions
                 </span>
                 <span className={styles["search-span"]}>Contribution</span>
               </Link>
@@ -44,6 +45,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
           </nav>
         </div>
         <div className={styles["nav-option"]}>
+          <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant={"outline"} className={styles["avatar-trigger"]}>

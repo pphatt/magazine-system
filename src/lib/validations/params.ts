@@ -6,7 +6,7 @@ export const searchParamsSchema = z.object({
   rows: z.coerce.string(),
 })
 
-export const facultyParamsSchema = z.object({
+export const contributionParamsSchema = z.object({
   facultyId: z.coerce.string(),
   academicYearId: z.coerce.string(),
   q: z.coerce.string(),
