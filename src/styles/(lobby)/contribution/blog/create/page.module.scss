@@ -1,9 +1,21 @@
 .layout {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
 
   width: 100%;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+
+  color: hsl(var(--muted-foreground));
+
+  margin-bottom: 1rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .inner-layout {

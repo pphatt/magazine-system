@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Suspense } from "react"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
@@ -10,6 +11,14 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { contributionParamsSchema } from "@/lib/validations/params"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/bread-crumb"
 import styles from "@/styles/(lobby)/contribution/blog/create/page.module.scss"
 
 const Editor = dynamic(() => import("@/components/editor/editor"), {
@@ -53,20 +62,38 @@ export default async function CreateBlogPage({
 
   return (
     <div className={styles["layout"]}>
+      <Breadcrumb className={styles["breadcrumb"]}>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/contribution">Contributions</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href={"/contribution"}>{faculty?.name ?? "-"}</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Create blog</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className={styles["inner-layout"]}>
         <div className={styles["header-wrapper"]}>
           <h1>Add new blog</h1>
         </div>
 
         <div className={styles["info-wrapper"]}>
-          <div className={styles["faculty-detail-wrapper"]}>
-            <div className={styles["faculty-detail-container"]}>
-              <h3>
-                Faculty: <span>{faculty.name}</span>
-              </h3>
-            </div>
-          </div>
-
           <div className={styles["faculty-detail-wrapper"]}>
             <div className={styles["faculty-detail-container"]}>
               <h3>
