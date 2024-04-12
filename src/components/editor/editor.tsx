@@ -102,7 +102,7 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
       })
 
       const json = (await response.json()) as { blogId: string }
-      router.push(`/faculty/blog/${json.blogId}`)
+      router.push(`/contribution/blog/${json.blogId}`)
     },
     onError: () => {
       toast.warning("Something went wrong.", {

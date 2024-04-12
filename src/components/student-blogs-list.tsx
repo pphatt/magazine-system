@@ -80,7 +80,7 @@ export async function StudentBlogsList({
                 <div className={styles["article-content-wrapper"]}>
                   <h3 className={styles["article-title"]}>
                     <Link
-                      href={`/faculty/blog/${id}`}
+                      href={`/contribution/blog/${id}`}
                       className={styles["article-link"]}
                     >
                       {title}

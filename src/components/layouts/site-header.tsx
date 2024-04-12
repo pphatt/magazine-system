@@ -4,7 +4,6 @@ import React from "react"
 import Link from "next/link"
 import { type User } from "next-auth"
 
-import { siteConfig } from "@/config/site"
 import { logout } from "@/lib/actions/logout"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"

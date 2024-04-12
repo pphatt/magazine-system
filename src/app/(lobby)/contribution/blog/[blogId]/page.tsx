@@ -106,7 +106,7 @@ export default async function BlogPage({
                 {blog.status === "PENDING" && blog.authorId === user.id && (
                   <div className={styles["manage-blog-wrapper"]}>
                     <Button asChild variant={"ghost"}>
-                      <Link href={`/faculty/blog/${blogId}/edit`}>Edit</Link>
+                      <Link href={`/contribution/blog/${blogId}/edit`}>Edit</Link>
                     </Button>
                   </div>
                 )}
