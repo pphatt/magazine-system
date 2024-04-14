@@ -18,6 +18,6 @@ export const contributionParamsSchema = z.object({
 
 export const recentBlogParamsSchema = z.object({
   page: z.coerce.string().default("1"),
-  rows: z.coerce.string(),
+  row: z.coerce.string(),
   status: z.coerce.string().default("pending"),
 })

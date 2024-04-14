@@ -1,6 +1,4 @@
-import { env } from "@/env"
 import Credentials from "@auth/core/providers/credentials"
-import Google from "@auth/core/providers/google"
 import bcrypt from "bcryptjs"
 import type { NextAuthConfig } from "next-auth"
 
@@ -9,10 +7,6 @@ import { authSchema } from "@/lib/validations/auth"
 
 export default {
   providers: [
-    Google({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
     Credentials({
       /* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/
       // @ts-ignore

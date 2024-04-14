@@ -75,7 +75,9 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{faculty?.name ?? "-"}</BreadcrumbPage>
+            <BreadcrumbPage>
+              {user.facultyId ? faculty?.name : "-"}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

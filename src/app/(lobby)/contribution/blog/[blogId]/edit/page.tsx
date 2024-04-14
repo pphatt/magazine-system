@@ -34,13 +34,13 @@ export default async function EditBlogPage({
   })) as BlogWithInclude
 
   if (!blog || isAfter(Date.now(), blog.academicYear.finalClosureDate)) {
-    redirect("/faculty")
+    redirect(`/contribution/blog/${blogId}`)
   }
 
   const user = (await currentUser()) as User
 
   if (blog.authorId !== user.id || blog.status !== "PENDING") {
-    redirect("/faculty")
+    redirect(`/contribution/blog/${blogId}`)
   }
 
   const content = blog.content as { blocks: Block[] }

@@ -1,10 +1,8 @@
 "use client"
 
 import React from "react"
-import { useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 import type { z } from "zod"
 
 import { login } from "@/lib/actions/login"
@@ -29,11 +27,6 @@ export type Inputs = z.infer<typeof authSchema>
 
 export default function SignInForm() {
   const [isPending, startTransition] = React.useTransition()
-  const searchParams = useSearchParams()
-  const isUrlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider."
-      : ""
 
   // register, handleSubmit, formState
   // default-values for controlled form
@@ -64,12 +57,6 @@ export default function SignInForm() {
       }
     })
   }
-
-  React.useEffect(() => {
-    if (isUrlError) {
-      toast(isUrlError)
-    }
-  }, [isUrlError])
 
   /*
    * HOF (higher-order functions)

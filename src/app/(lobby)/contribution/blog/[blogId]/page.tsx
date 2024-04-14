@@ -39,7 +39,7 @@ export default async function BlogPage({
   })) as BlogWithInclude
 
   if (!blog) {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   const user = (await currentUser()) as User
@@ -51,17 +51,17 @@ export default async function BlogPage({
       blog.academicYear.status === "SUSPENDED") &&
     blog.authorId !== user.id
   ) {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   if (user.role === "STUDENT") {
     if (blog.authorId !== user.id && blog.status !== "APPROVE") {
-      redirect("/faculty")
+      redirect("/contribution")
     }
   }
 
   if (user.role === "GUEST" && !blog.publicized) {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   const content = blog.content as { blocks: Block[] }
@@ -130,9 +130,6 @@ export default async function BlogPage({
           <div className={styles["file-upload-wrapper"]}>
             <h3>File upload</h3>
             <div className={styles["files"]}>
-              <DownloadZip name={blog.title} location={blog.location} />
-            </div>
-            <div className={styles["files"]}>
               {blog.location.map((value) => {
                 const _split = value.split("/")
                 const name = _split[_split.length - 1] ?? ""
@@ -141,42 +138,30 @@ export default async function BlogPage({
                   <Link
                     href={`https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contributions/${value}`}
                     className={styles["file"]}
+                    download={true}
                   >
-                    <Icons.fileDownload />
+                    <Icons.fileDownload/>
                     <span>{name}</span>
                   </Link>
                 )
               })}
             </div>
+            <div className={styles["files"]}>
+              <DownloadZip name={blog.title} location={blog.location}/>
+            </div>
           </div>
         </div>
 
-        <CommentsSection blogId={blog.id} />
+        <CommentsSection blogId={blog.id}/>
       </article>
-      <div className={styles["blog-detail-wrapper"]}>
+
+      {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
         <div className={styles["blog-detail"]}>
-          <div>
-            Blog status:{" "}
-            <span data-submit={blog.status.toLowerCase()}>
-              {blog.status.toLowerCase()}
-            </span>
-          </div>
-          <div>
-            Faculty: <strong>{blog.faculty.name ?? "-"}</strong>
-          </div>
-          <div>
-            Academic Year: <strong>{blog.academicYear.name}</strong>
-          </div>
+          {blog.status.toLowerCase() === "pending" && (
+            <BlogSubmissionGrading blogId={blog.id} status={blog.status} />
+          )}
         </div>
-        {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
-          <div className={styles["blog-detail"]}>
-            <div>Blog grading</div>
-            {blog.status.toLowerCase() === "pending" && (
-              <BlogSubmissionGrading blogId={blog.id} status={blog.status} />
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   )
 }

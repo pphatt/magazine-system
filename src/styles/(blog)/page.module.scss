@@ -1,8 +1,7 @@
 .blog-wrapper {
-  display: grid;
-  gap: 1rem;
-
-  grid-template-columns: 7fr 3fr;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   max-width: 1280px;
   width: 100%;
@@ -35,7 +34,7 @@
 }
 
 .background-image-wrapper {
-  max-height: calc(100vh - 56px - 2 * 1rem);
+  max-height: 650px;
 
   border-radius: calc(0.5rem - 4px) calc(0.5rem - 4px) 0 0;
 
@@ -222,6 +221,10 @@
 }
 
 .blog-detail {
+  position: fixed;
+  top: 40%;
+  right: 0;
+
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -231,6 +234,8 @@
 
   border-width: 1px;
   border-radius: calc(0.5rem - 4px);
+
+  margin-right: 0.5rem;
 
   padding: 1rem;
 

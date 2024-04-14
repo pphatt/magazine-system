@@ -101,8 +101,8 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
         body: formData,
       })
 
-      const json = (await response.json()) as { blogId: string }
-      router.push(`/contribution/blog/${json.blogId}`)
+      const { blogId } = (await response.json()) as { blogId: string }
+      router.push(`/contribution/blog/${blogId}`)
     },
     onError: () => {
       toast.warning("Something went wrong.", {

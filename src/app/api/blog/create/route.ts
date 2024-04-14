@@ -1,11 +1,9 @@
 import { db } from "@/server/db"
 import { supabase } from "@/server/supabase/supabase"
-import { User } from "@prisma/client"
 import { v4 } from "uuid"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import { resend } from "@/lib/resend"
 import type { uploadBlogSchema } from "@/lib/validations/blog"
 
 export async function POST(req: Request) {
@@ -69,25 +67,25 @@ export async function POST(req: Request) {
       },
     })
 
-    const mc = (await db.user.findFirst({
-      where: { facultyId, role: "MARKETING_COORDINATOR" },
-    })) as User
+    // const mc = (await db.user.findFirst({
+    //   where: { facultyId, role: "MARKETING_COORDINATOR" },
+    // })) as User
 
     // one email for student who submit the blog
-    await resend.emails.send({
-      from: "noreply <onboarding@mangado.org>",
-      to: [user.email!],
-      subject: "You have submitted",
-      html: `<strong>yea</strong>`,
-    })
-
-    // one email for marketing coordinator who will grading the blog
-    await resend.emails.send({
-      from: "noreply <onboarding@mangado.org>",
-      to: [mc.email!],
-      subject: "Student submit blog",
-      html: `<strong>Have to grade this within 14 days</strong>`,
-    })
+    // await resend.emails.send({
+    //   from: "noreply <onboarding@mangado.org>",
+    //   to: [user.email!],
+    //   subject: "You have submitted",
+    //   html: `<strong>yea</strong>`,
+    // })
+    //
+    // // one email for marketing coordinator who will grading the blog
+    // await resend.emails.send({
+    //   from: "noreply <onboarding@mangado.org>",
+    //   to: [mc.email!],
+    //   subject: "Student submit blog",
+    //   html: `<strong>Have to grade this within 14 days</strong>`,
+    // })
 
     return new Response(JSON.stringify({ blogId: id }), { status: 200 })
   } catch (error) {

@@ -28,13 +28,13 @@ export function ContributionSelect({
     <div className={styles["select-wrapper"]}>
       {role !== ("student" as string) && role !== ("guest" as string) && (
         <>
-          <SelectFacultyInput faculties={faculties} />
-
           {role !== "marketing_coordinator" && (
             <>
-              <SelectAcademicYearInput academicYears={academicYears} />
+              <SelectFacultyInput faculties={faculties} />
             </>
           )}
+
+          <SelectAcademicYearInput academicYears={academicYears} />
 
           <SelectStatusInput />
         </>

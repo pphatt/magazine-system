@@ -43,12 +43,74 @@ async function main() {
 
   const faculty = await db.faculty.findMany()
 
-  for (let i = 0; i < 1000; i++) {
+  await prisma.user.create({
+    data: {
+      name: faker.internet.userName(),
+      email: "vutienphat0809@gmail.com",
+      password: await bcrypt.hash("studentAccount@123", 10),
+      address: faker.location.streetAddress(),
+      city: faker.location.city(),
+      phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),
+      role: "STUDENT",
+      facultyId:
+        faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
+    },
+  })
+
+  await prisma.user.create({
+    data: {
+      name: faker.internet.userName(),
+      email: "phatvu080903@gmail.com",
+      password: await bcrypt.hash("mcAccount@123", 10),
+      address: faker.location.streetAddress(),
+      city: faker.location.city(),
+      phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),
+      role: "MARKETING_COORDINATOR",
+      facultyId:
+        faculty[Math.floor(Math.random() * faculty.length)]?.id ?? null,
+    },
+  })
+
+  await prisma.user.create({
+    data: {
+      name: faker.internet.userName(),
+      email: "phatvtgcs210973@fpt.edu.vn",
+      password: await bcrypt.hash("adminAccount@123", 10),
+      address: faker.location.streetAddress(),
+      city: faker.location.city(),
+      phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),
+      role: "ADMIN",
+      facultyId: null,
+    },
+  })
+
+  await prisma.user.create({
+    data: {
+      name: faker.internet.userName(),
+      email: "manager-account123@gmail.com",
+      password: await bcrypt.hash("mmAccount@123", 10),
+      address: faker.location.streetAddress(),
+      city: faker.location.city(),
+      phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),
+      role: "MARKETING_MANAGER",
+      facultyId: null,
+    },
+  })
+
+  for (let i = 0; i < 10; i++) {
+    const password = faker.internet.password({
+      length: 10,
+      pattern: /[A-Za-z0-9\d!@#$%^&*]/,
+    })
+    const hashPassword = await bcrypt.hash(password, 10)
+
+    console.log(password)
+
     await prisma.user.create({
       data: {
         name: faker.internet.userName(),
         email: faker.internet.email(),
-        password: await bcrypt.hash(faker.internet.password(), 10),
+        password: hashPassword,
         address: faker.location.streetAddress(),
         city: faker.location.city(),
         phoneNumber: faker.string.numeric({ length: { min: 10, max: 11 } }),

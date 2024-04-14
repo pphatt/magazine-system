@@ -188,6 +188,10 @@
   padding: 0 !important;
 }
 
+*[data-radix-popper-content-wrapper] {
+  z-index: 50 !important;
+}
+
 //.codex-editor__redactor {
 //  @media (min-width: 651px) {
 //    margin-right: 60px;
