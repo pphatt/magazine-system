@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAlertModal } from "@/components/modals/user-alert-modal"
 import styles from "@/styles/components/tables/user-tables/cell-action.module.scss"
+import {deleteUser} from "@/lib/actions/user";
 
 interface CellActionProps {
   data: User
@@ -31,35 +32,16 @@ export const UserCellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = () => {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/user/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: data.id }),
-        })
+        const req = await deleteUser({ userId: data.id })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Delete user successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Delete user successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }

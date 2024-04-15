@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { changeUserPassword, editUserProfile } from "@/lib/actions/user"
 import type { UserWithFaculty } from "@/lib/prisma"
 import { cn } from "@/lib/utils"
 import {
@@ -80,31 +81,15 @@ export function EditProfile({ user }: EditUserProps) {
 
     startTransition(async () => {
       try {
-        const req = await fetch("/api/user/edit-profile", {
-          method: "POST",
-          body: formData,
-        })
+        const req = await editUserProfile(formData)
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Edit user profile successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        router.refresh()
-
-        toast.success("Edit user profile successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }
@@ -116,24 +101,22 @@ export function EditProfile({ user }: EditUserProps) {
 
     startTransition(async () => {
       try {
-        await fetch("/api/user/change-password", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: user.id,
-            newPassword,
-            confirmNewPassword,
-          }),
+        const req = await changeUserPassword({
+          userId: user.id,
+          newPassword,
+          confirmNewPassword,
         })
 
-        setOpenChangePassword(false)
-        router.refresh()
+        if ("success" in req) {
+          setOpenChangePassword(false)
+          router.refresh()
 
-        toast("Change user's password successfully")
+          toast.success("Change user's password successfully")
+        } else {
+          toast.error(req.error)
+        }
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }
