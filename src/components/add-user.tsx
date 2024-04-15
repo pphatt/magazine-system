@@ -105,12 +105,12 @@ export function AddUser({ faculty }: AddUserProps) {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.error("Error parsing response text", {
+            toast.warning("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.error(errorMessage)
+          toast.warning(errorMessage)
           return
         }
 

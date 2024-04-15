@@ -105,20 +105,20 @@ export function EditUser({ user }: EditUserProps) {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.warning("Error parsing response text", {
+            toast.error("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.warning(errorMessage)
+          toast.error(errorMessage)
           return
         }
 
         router.refresh()
 
-        toast("Edit user successfully")
+        toast.success("Edit user successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }
@@ -138,9 +138,9 @@ export function EditUser({ user }: EditUserProps) {
         router.push("/admin/user")
         router.refresh()
 
-        toast("Delete user successfully")
+        toast.success("Delete user successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }
@@ -165,9 +165,9 @@ export function EditUser({ user }: EditUserProps) {
         setOpenChangePassword(false)
         router.refresh()
 
-        toast("Change user's password successfully")
+        toast.success("Change user's password successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }

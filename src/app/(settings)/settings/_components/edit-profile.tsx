@@ -93,20 +93,20 @@ export function EditProfile({ user }: EditUserProps) {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.warning("Error parsing response text", {
+            toast.error("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.warning(errorMessage)
+          toast.error(errorMessage)
           return
         }
 
         router.refresh()
 
-        toast("Edit user profile successfully")
+        toast.success("Edit user profile successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }
