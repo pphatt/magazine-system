@@ -8,34 +8,6 @@ export const addUserSchema = z
     email: z.string().email({
       message: "Please enter a valid email address",
     }),
-    password: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .regex(
-        new RegExp(
-          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
-        ),
-        {
-          message:
-            "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
-        }
-      ),
-    confirmPassword: z
-      .string()
-      .min(8, {
-        message: "Password must be at least 8 characters long",
-      })
-      .regex(
-        new RegExp(
-          "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
-        ),
-        {
-          message:
-            "Password must contain at least 8 characters, one uppercase, one lowercase, one number and one special character",
-        }
-      ),
     firstName: z.string().min(1, { message: "First name is required" }),
     lastName: z.string().min(1, { message: "Last name is required" }),
     role: z.string().min(1, { message: "User's role must be assigned" }),
@@ -67,10 +39,6 @@ export const addUserSchema = z
       path: ["faculty"],
     }
   )
-  .refine(({ password, confirmPassword }) => password === confirmPassword, {
-    message: "Confirm password must match password",
-    path: ["confirmPassword"],
-  })
 
 export const editUserSchema = z.object({
   userId: z.string().optional(),

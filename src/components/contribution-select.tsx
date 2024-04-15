@@ -34,10 +34,12 @@ export function ContributionSelect({
             </>
           )}
 
-          <SelectAcademicYearInput academicYears={academicYears} />
-
           <SelectStatusInput />
         </>
+      )}
+
+      {role !== "guest" && (
+        <SelectAcademicYearInput academicYears={academicYears} />
       )}
 
       <div className={styles["add-new-blog-wrapper"]}>

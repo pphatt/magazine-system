@@ -9,6 +9,11 @@ const config = {
   reactStrictMode: true,
   experimental: {
     swcMinify: true,
+    serverComponentsExternalPackages: [
+      '@react-email/components',
+      '@react-email/render',
+      '@react-email/html',
+    ],
   },
 }
 

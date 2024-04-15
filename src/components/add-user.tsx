@@ -55,8 +55,6 @@ export function AddUser({ faculty }: AddUserProps) {
     resolver: zodResolver(addUserSchema),
     defaultValues: {
       email: "",
-      password: "",
-      confirmPassword: "",
       firstName: "",
       lastName: "",
       role: "",
@@ -76,8 +74,6 @@ export function AddUser({ faculty }: AddUserProps) {
     ) {
       payload = {
         email: data.email,
-        password: data.password,
-        confirmPassword: data.confirmPassword,
         role: data.role,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -160,46 +156,6 @@ export function AddUser({ faculty }: AddUserProps) {
                     <Input
                       {...field}
                       placeholder={"Enter Email"}
-                      className={styles["form-input"]}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className={styles["form-item"]}>
-                  <FormLabel className={styles["form-label"]}>
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="**********"
-                      className={styles["form-input"]}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem className={styles["form-item"]}>
-                  <FormLabel className={styles["form-label"]}>
-                    Confirm Password
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="**********"
                       className={styles["form-input"]}
                     />
                   </FormControl>

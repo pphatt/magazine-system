@@ -1,10 +1,16 @@
+import { env } from "@/env"
 import { db } from "@/server/db"
+import { transporter } from "@/server/node-mailer/node-mailer"
 import { supabase } from "@/server/supabase/supabase"
+import { render } from "@react-email/components"
+import { format } from "date-fns"
 import { v4 } from "uuid"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
 import type { uploadBlogSchema } from "@/lib/validations/blog"
+import { GradingBlogEmail } from "@/components/emails/grading-blog-email"
+import { SubmitBlogEmail } from "@/components/emails/submit-blog-email"
 
 export async function POST(req: Request) {
   try {
@@ -54,7 +60,7 @@ export async function POST(req: Request) {
       imageUrl = data?.path ?? ""
     }
 
-    const { id } = await db.blogs.create({
+    const { id, createdAt } = await db.blogs.create({
       data: {
         title,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -78,14 +84,69 @@ export async function POST(req: Request) {
     //   subject: "You have submitted",
     //   html: `<strong>yea</strong>`,
     // })
-    //
-    // // one email for marketing coordinator who will grading the blog
-    // await resend.emails.send({
-    //   from: "noreply <onboarding@mangado.org>",
-    //   to: [mc.email!],
-    //   subject: "Student submit blog",
-    //   html: `<strong>Have to grade this within 14 days</strong>`,
+
+    // one email for marketing coordinator who will grading the blog
+    // const reqEmail = await resend.emails.send({
+    //   from: "Do not reply to this email <magazine@mangado.org>",
+    //   to: ["phatvu.080903@gmail.com"],
+    //   subject: "You have submitted",
+    //   html: `<strong>You have submitted successfully <a href="${env.NODE_ENV === "development" ? "http://localhost:3000" : ""}/contribution/blog/${id}">Blog link</a></strong>`,
     // })
+
+    const faculty = await db.faculty.findUnique({
+      where: {
+        id: facultyId,
+      },
+    })
+
+    const academicYear = await db.academicYear.findUnique({
+      where: {
+        id: academicYearId,
+      },
+    })
+
+    const marketingCoordinatorDetails = await db.user.findUnique({
+      where: {
+        email: "phatvu080903@gmail.com",
+      },
+    })
+
+    const blogUrl = `${env.NODE_ENV === "development" ? "http://localhost:3000" : ""}/contribution/blog/${id}`
+
+    const studentEmailHtml = render(
+      SubmitBlogEmail({
+        id,
+        title,
+        uploadedAt: format(createdAt, "PPP"),
+        faculty: faculty?.name ?? "-",
+        academicYear: academicYear?.name ?? "-",
+        blogUrl,
+      })
+    )
+
+    const marketingCoordinatorEmailHtml = render(
+      GradingBlogEmail({
+        title,
+        uploadedAt: format(createdAt, "PPP"),
+        academicYear: academicYear?.name ?? "-",
+        author: marketingCoordinatorDetails!,
+        blogUrl,
+      })
+    )
+
+    await transporter.sendMail({
+      from: "Do not reply to this email <magazine@greenwich.magazine.edu>",
+      subject: "Submitted blog successfully",
+      to: `${user.email}`,
+      html: studentEmailHtml,
+    })
+
+    await transporter.sendMail({
+      from: "Do not reply to this email <magazine@greenwich.magazine.edu>",
+      subject: "Grading blog pending",
+      to: "phatvu080903@gmail.com",
+      html: marketingCoordinatorEmailHtml,
+    })
 
     return new Response(JSON.stringify({ blogId: id }), { status: 200 })
   } catch (error) {

@@ -19,10 +19,10 @@ export const sleep = (ms = 0) => {
 
 export function catchNextAuthError(err: unknown) {
   if (typeof err === "string") {
-    return toast(err)
+    return toast.error(err)
   }
 
-  return toast(JSON.stringify(err))
+  return toast.error(JSON.stringify(err))
 }
 
 export function formatTimeForSubmissionDiff(day: Date, dayCompare: Date) {

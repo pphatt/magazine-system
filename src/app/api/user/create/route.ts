@@ -13,7 +13,6 @@ export async function POST(req: Request) {
 
     const {
       email,
-      password,
       role,
       faculty,
       firstName,
@@ -29,12 +28,9 @@ export async function POST(req: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
     await db.user.create({
       data: {
         email,
-        password: hashedPassword,
         name: firstName + " " + lastName,
         role: role as UserRole,
         facultyId: faculty ? faculty : null,
