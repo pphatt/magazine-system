@@ -9,6 +9,7 @@ import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { editAcademicYear } from "@/lib/actions/academic-year"
 import { type AcademicYearWithUser } from "@/lib/prisma"
 import { editAcademicYearSchema } from "@/lib/validations/academic-year"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -47,6 +48,7 @@ export function EditAcademicYear({ academicYear }: EditAcademicYearProps) {
   const form = useForm<EditAcademicYearInputs>({
     resolver: zodResolver(editAcademicYearSchema),
     defaultValues: {
+      academicYearId: academicYear.id ?? "",
       name: academicYear.name,
       description: academicYear.description,
       status: academicYear.status as string,
@@ -77,34 +79,15 @@ export function EditAcademicYear({ academicYear }: EditAcademicYearProps) {
   function onSubmit(data: EditAcademicYearInputs) {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/academic-year/edit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ academicYearId: academicYear.id, ...data }),
-        })
+        const req = await editAcademicYear(data)
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Edit academic year successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        router.refresh()
-
-        toast.success("Edit academic year successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }

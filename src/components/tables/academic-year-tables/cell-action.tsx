@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { AcademicYearAlertModal } from "@/components/modals/academic-year-alert-modal"
 import styles from "@/styles/components/tables/academic-year-tables/cell-action.module.scss"
+import {deleteAcademicYear} from "@/lib/actions/academic-year";
 
 interface CellActionProps {
   data: AcademicYear
@@ -31,35 +32,16 @@ export const AcademicYearCellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = () => {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/academic-year/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ academicYearId: data.id }),
-        })
+        const req = await deleteAcademicYear({ academicYearId: data.id })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Delete academic year successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Delete academic year successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }

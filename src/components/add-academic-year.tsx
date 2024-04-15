@@ -9,6 +9,7 @@ import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { createAcademicYear } from "@/lib/actions/academic-year"
 import { addAcademicYearSchema } from "@/lib/validations/academic-year"
 import { Button } from "@/components/ui/button"
 import {
@@ -75,35 +76,16 @@ export function AddAcademicYear() {
   function onSubmit(data: AddAcademicYearInputs) {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/academic-year/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...data }),
-        })
+        const req = await createAcademicYear(data)
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Create new academic year successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Create new academic year successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }
