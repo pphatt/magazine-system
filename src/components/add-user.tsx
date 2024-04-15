@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/select"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/add-user.module.scss"
+import {createUser} from "@/lib/actions/user";
 
 export type AddUserInputs = z.infer<typeof addUserSchema>
 
@@ -85,35 +86,16 @@ export function AddUser({ faculty }: AddUserProps) {
 
     startTransition(async () => {
       try {
-        const req = await fetch("/api/user/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        })
+        const req = await createUser(payload)
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ('success' in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.warning("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.warning(errorMessage)
-          return
+          toast.success("Create new user successfully")
+        } else {
+          toast.warning(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Create new user successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }

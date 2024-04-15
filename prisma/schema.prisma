@@ -84,6 +84,24 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model SetPasswordToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 model Faculty {
   id        String           @id @default(cuid())
   name      String

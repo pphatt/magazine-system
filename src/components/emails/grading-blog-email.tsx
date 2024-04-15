@@ -16,7 +16,7 @@ import {
 
 import { Icons } from "@/components/icons"
 
-interface SubmitBlogEmailProps {
+interface GradingBlogEmailProps {
   title: string
   uploadedAt: string
   academicYear: string
@@ -30,7 +30,7 @@ export function GradingBlogEmail({
   academicYear,
   author,
   blogUrl,
-}: SubmitBlogEmailProps) {
+}: GradingBlogEmailProps) {
   return (
     <Html>
       <Head />

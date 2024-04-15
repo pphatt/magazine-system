@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card"
 import SignInForm from "@/components/forms/signin-form"
 import { Shell } from "@/components/shells/shell"
-import styles from "@/styles/(auth)/(protected-auth)/signin/page.module.scss"
+import styles from "@/styles/(auth)/(protected-auth)/set-password/page.module.scss"
 
-export default function SignInPage() {
+export default function SetPasswordPage() {
   return (
     <Shell className={styles["sign-in-layout"]}>
       <Card style={{ width: "100%" }}>
