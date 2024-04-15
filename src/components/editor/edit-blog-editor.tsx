@@ -48,6 +48,7 @@ import type { Block } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import type { FilePondFile, FilePondInitialFile } from "filepond"
 
+import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
 
 // Register the plugins
@@ -78,6 +79,8 @@ export default function EditBlogEditor({
   academicYearId,
   facultyId,
 }: EditorProps) {
+  const [agree, setAgree] = React.useState(false)
+
   const [newFilesCount, setNewFilesCount] = React.useState(0)
   const [files, setFiles] = React.useState<
     FilePondInitialFile[] | FilePondFile[]
@@ -364,21 +367,40 @@ export default function EditBlogEditor({
             labelIdle='Drag & Drop your submit files or <span class="filepond--label-action">Browse</span>'
           />
 
-          <div className={styles["submit-btn"]}>
-            <Button
-              type="button"
-              variant={"outline"}
-              disabled={isPending}
-              asChild
-            >
-              <Link href={"/contribution"}>Cancel</Link>
-            </Button>
-            <Button type="submit" disabled={isPending}>
-              {isPending && (
-                <Icons.spinner className={styles["icon"]} aria-hidden="true" />
-              )}
-              Confirm
-            </Button>
+          <div className={styles["submit-group"]}>
+            <div className={styles["checkbox-term"]}>
+              <Checkbox
+                id="terms"
+                checked={agree}
+                onCheckedChange={() => setAgree(!agree)}
+              />
+              <label htmlFor="terms">Accept terms and conditions</label>
+            </div>
+
+            <div className={styles["submit-btn-group"]}>
+              <Button
+                type="button"
+                variant={"outline"}
+                disabled={isPending}
+                className={styles["submit-btn"]}
+                asChild
+              >
+                <Link href={`/contribution/blog/${blogId}`}>Cancel</Link>
+              </Button>
+              <Button
+                type="submit"
+                disabled={isPending || !agree}
+                className={styles["submit-btn"]}
+              >
+                {isPending && (
+                  <Icons.spinner
+                    className={styles["icon"]}
+                    aria-hidden="true"
+                  />
+                )}
+                Confirm
+              </Button>
+            </div>
           </div>
         </form>
       </Form>

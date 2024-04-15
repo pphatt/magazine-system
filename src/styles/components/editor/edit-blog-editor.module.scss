@@ -92,11 +92,34 @@
   margin-top: 1rem;
 }
 
-.submit-btn {
+.submit-group {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 
   margin-top: 1rem;
+}
+
+.checkbox-term {
+  display: flex;
+  align-items: center;
+
+  label {
+    margin-left: 8px;
+
+    font-size: .875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+  }
+}
+
+.submit-btn-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.submit-btn {
+  width: fit-content !important;
 }
 
 .icon {
