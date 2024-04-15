@@ -132,15 +132,15 @@ export default function EditBlogEditor({
       })
 
       const json = (await response.json()) as { blogId: string }
-      router.push(`/faculty/blog/${json.blogId}`)
+      router.push(`/contribution/blog/${json.blogId}`)
     },
     onError: () => {
-      toast.warning("Something went wrong.", {
+      toast.error("Something went wrong.", {
         description: "Your blog was not published. Please try again.",
       })
     },
     onSuccess: () => {
-      toast("Upload blog successfully.")
+      toast.success("Edit blog successfully.")
       router.refresh()
     },
   })
@@ -371,7 +371,7 @@ export default function EditBlogEditor({
               disabled={isPending}
               asChild
             >
-              <Link href={"/faculty"}>Cancel</Link>
+              <Link href={"/contribution"}>Cancel</Link>
             </Button>
             <Button type="submit" disabled={isPending}>
               {isPending && (

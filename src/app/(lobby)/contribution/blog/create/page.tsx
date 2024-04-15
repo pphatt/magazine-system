@@ -35,13 +35,13 @@ export default async function CreateBlogPage({
   const { academicYearId } = contributionParamsSchema.parse(searchParams)
 
   if (academicYearId === "undefined") {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   const user = (await currentUser()) as User
 
   if (user.role !== "STUDENT") {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   const faculty = (await db.faculty.findUnique({
@@ -53,11 +53,11 @@ export default async function CreateBlogPage({
   })) as AcademicYear
 
   if (isAfter(Date.now(), academicYear.closureDate)) {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   if (faculty.status === "SUSPENDED" || academicYear.status === "SUSPENDED") {
-    redirect("/faculty")
+    redirect("/contribution")
   }
 
   return (

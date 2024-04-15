@@ -51,21 +51,21 @@ export const FacultyCellAction: React.FC<CellActionProps> = ({ data }) => {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.warning("Error parsing response text", {
+            toast.error("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.warning(errorMessage)
+          toast.error(errorMessage)
           return
         }
 
         setOpen(false)
         router.refresh()
 
-        toast("Delete faculty successfully")
+        toast.success("Delete faculty successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.success("Something went wrong. Try again!")
       }
     })
   }

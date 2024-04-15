@@ -105,12 +105,12 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
       router.push(`/contribution/blog/${blogId}`)
     },
     onError: () => {
-      toast.warning("Something went wrong.", {
+      toast.error("Something went wrong.", {
         description: "Your blog was not published. Please try again.",
       })
     },
     onSuccess: () => {
-      toast("Upload blog successfully.")
+      toast.success("Upload blog successfully.")
       router.refresh()
     },
   })

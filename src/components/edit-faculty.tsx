@@ -76,20 +76,20 @@ export function EditFaculty({ faculty }: EditFacultyProps) {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.warning("Error parsing response text", {
+            toast.error("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.warning(errorMessage)
+          toast.error(errorMessage)
           return
         }
 
         router.refresh()
 
-        toast("Edit faculty successfully")
+        toast.success("Edit faculty successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }

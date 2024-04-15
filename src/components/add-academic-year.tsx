@@ -91,21 +91,21 @@ export function AddAcademicYear() {
 
             errorMessage = responseText || errorMessage
           } catch (error) {
-            toast.warning("Error parsing response text", {
+            toast.error("Error parsing response text", {
               description: String(error),
             })
           }
 
-          toast.warning(errorMessage)
+          toast.error(errorMessage)
           return
         }
 
         setOpen(false)
         router.refresh()
 
-        toast("Create new academic year successfully")
+        toast.success("Create new academic year successfully")
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }
