@@ -10,7 +10,7 @@ import type { BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { PaginationGroupList } from "@/components/pagination-group-list"
+import { PaginationMarketingCoor } from "@/components/pagination/pagination-marketing-coor"
 import { StudentSubmissionGrading } from "@/components/student-submission-grading"
 import styles from "@/styles/components/marketing-coor-blogs-list.module.scss"
 
@@ -105,7 +105,9 @@ export async function MarketingCoorBlogsList({
                   </Link>
                 </h3>
                 <p className={styles["article-description"]}>
-                  {marketingCoordinator?.name ? `Graded by: ${marketingCoordinator?.name}` : "Not graded yet"}
+                  {marketingCoordinator?.name
+                    ? `Graded by: ${marketingCoordinator?.name}`
+                    : "Not graded yet"}
                 </p>
                 <div className={styles["article-comments-wrapper"]}>
                   <Button variant={"ghost"} className={styles["comment-btn"]}>
@@ -129,9 +131,10 @@ export async function MarketingCoorBlogsList({
         )
       )}
 
-      <PaginationGroupList
+      <PaginationMarketingCoor
         page={page}
         rows={rows}
+        academicYearId={academicYearId}
         status={status}
         totalBlogs={totalBlogs}
       />

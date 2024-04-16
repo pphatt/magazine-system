@@ -53,6 +53,7 @@ export function SelectFacultyInput({ faculties }: { faculties: Faculty[] }) {
   React.useEffect(() => {
     startTransition(() => {
       const newQueryString = createQueryString({
+        page: 1,
         facultyId: debouncedFacultyId,
       })
 

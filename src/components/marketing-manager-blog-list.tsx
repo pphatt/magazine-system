@@ -11,7 +11,7 @@ import type { BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { PaginationGroupList } from "@/components/pagination-group-list"
+import { PaginationManager } from "@/components/pagination/pagination-blog-manager"
 import styles from "@/styles/components/marketing-manager-blog-list.module.scss"
 
 interface MarketingManagerBlogListProps {
@@ -128,9 +128,11 @@ export async function MarketingManagerBlogList({
         )}
       </div>
 
-      <PaginationGroupList
+      <PaginationManager
         page={page}
         rows={rows}
+        facultyId={facultyId}
+        academicYearId={academicYearId}
         status={status}
         totalBlogs={totalBlogs}
       />

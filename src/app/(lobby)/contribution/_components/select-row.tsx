@@ -53,6 +53,7 @@ export function SelectRowInput() {
   React.useEffect(() => {
     startTransition(() => {
       const newQueryString = createQueryString({
+        page: 1,
         row: debouncedRow,
       })
 

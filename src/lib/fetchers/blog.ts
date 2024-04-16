@@ -48,7 +48,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -64,7 +64,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -80,7 +80,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -95,7 +95,7 @@ export async function getBlogsWithUser({
       include: {
         author: true,
         comments: true,
-        marketingCoordinator: true
+        marketingCoordinator: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -119,6 +119,7 @@ export async function getBlogCountByStudent(academicYearId: string) {
 }
 
 export async function getBlogsWithUserByStudent({
+  query,
   pageNumber,
   rowsNumber,
   facultyId,
@@ -128,7 +129,16 @@ export async function getBlogsWithUserByStudent({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { facultyId, academicYearId, publicized: true, status: "APPROVE" },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        facultyId,
+        academicYearId,
+        publicized: true,
+        status: "APPROVE",
+      },
       include: {
         author: true,
         comments: true,
@@ -182,7 +192,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -198,7 +208,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -214,7 +224,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -229,7 +239,7 @@ export async function getRecentBlogs({
       include: {
         author: true,
         comments: true,
-        marketingCoordinator: true
+        marketingCoordinator: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -288,7 +298,7 @@ export async function getBlogsWithUserByMarketingManager({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -308,7 +318,7 @@ export async function getBlogsWithUserByMarketingManager({
         include: {
           author: true,
           comments: true,
-          marketingCoordinator: true
+          marketingCoordinator: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -323,7 +333,7 @@ export async function getBlogsWithUserByMarketingManager({
       include: {
         author: true,
         comments: true,
-        marketingCoordinator: true
+        marketingCoordinator: true,
       },
       orderBy: {
         createdAt: "desc",

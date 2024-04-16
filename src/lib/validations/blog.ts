@@ -35,6 +35,7 @@ export const getBlogsWithUserSchema = z.object({
 })
 
 export const getBlogsWithUserByStudentSchema = z.object({
+  query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
   facultyId: z.coerce.string(),

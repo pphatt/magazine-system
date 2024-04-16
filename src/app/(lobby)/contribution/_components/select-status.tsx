@@ -54,6 +54,7 @@ export function SelectStatusInput() {
   React.useEffect(() => {
     startTransition(() => {
       const newQueryString = createQueryString({
+        page: 1,
         status: debouncedStatus,
       })
 

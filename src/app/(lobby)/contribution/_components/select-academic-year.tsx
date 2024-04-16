@@ -58,6 +58,7 @@ export function SelectAcademicYearInput({
   React.useEffect(() => {
     startTransition(() => {
       const newQueryString = createQueryString({
+        page: 1,
         academicYearId: debouncedAcademicYearId,
       })
 

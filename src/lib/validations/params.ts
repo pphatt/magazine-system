@@ -9,9 +9,9 @@ export const searchParamsSchema = z.object({
 export const contributionParamsSchema = z.object({
   facultyId: z.coerce.string(),
   academicYearId: z.coerce.string(),
-  q: z.coerce.string(),
+  q: z.coerce.string().default(""),
   page: z.coerce.string().default("1"),
-  rows: z.coerce.string(),
+  row: z.coerce.string(),
   // STUDENT, MC => blog status
   status: z.coerce.string().default("ALL BLOGS"),
 })

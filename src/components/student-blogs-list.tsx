@@ -10,10 +10,11 @@ import { type BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { PaginationRows } from "@/components/pagination-rows"
+import { PaginationBlogStudent } from "@/components/pagination/pagination-blog-student"
 import styles from "@/styles/components/student-blogs-list.module.scss"
 
 interface StudentBlogsListProps {
+  query: string
   page: number
   rows: number
   facultyId: string
@@ -21,12 +22,14 @@ interface StudentBlogsListProps {
 }
 
 export async function StudentBlogsList({
+  query,
   page,
   rows,
   facultyId,
   academicYearId,
 }: StudentBlogsListProps) {
   const blogs = (await getBlogsWithUserByStudent({
+    query,
     pageNumber: page,
     rowsNumber: rows,
     facultyId,
@@ -93,7 +96,9 @@ export async function StudentBlogsList({
                   </Link>
                 </h3>
                 <p className={styles["article-description"]}>
-                  {marketingCoordinator?.name ? `Graded by: ${marketingCoordinator?.name}` : "Not graded yet"}
+                  {marketingCoordinator?.name
+                    ? `Graded by: ${marketingCoordinator?.name}`
+                    : "Not graded yet"}
                 </p>
                 <div className={styles["article-comments-wrapper"]}>
                   <Button variant={"ghost"} className={styles["comment-btn"]}>
@@ -110,7 +115,12 @@ export async function StudentBlogsList({
         )
       )}
 
-      <PaginationRows page={page} rows={rows} totalBlogs={totalBlogs} />
+      <PaginationBlogStudent
+        page={page}
+        rows={rows}
+        academicYearId={academicYearId}
+        totalBlogs={totalBlogs}
+      />
     </div>
   )
 }

@@ -30,12 +30,12 @@ interface SearchPageProps {
 }
 
 export default async function FacultyPage({ searchParams }: SearchPageProps) {
-  const { facultyId, academicYearId, status, page, rows } =
+  const { facultyId, academicYearId, status, page, row, q } =
     contributionParamsSchema.parse(searchParams)
 
   // get a search query
   const pageNumber = parserPage(page)
-  const rowsNumber = parserRows(rows, 10)
+  const rowsNumber = parserRows(row, 10)
   const parserStatus = sortByStatus.some(({ value }) => value === status)
     ? status
     : "PENDING"
@@ -104,6 +104,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
         <>
           {user?.role === "STUDENT" && (
             <StudentBlogsList
+              query={q}
               page={pageNumber}
               rows={rowsNumber}
               facultyId={user.facultyId ?? ""}

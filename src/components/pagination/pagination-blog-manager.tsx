@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 import { generatePagination } from "@/lib/utils"
 import {
@@ -15,52 +15,30 @@ import {
 } from "@/components/ui/pagination"
 import styles from "@/styles/components/pagination-group-list.module.scss"
 
-interface PaginationGroupListProps {
+interface PaginationManagerProps {
   page: number
   rows: number
+  facultyId: string
+  academicYearId: string
   status: string
   totalBlogs: number
 }
 
-export function PaginationGroupList({
+export function PaginationManager({
   page,
   rows,
+  facultyId,
+  academicYearId,
   status,
   totalBlogs,
-}: PaginationGroupListProps) {
+}: PaginationManagerProps) {
   const canNextPage = totalBlogs > rows * page
   const canPrevPage = page > 1
   const totalPages = Math.ceil(totalBlogs / rows)
 
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   const paginationArr = generatePagination(page, totalPages)
-
-  const createQueryString = React.useCallback(
-    (params: Record<string, string | number | null>) => {
-      const newSearchParams = new URLSearchParams(searchParams?.toString())
-
-      for (const [key, value] of Object.entries(params)) {
-        if (value === null) {
-          newSearchParams.delete(key)
-        } else {
-          newSearchParams.set(key, String(value))
-        }
-      }
-
-      return newSearchParams.toString()
-    },
-    [searchParams]
-  )
-
-  const queryURL = React.useCallback(() => {
-    return createQueryString({
-      page: null,
-      rows,
-      status: status.toLowerCase(),
-    })
-  }, [createQueryString, rows, status])
 
   return (
     <div className={styles["pagination-group-list"]}>
@@ -71,7 +49,7 @@ export function PaginationGroupList({
               aria-disabled={!canPrevPage}
               tabIndex={!canPrevPage ? -1 : undefined}
               className={!canPrevPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page - 1}&${queryURL()}`}
+              href={`${pathname}?page=${page - 1}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
             />
           </PaginationItem>
           {paginationArr[0] && paginationArr[0] < 1 && (
@@ -82,7 +60,7 @@ export function PaginationGroupList({
           {paginationArr.map((value, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`${pathname}?page=${value}&${queryURL()}`}
+                href={`${pathname}?page=${value}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
                 isActive={value === page}
               >
                 {value}
@@ -100,7 +78,7 @@ export function PaginationGroupList({
               aria-disabled={!canNextPage}
               tabIndex={!canNextPage ? -1 : undefined}
               className={!canNextPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page + 1}&${queryURL()}`}
+              href={`${pathname}?page=${page + 1}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
             />
           </PaginationItem>
         </PaginationContent>
