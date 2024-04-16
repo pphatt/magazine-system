@@ -11,7 +11,8 @@ import { v4 } from "uuid"
 import * as z from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import generateSetPasswordToken from "@/lib/token"
+import generateSetPasswordToken, {getSetPasswordTokenByToken} from "@/lib/token"
+import { setPasswordSchema } from "@/lib/validations/auth"
 import {
   addUserSchema,
   changeUserPasswordSchema,
@@ -20,6 +21,7 @@ import {
   type editUserSchema,
 } from "@/lib/validations/user"
 import { SetPasswordEmail } from "@/components/emails/set-password-email"
+import {getUserByEmail} from "@/lib/fetchers/user";
 
 export const createUser = async (
   values: z.infer<typeof addUserSchema>
@@ -66,7 +68,7 @@ export const createUser = async (
 
     const { token } = await generateSetPasswordToken(email)
 
-    const html = render(SetPasswordEmail({ email, token: token }))
+    const html = render(SetPasswordEmail({ email, token }))
 
     await transporter.sendMail({
       from: "Do not reply to this email <magazine@greenwich.magazine.edu>",
@@ -282,4 +284,46 @@ export const editUserProfile = async (formData: FormData) => {
       error: "Could not update user profile at this time. Please try later",
     }
   }
+}
+
+export const setPassword = async (
+  values: z.infer<typeof setPasswordSchema>,
+  token?: string | null
+) => {
+  if (!token) {
+    return { error: "Missing token!" }
+  }
+
+  const validatedFields = setPasswordSchema.safeParse(values)
+
+  if (!validatedFields.success) {
+    return { error: "Invalid fields!" }
+  }
+
+  const { password } = validatedFields.data
+
+  const existingToken = await getSetPasswordTokenByToken(token)
+
+  if (!existingToken) {
+    return { error: "Invalid token!" }
+  }
+
+  const existingUser = await getUserByEmail(existingToken.email)
+
+  if (!existingUser) {
+    return { error: "Email does not exist!" }
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  await db.user.update({
+    where: { id: existingUser.id },
+    data: { password: hashedPassword },
+  })
+
+  await db.setPasswordToken.delete({
+    where: { id: existingToken.id },
+  })
+
+  return { success: "Password updated!" }
 }

@@ -10,7 +10,7 @@ export const publicRoutes = ["/", "/blogs"]
  * These routes will redirect logged-in users to lobby.
  * @type {string[]}
  */
-export const authRoutes = ["/signin", "/signup"]
+export const authRoutes = ["/signin", "/signup", "/set-password"]
 
 /**
  * The prefix for API authentication routes.

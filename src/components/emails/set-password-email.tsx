@@ -19,7 +19,7 @@ interface SetPasswordEmailProps {
 }
 
 export function SetPasswordEmail({ email, token }: SetPasswordEmailProps) {
-  const setPasswordLink = `${domain}/auth/set-password?token=${token}`
+  const setPasswordLink = `${domain}/set-password?token=${token}`
 
   return (
     <Html>

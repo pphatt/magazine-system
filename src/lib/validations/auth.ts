@@ -32,3 +32,13 @@ export const changeUserNameSchema = z.object({
       message: "Please use 32 characters at maximum.",
     }),
 })
+
+export const setPasswordSchema = z
+  .object({
+    password: authSchema.shape.password,
+    confirmPassword: authSchema.shape.password,
+  })
+  .refine(({ password, confirmPassword }) => password === confirmPassword, {
+    message: "Password do not match",
+    path: ["confirmPassword"],
+  })

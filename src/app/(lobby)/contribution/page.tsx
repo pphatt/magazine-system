@@ -38,7 +38,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   const rowsNumber = parserRows(rows, 10)
   const parserStatus = sortByStatus.some(({ value }) => value === status)
     ? status
-    : "ALL BLOGS"
+    : "PENDING"
 
   // get user info
   const user = (await currentUser()) as User

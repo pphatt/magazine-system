@@ -5,23 +5,33 @@ import { getSetPasswordTokenByEmail } from "@/lib/fetchers/set-password"
 
 export default async function generateSetPasswordToken(email: string) {
   const token = uuidv4()
-  const expires = new Date(new Date().getTime() + 3600 * 1000)
 
   const existingToken = await getSetPasswordTokenByEmail(email)
 
   if (existingToken) {
-    await db.passwordResetToken.delete({
+    await db.setPasswordToken.delete({
       where: { id: existingToken.id },
     })
   }
 
-  const passwordResetToken = await db.passwordResetToken.create({
+  const setPasswordToken = await db.setPasswordToken.create({
     data: {
       email,
       token,
-      expires,
     },
   })
 
-  return passwordResetToken
+  return setPasswordToken
 }
+
+export const getSetPasswordTokenByToken = async (token: string) => {
+  try {
+    const setPasswordToken = await db.setPasswordToken.findUnique({
+      where: { token }
+    });
+
+    return setPasswordToken;
+  } catch {
+    return null;
+  }
+};
