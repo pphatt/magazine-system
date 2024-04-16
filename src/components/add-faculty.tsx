@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { addFaculty } from "@/lib/actions/faculty"
 import { addFacultySchema } from "@/lib/validations/faculty"
 import { Button } from "@/components/ui/button"
 import {
@@ -50,35 +51,16 @@ export function AddFaculty() {
 
     startTransition(async () => {
       try {
-        const req = await fetch("/api/faculty/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name }),
-        })
+        const req = await addFaculty({ name })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Create new faculty successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Create new faculty successfully")
       } catch (e) {
         toast.success("Something went wrong. Try again!")
       }

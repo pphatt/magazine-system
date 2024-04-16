@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { editFaculty } from "@/lib/actions/faculty"
 import { type FacultyWithUser } from "@/lib/prisma"
 import { editFacultySchema } from "@/lib/validations/faculty"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -60,34 +61,15 @@ export function EditFaculty({ faculty }: EditFacultyProps) {
 
     startTransition(async () => {
       try {
-        const req = await fetch("/api/faculty/edit", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ facultyId: faculty.id, name, status }),
-        })
+        const req = await editFaculty({ facultyId: faculty.id, name, status })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Edit faculty successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        router.refresh()
-
-        toast.success("Edit faculty successfully")
       } catch (e) {
         toast.error("Something went wrong. Try again!")
       }

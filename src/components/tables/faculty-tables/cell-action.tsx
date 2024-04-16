@@ -8,6 +8,7 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { deleteFaculty } from "@/lib/actions/faculty"
 import { type deleteFacultySchema } from "@/lib/validations/faculty"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,35 +36,16 @@ export const FacultyCellAction: React.FC<CellActionProps> = ({ data }) => {
   const onConfirm = () => {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/faculty/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ facultyId: data.id }),
-        })
+        const req = await deleteFaculty({ facultyId: data.id })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
+        if ("success" in req) {
+          setOpen(false)
+          router.refresh()
 
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.error("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.error(errorMessage)
-          return
+          toast.success("Delete faculty successfully")
+        } else {
+          toast.error(req.error)
         }
-
-        setOpen(false)
-        router.refresh()
-
-        toast.success("Delete faculty successfully")
       } catch (e) {
         toast.success("Something went wrong. Try again!")
       }

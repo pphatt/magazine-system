@@ -15,8 +15,6 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { PaginationGroupList } from "@/components/pagination-group-list"
 import styles from "@/styles/(settings)/recent-blogs/page.module.scss"
-import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
-import { SelectStatusInput } from "@/app/(lobby)/contribution/_components/select-status"
 
 interface SearchPageProps {
   searchParams: SearchParams
