@@ -66,6 +66,8 @@ export default async function BlogPage({
 
   const content = blog.content as { blocks: Block[] }
 
+  const showBlogStatus = (user.id === blog.authorId || (user.role !== "STUDENT" && user.role !== "GUEST"))
+
   return (
     <div className={styles["blog-wrapper"]}>
       <article className={styles["blog-content-wrapper"]}>
@@ -127,6 +129,11 @@ export default async function BlogPage({
               <div className={styles["extra-layout"]}>
                 Academic Year: {blog.academicYear.name ?? "-"}
               </div>
+              {showBlogStatus && (
+                <div className={styles["blog-status"]} data-status={blog.status.toLowerCase()}>
+                  {blog.status}
+                </div>
+              )}
             </div>
           </div>
         </header>

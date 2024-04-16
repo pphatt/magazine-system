@@ -48,6 +48,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -63,6 +64,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -78,6 +80,7 @@ export async function getBlogsWithUser({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -92,6 +95,7 @@ export async function getBlogsWithUser({
       include: {
         author: true,
         comments: true,
+        marketingCoordinator: true
       },
       orderBy: {
         createdAt: "asc",
@@ -128,6 +132,7 @@ export async function getBlogsWithUserByStudent({
       include: {
         author: true,
         comments: true,
+        marketingCoordinator: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -177,6 +182,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -192,6 +198,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -207,6 +214,7 @@ export async function getRecentBlogs({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "asc",
@@ -221,6 +229,7 @@ export async function getRecentBlogs({
       include: {
         author: true,
         comments: true,
+        marketingCoordinator: true
       },
       orderBy: {
         createdAt: "asc",
@@ -279,6 +288,7 @@ export async function getBlogsWithUserByMarketingManager({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "desc",
@@ -298,6 +308,7 @@ export async function getBlogsWithUserByMarketingManager({
         include: {
           author: true,
           comments: true,
+          marketingCoordinator: true
         },
         orderBy: {
           createdAt: "desc",
@@ -312,6 +323,7 @@ export async function getBlogsWithUserByMarketingManager({
       include: {
         author: true,
         comments: true,
+        marketingCoordinator: true
       },
       orderBy: {
         createdAt: "desc",

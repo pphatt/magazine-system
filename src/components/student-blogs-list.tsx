@@ -42,7 +42,18 @@ export async function StudentBlogsList({
   return (
     <div>
       {blogs.map(
-        ({ id, title, author, createdAt, updatedAt, comments }, index) => (
+        (
+          {
+            id,
+            title,
+            author,
+            createdAt,
+            updatedAt,
+            comments,
+            marketingCoordinator,
+          },
+          index
+        ) => (
           <article className={styles["article-wrapper"]} key={index}>
             <div className={styles["article-container"]}>
               <div className={styles["article-header-wrapper"]}>
@@ -81,7 +92,9 @@ export async function StudentBlogsList({
                     {title}
                   </Link>
                 </h3>
-                <p className={styles["article-description"]}>-</p>
+                <p className={styles["article-description"]}>
+                  {marketingCoordinator?.name ? `Graded by: ${marketingCoordinator?.name}` : "Not graded yet"}
+                </p>
                 <div className={styles["article-comments-wrapper"]}>
                   <Button variant={"ghost"} className={styles["comment-btn"]}>
                     <Icons.messageCircle />

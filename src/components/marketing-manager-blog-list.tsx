@@ -52,7 +52,16 @@ export async function MarketingManagerBlogList({
       <div>
         {blogs.map(
           (
-            { id, title, author, createdAt, updatedAt, status, comments },
+            {
+              id,
+              title,
+              author,
+              createdAt,
+              updatedAt,
+              status,
+              comments,
+              marketingCoordinator,
+            },
             index
           ) => (
             <article className={styles["article-wrapper"]} key={index}>
@@ -98,7 +107,11 @@ export async function MarketingManagerBlogList({
                       {title}
                     </Link>
                   </h3>
-                  <p className={styles["article-description"]}>-</p>
+                  <p className={styles["article-description"]}>
+                    {marketingCoordinator?.name
+                      ? `Graded by: ${marketingCoordinator?.name}`
+                      : "Not graded yet"}
+                  </p>
                   <div className={styles["article-comments-wrapper"]}>
                     <Button variant={"ghost"} className={styles["comment-btn"]}>
                       <Icons.messageCircle />

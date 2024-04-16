@@ -17,7 +17,6 @@ import {
   type uploadEditBlogSchema,
 } from "@/lib/validations/blog"
 import { commentSchema } from "@/lib/validations/comment"
-import type { CommentInputs } from "@/components/comments/comments-input"
 import { GradingBlogEmail } from "@/components/emails/grading-blog-email"
 import { GradingBlogStudentNotifyEmail } from "@/components/emails/grading-blog-notify-student-email"
 import { SubmitBlogEmail } from "@/components/emails/submit-blog-email"

@@ -168,6 +168,20 @@
   }
 }
 
+.blog-status {
+  @extend .extra-layout;
+
+  &[data-status="approve"] {
+    color: hsl(180.54, 100%, 21.96%);
+    background-color: hsl(180, 38.78%, 90.39%);
+  }
+
+  &[data-status="reject"] {
+    color: hsl(0, 70%, 40%);
+    background-color: hsl(0, 100%, 97%);
+  }
+}
+
 .content-wrapper {
   padding: 2rem 4rem;
 }
