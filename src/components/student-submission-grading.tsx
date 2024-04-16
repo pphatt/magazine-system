@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
+import type { User } from "next-auth"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { gradingBlog } from "@/lib/actions/blog"
 import type { blogGradingSchema } from "@/lib/validations/blog"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -13,6 +15,7 @@ import { RejectGradingAlertModal } from "@/components/modals/reject-grading-blog
 import styles from "@/styles/components/student-submission-grading.module.scss"
 
 interface StudentSubmissionGradingProps {
+  user: User
   blogId: string
   status: string
 }
@@ -20,6 +23,7 @@ interface StudentSubmissionGradingProps {
 export type BlogGradingFormInputs = z.infer<typeof blogGradingSchema>
 
 export function StudentSubmissionGrading({
+  user,
   blogId,
   status,
 }: StudentSubmissionGradingProps) {
@@ -37,35 +41,20 @@ export function StudentSubmissionGrading({
 
     startTransition(async () => {
       try {
-        const payload = { blogId, status: "APPROVE" }
-
-        const req = await fetch("/api/blog/grading", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        })
-
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
-
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.warning("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.warning(errorMessage)
-          return
+        const payload = {
+          blogId,
+          status: "APPROVE",
+          marketingCoordinatorId: user.id ?? "",
         }
 
-        router.refresh()
-        toast("Graded successfully.")
+        const req = await gradingBlog(payload)
+
+        if ("success" in req) {
+          router.refresh()
+          toast.success("Graded successfully.")
+        } else {
+          toast.error(req.error)
+        }
       } catch (e) {
         toast("Something went wrong. Try again!")
       }
@@ -80,36 +69,20 @@ export function StudentSubmissionGrading({
 
     startTransition(async () => {
       try {
-        const payload = { blogId, status: "REJECT" }
-
-        const req = await fetch("/api/blog/grading", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        })
-
-        if (!req.ok) {
-          let errorMessage = "An error occurred"
-
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.warning("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.warning(errorMessage)
-          return
+        const payload = {
+          blogId,
+          status: "REJECT",
+          marketingCoordinatorId: user.id ?? "",
         }
 
-        router.refresh()
+        const req = await gradingBlog(payload)
 
-        toast("Graded successfully.")
+        if ("success" in req) {
+          router.refresh()
+          toast.success("Graded successfully.")
+        } else {
+          toast.error(req.error)
+        }
       } catch (e) {
         toast("Something went wrong. Try again!")
       }

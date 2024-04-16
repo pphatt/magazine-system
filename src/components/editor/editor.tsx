@@ -45,6 +45,7 @@ import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
 import { type FilePondFile } from "filepond"
 
+import { createBlog } from "@/lib/actions/blog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
 
@@ -96,13 +97,13 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
         formData.set("image", image)
       }
 
-      const response = await fetch("/api/blog/create", {
-        method: "POST",
-        body: formData,
-      })
+      const req = await createBlog(formData)
 
-      const { blogId } = (await response.json()) as { blogId: string }
-      router.push(`/contribution/blog/${blogId}`)
+      if ("success" in req) {
+        router.push(`/contribution/blog/${req.success?.blogId}`)
+      } else {
+        toast.error(req.error)
+      }
     },
     onError: () => {
       toast.error("Something went wrong.", {
@@ -319,6 +320,7 @@ export default function Editor({ academicYearId, facultyId }: EditorProps) {
                 id="terms"
                 checked={agree}
                 onCheckedChange={() => setAgree(!agree)}
+                disabled={isPending}
               />
               <label htmlFor="terms">Accept terms and conditions</label>
             </div>

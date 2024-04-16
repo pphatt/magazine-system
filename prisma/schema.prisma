@@ -60,9 +60,10 @@ model User {
 
   academicYearCreated AcademicYear[] @relation("AcademicYearCreatedBy")
 
-  accounts Account[]
-  Blogs    Blogs[]
-  Comment  Comment[]
+  accounts                  Account[]
+  Comment                   Comment[]
+  authorBlogs               Blogs[]   @relation("Author")
+  marketingCoordinatorBlogs Blogs[]   @relation("Marketing Coordinator")
 }
 
 model Account {
@@ -141,6 +142,7 @@ model Blogs {
   backgroundImage String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
+  gradedAt        DateTime?
   publicized      Boolean    @default(false)
   status          StatusEnum @default(PENDING)
 
@@ -153,7 +155,10 @@ model Blogs {
   academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
 
   authorId String
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation("Author", fields: [authorId], references: [id])
+
+  marketingCoordinatorId String?
+  marketingCoordinator   User?   @relation("Marketing Coordinator", fields: [marketingCoordinatorId], references: [id])
 
   comments Comment[]
 }
@@ -162,10 +167,12 @@ model Comment {
   id        String   @id @default(cuid())
   text      String
   createdAt DateTime @default(now())
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-  blog      Blogs    @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId    String
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  blog   Blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId String
 
   replyToId String?
   replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)

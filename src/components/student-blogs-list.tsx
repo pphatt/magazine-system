@@ -11,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { PaginationRows } from "@/components/pagination-rows"
-import { StudentSubmissionGrading } from "@/components/student-submission-grading"
 import styles from "@/styles/components/student-blogs-list.module.scss"
 
 interface StudentBlogsListProps {
@@ -44,7 +43,7 @@ export async function StudentBlogsList({
     <div>
       {blogs.map(
         (
-          { id, title, author, createdAt, updatedAt, status, comments },
+          { id, title, author, createdAt, updatedAt, comments },
           index
         ) => (
           <article className={styles["article-wrapper"]} key={index}>
@@ -96,9 +95,6 @@ export async function StudentBlogsList({
                   </Button>
                 </div>
               </div>
-              {status.toLowerCase() === "pending" && (
-                <StudentSubmissionGrading blogId={id} status={status} />
-              )}
             </div>
           </article>
         )

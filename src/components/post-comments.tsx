@@ -15,6 +15,7 @@ import { MessageSquare } from "lucide-react"
 import type { User } from "next-auth"
 import { toast } from "sonner"
 
+import { commentOnBlog } from "@/lib/actions/blog"
 import { formatTimeToNow } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -64,38 +65,19 @@ export function PostComments({ comment, blogId }: PostCommentsProps) {
   function onSubmit(callback: () => void) {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/blog/comment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            blogId,
-            replyToId: comment.replyToId ?? comment.id,
-            text: editorState,
-          }),
+        const req = await commentOnBlog({
+          blogId,
+          replyToId: comment.replyToId ?? comment.id,
+          text: editorState,
         })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
-
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.warning("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.warning(errorMessage)
-          return
+        if ("success" in req) {
+          router.refresh()
+          setIsReplying(false)
+          callback()
+        } else {
+          toast.error(req.error)
         }
-
-        router.refresh()
-        setIsReplying(false)
-        callback()
       } catch (e) {
         toast("Something went wrong. Try again!")
       }

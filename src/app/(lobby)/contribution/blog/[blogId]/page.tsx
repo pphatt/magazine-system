@@ -108,6 +108,9 @@ export default async function BlogPage({
                     <Button asChild variant={"ghost"}>
                       <Link href={`/contribution/blog/${blogId}/edit`}>Edit</Link>
                     </Button>
+                    <Button asChild variant={"ghost"}>
+                      <Link href={`/contribution/blog/${blogId}/edit`}>Delete</Link>
+                    </Button>
                   </div>
                 )}
               </div>
@@ -158,7 +161,7 @@ export default async function BlogPage({
       {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
         <div className={styles["blog-detail"]}>
           {blog.status.toLowerCase() === "pending" && (
-            <BlogSubmissionGrading blogId={blog.id} status={blog.status} />
+            <BlogSubmissionGrading user={user} blogId={blog.id} status={blog.status} />
           )}
         </div>
       )}

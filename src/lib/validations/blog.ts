@@ -59,6 +59,7 @@ export const getRecentBlogsSchema = z.object({
 export const blogGradingSchema = z.object({
   blogId: z.coerce.string(),
   status: z.coerce.string(),
+  marketingCoordinatorId: z.coerce.string(),
 })
 
 export const uploadEditBlogSchema = z.object({

@@ -50,6 +50,7 @@ import type { FilePondFile, FilePondInitialFile } from "filepond"
 
 import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
+import {editBlog} from "@/lib/actions/blog";
 
 // Register the plugins
 registerPlugin(
@@ -129,13 +130,11 @@ export default function EditBlogEditor({
         formData.set("image", image)
       }
 
-      const response = await fetch("/api/blog/edit", {
-        method: "POST",
-        body: formData,
-      })
+      const req = await editBlog(formData)
 
-      const json = (await response.json()) as { blogId: string }
-      router.push(`/contribution/blog/${json.blogId}`)
+      if ("success" in req) {
+        router.push(`/contribution/blog/${req.success?.blogId}`)
+      }
     },
     onError: () => {
       toast.error("Something went wrong.", {
@@ -373,6 +372,7 @@ export default function EditBlogEditor({
                 id="terms"
                 checked={agree}
                 onCheckedChange={() => setAgree(!agree)}
+                disabled={isPending}
               />
               <label htmlFor="terms">Accept terms and conditions</label>
             </div>
@@ -387,6 +387,7 @@ export default function EditBlogEditor({
               >
                 <Link href={`/contribution/blog/${blogId}`}>Cancel</Link>
               </Button>
+
               <Button
                 type="submit"
                 disabled={isPending || !agree}

@@ -12,6 +12,7 @@ import { type EditorState } from "lexical"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { commentOnBlog } from "@/lib/actions/blog"
 import type { commentSchema } from "@/lib/validations/comment"
 import { OnChangePlugin } from "@/components/comments/plugins/onchange-plugin"
 import { SubmitPlugin } from "@/components/comments/plugins/submit-plugin"
@@ -67,35 +68,20 @@ export default function CommentsInput({
   function onSubmit(callback: () => void) {
     startTransition(async () => {
       try {
-        const req = await fetch("/api/blog/comment", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ blogId, replyToId, text: editorState }),
+        const req = await commentOnBlog({
+          blogId,
+          replyToId,
+          text: editorState,
         })
 
-        if (!req.ok) {
-          let errorMessage = "Some went wrong try again later."
-
-          try {
-            const responseText = await req.text()
-
-            errorMessage = responseText || errorMessage
-          } catch (error) {
-            toast.warning("Error parsing response text", {
-              description: String(error),
-            })
-          }
-
-          toast.warning(errorMessage)
-          return
+        if ("success" in req) {
+          router.refresh()
+          callback()
+        } else {
+          toast.error(req.error)
         }
-
-        router.refresh()
-        callback()
       } catch (e) {
-        toast("Something went wrong. Try again!")
+        toast.error("Something went wrong. Try again!")
       }
     })
   }

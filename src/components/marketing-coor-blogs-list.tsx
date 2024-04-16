@@ -2,7 +2,9 @@ import * as React from "react"
 import Link from "next/link"
 import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
+import type { User } from "next-auth"
 
+import { currentUser } from "@/lib/auth/auth"
 import { getBlogCount, getBlogsWithUser } from "@/lib/fetchers/blog"
 import type { BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -36,6 +38,8 @@ export async function MarketingCoorBlogsList({
   })) as BlogWithUser[]
 
   const totalBlogs = (await getBlogCount(academicYearId, status)) as number
+
+  const user = (await currentUser()) as User
 
   if (!blogs?.length) {
     return <div className={styles["no-results"]}>No results</div>
@@ -103,7 +107,11 @@ export async function MarketingCoorBlogsList({
                 </div>
               </div>
               {status.toLowerCase() === "pending" && (
-                <StudentSubmissionGrading blogId={id} status={status} />
+                <StudentSubmissionGrading
+                  user={user}
+                  blogId={id}
+                  status={status}
+                />
               )}
             </div>
           </article>
