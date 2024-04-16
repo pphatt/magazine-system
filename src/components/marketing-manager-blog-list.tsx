@@ -1,5 +1,6 @@
 import * as React from "react"
 import Link from "next/link"
+import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
 
@@ -38,8 +39,8 @@ export async function MarketingManagerBlogList({
   })) as BlogWithUser[]
 
   const totalBlogs = (await getBlogCountByMarketingManager(
-    academicYearId,
     facultyId,
+    academicYearId,
     status
   )) as number
 

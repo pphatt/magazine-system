@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
