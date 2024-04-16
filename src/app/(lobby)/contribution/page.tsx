@@ -127,6 +127,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
               rows={rowsNumber}
               status={parserStatus.toLowerCase() as StatusEnum}
               academicYearId={academicYear?.id ?? ""}
+              facultyId={faculty?.id ?? ""}
             />
           )}
         </>

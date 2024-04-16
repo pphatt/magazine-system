@@ -19,6 +19,7 @@ interface MarketingManagerBlogListProps {
   rows: number
   status: StatusEnum
   academicYearId: string
+  facultyId: string
 }
 
 export async function MarketingManagerBlogList({
@@ -26,16 +27,19 @@ export async function MarketingManagerBlogList({
   rows,
   status,
   academicYearId,
+  facultyId,
 }: MarketingManagerBlogListProps) {
   const blogs = (await getBlogsWithUserByMarketingManager({
     pageNumber: page,
     rowsNumber: rows,
     status,
     academicYearId,
+    facultyId,
   })) as BlogWithUser[]
 
   const totalBlogs = (await getBlogCountByMarketingManager(
     academicYearId,
+    facultyId,
     status
   )) as number
 

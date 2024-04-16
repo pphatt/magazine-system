@@ -233,24 +233,29 @@ export async function getRecentBlogs({
 }
 
 export async function getBlogCountByMarketingManager(
+  facultyId: string,
   academicYearId: string,
   status: string
 ) {
   try {
     if (status === "all blogs") {
       return await db.blogs.count({
-        where: { academicYearId },
+        where: { academicYearId, facultyId },
       })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
-        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
+        where: {
+          academicYearId,
+          facultyId,
+          status: status.toUpperCase() as StatusEnum,
+        },
       })
     }
 
     return await db.blogs.count({
-      where: { academicYearId },
+      where: { academicYearId, facultyId },
     })
   } catch (err) {
     console.log(err)
@@ -263,13 +268,14 @@ export async function getBlogsWithUserByMarketingManager({
   rowsNumber,
   status,
   academicYearId,
+  facultyId,
 }: z.infer<typeof getBlogsWithUserByMarketingManagerSchema>) {
   try {
     if (status === "all blogs") {
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { academicYearId },
+        where: { academicYearId, facultyId },
         include: {
           author: true,
           comments: true,
@@ -284,7 +290,11 @@ export async function getBlogsWithUserByMarketingManager({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
+        where: {
+          academicYearId,
+          facultyId,
+          status: status.toUpperCase() as StatusEnum,
+        },
         include: {
           author: true,
           comments: true,
@@ -298,7 +308,7 @@ export async function getBlogsWithUserByMarketingManager({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { academicYearId },
+      where: { academicYearId, facultyId },
       include: {
         author: true,
         comments: true,

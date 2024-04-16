@@ -46,6 +46,7 @@ export const getBlogsWithUserByMarketingManagerSchema = z.object({
   rowsNumber: z.number().default(50),
   status: z.coerce.string(),
   academicYearId: z.coerce.string(),
+  facultyId: z.coerce.string(),
 })
 
 export const getRecentBlogsSchema = z.object({
