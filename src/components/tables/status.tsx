@@ -7,5 +7,9 @@ interface StatusColumnProps {
 }
 
 export function StatusColumn({ status }: StatusColumnProps) {
-  return <div className={styles["data-status"]} data-status={status}>{status.toLowerCase()}</div>
+  return (
+    <div className={styles["data-status"]} data-status={status}>
+      {status.toLowerCase()}
+    </div>
+  )
 }

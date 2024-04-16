@@ -70,10 +70,7 @@ export function SelectRowInput() {
   return (
     <Select defaultValue={rowParams} onValueChange={(value) => setRow(value)}>
       <SelectTrigger className={styles["select-trigger"]}>
-        <SelectValue
-          placeholder={title ?? "Select row"}
-          defaultValue={row}
-        />
+        <SelectValue placeholder={title ?? "Select row"} defaultValue={row} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

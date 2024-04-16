@@ -27,11 +27,11 @@ export default async function generateSetPasswordToken(email: string) {
 export const getSetPasswordTokenByToken = async (token: string) => {
   try {
     const setPasswordToken = await db.setPasswordToken.findUnique({
-      where: { token }
-    });
+      where: { token },
+    })
 
-    return setPasswordToken;
+    return setPasswordToken
   } catch {
-    return null;
+    return null
   }
-};
+}

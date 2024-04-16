@@ -48,9 +48,9 @@ import type { Block } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import type { FilePondFile, FilePondInitialFile } from "filepond"
 
+import { editBlog } from "@/lib/actions/blog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
-import {editBlog} from "@/lib/actions/blog";
 
 // Register the plugins
 registerPlugin(

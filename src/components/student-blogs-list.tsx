@@ -42,10 +42,7 @@ export async function StudentBlogsList({
   return (
     <div>
       {blogs.map(
-        (
-          { id, title, author, createdAt, updatedAt, comments },
-          index
-        ) => (
+        ({ id, title, author, createdAt, updatedAt, comments }, index) => (
           <article className={styles["article-wrapper"]} key={index}>
             <div className={styles["article-container"]}>
               <div className={styles["article-header-wrapper"]}>

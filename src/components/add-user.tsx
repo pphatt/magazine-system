@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
 
+import { createUser } from "@/lib/actions/user"
 import { addUserSchema } from "@/lib/validations/user"
 import { Button } from "@/components/ui/button"
 import {
@@ -37,7 +38,6 @@ import {
 } from "@/components/ui/select"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/add-user.module.scss"
-import {createUser} from "@/lib/actions/user";
 
 export type AddUserInputs = z.infer<typeof addUserSchema>
 
@@ -88,7 +88,7 @@ export function AddUser({ faculty }: AddUserProps) {
       try {
         const req = await createUser(payload)
 
-        if ('success' in req) {
+        if ("success" in req) {
           setOpen(false)
           router.refresh()
 

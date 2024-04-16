@@ -122,27 +122,31 @@ const formatDistanceLocale = {
 }
 
 interface FormatDistanceOptions {
-  addSuffix?: boolean;
-  comparison?: number;
+  addSuffix?: boolean
+  comparison?: number
 }
 
-function formatDistance(token: string, count: number, options?: FormatDistanceOptions): string {
-  options = options || {};
+function formatDistance(
+  token: string,
+  count: number,
+  options?: FormatDistanceOptions
+): string {
+  options = options || {}
 
   const result = formatDistanceLocale[
     token as keyof typeof formatDistanceLocale
-    ].replace('{{count}}', count.toString());
+  ].replace("{{count}}", count.toString())
 
   if (options.addSuffix) {
     if (options.comparison && options.comparison > 0) {
-      return 'in ' + result;
+      return "in " + result
     } else {
-      if (result === 'just now') return result;
-      return result + ' ago';
+      if (result === "just now") return result
+      return result + " ago"
     }
   }
 
-  return result;
+  return result
 }
 
 export function formatTimeToNow(date: Date): string {

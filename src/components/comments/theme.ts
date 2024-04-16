@@ -27,12 +27,12 @@ export default {
   rtl: styles["rtl"],
   text: {
     bold: styles["editor-text-bold"],
-    code: styles['editor-text-code'],
-    hashtag: styles['editor-text-hashtag'],
+    code: styles["editor-text-code"],
+    hashtag: styles["editor-text-hashtag"],
     italic: styles["editor-text-italic"],
     overflowed: styles["editor-text-overflowed"],
     strikethrough: styles["editor-text-strikethrough"],
     underline: styles["editor-text-underline"],
-    underlineStrikethrough: styles['editor-text-underlineStrikethrough'],
+    underlineStrikethrough: styles["editor-text-underlineStrikethrough"],
   },
 }

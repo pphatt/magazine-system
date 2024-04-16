@@ -7,6 +7,7 @@ import { type User } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 
+import { deleteUser } from "@/lib/actions/user"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAlertModal } from "@/components/modals/user-alert-modal"
 import styles from "@/styles/components/tables/user-tables/cell-action.module.scss"
-import {deleteUser} from "@/lib/actions/user";
 
 interface CellActionProps {
   data: User

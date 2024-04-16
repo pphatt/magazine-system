@@ -41,7 +41,12 @@ export const AcceptGradingAlertModal: React.FC<AlertModalProps> = ({
         <Button disabled={loading} variant="outline" onClick={onClose}>
           Cancel
         </Button>
-        <Button disabled={loading} variant="custom" onClick={onConfirm} className={styles["accept"]}>
+        <Button
+          disabled={loading}
+          variant="custom"
+          onClick={onConfirm}
+          className={styles["accept"]}
+        >
           {loading && (
             <Icons.spinner className={styles["icon"]} aria-hidden="true" />
           )}

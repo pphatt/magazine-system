@@ -7,6 +7,7 @@ import { type AcademicYear } from "@prisma/client"
 import { Edit, MoreHorizontal, Trash } from "lucide-react"
 import { toast } from "sonner"
 
+import { deleteAcademicYear } from "@/lib/actions/academic-year"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { AcademicYearAlertModal } from "@/components/modals/academic-year-alert-modal"
 import styles from "@/styles/components/tables/academic-year-tables/cell-action.module.scss"
-import {deleteAcademicYear} from "@/lib/actions/academic-year";
 
 interface CellActionProps {
   data: AcademicYear

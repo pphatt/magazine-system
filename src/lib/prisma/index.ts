@@ -13,7 +13,7 @@ export type AcademicYearWithUser = Prisma.AcademicYearGetPayload<{
 }>
 
 export type BlogWithUser = Prisma.BlogsGetPayload<{
-  include: { author: true, comments: true }
+  include: { author: true; comments: true }
 }>
 
 export type BlogWithInclude = Prisma.BlogsGetPayload<{

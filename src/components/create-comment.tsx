@@ -15,7 +15,7 @@ interface CreateCommentProps {
   blogId: string
 }
 
-export async function CreateComment({blogId}: CreateCommentProps) {
+export async function CreateComment({ blogId }: CreateCommentProps) {
   const user = (await currentUser()) as User
 
   return (

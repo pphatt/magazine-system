@@ -6,7 +6,7 @@ import { format } from "date-fns"
 import { type AcademicYearWithUser } from "@/lib/prisma"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AcademicYearCellAction } from "@/components/tables/academic-year-tables/cell-action"
-import {StatusColumn} from "@/components/tables/status";
+import { StatusColumn } from "@/components/tables/status"
 
 export const columns: ColumnDef<AcademicYearWithUser>[] = [
   {

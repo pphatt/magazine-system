@@ -11,7 +11,10 @@ import { v4 } from "uuid"
 import * as z from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import generateSetPasswordToken, {getSetPasswordTokenByToken} from "@/lib/token"
+import { getUserByEmail } from "@/lib/fetchers/user"
+import generateSetPasswordToken, {
+  getSetPasswordTokenByToken,
+} from "@/lib/token"
 import { setPasswordSchema } from "@/lib/validations/auth"
 import {
   addUserSchema,
@@ -21,7 +24,6 @@ import {
   type editUserSchema,
 } from "@/lib/validations/user"
 import { SetPasswordEmail } from "@/components/emails/set-password-email"
-import {getUserByEmail} from "@/lib/fetchers/user";
 
 export const createUser = async (
   values: z.infer<typeof addUserSchema>

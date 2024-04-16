@@ -106,10 +106,14 @@ export default async function BlogPage({
                 {blog.status === "PENDING" && blog.authorId === user.id && (
                   <div className={styles["manage-blog-wrapper"]}>
                     <Button asChild variant={"ghost"}>
-                      <Link href={`/contribution/blog/${blogId}/edit`}>Edit</Link>
+                      <Link href={`/contribution/blog/${blogId}/edit`}>
+                        Edit
+                      </Link>
                     </Button>
                     <Button asChild variant={"ghost"}>
-                      <Link href={`/contribution/blog/${blogId}/edit`}>Delete</Link>
+                      <Link href={`/contribution/blog/${blogId}/edit`}>
+                        Delete
+                      </Link>
                     </Button>
                   </div>
                 )}
@@ -143,25 +147,29 @@ export default async function BlogPage({
                     className={styles["file"]}
                     download={true}
                   >
-                    <Icons.fileDownload/>
+                    <Icons.fileDownload />
                     <span>{name}</span>
                   </Link>
                 )
               })}
             </div>
             <div className={styles["files"]}>
-              <DownloadZip name={blog.title} location={blog.location}/>
+              <DownloadZip name={blog.title} location={blog.location} />
             </div>
           </div>
         </div>
 
-        <CommentsSection blogId={blog.id}/>
+        <CommentsSection blogId={blog.id} />
       </article>
 
       {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
         <div className={styles["blog-detail"]}>
           {blog.status.toLowerCase() === "pending" && (
-            <BlogSubmissionGrading user={user} blogId={blog.id} status={blog.status} />
+            <BlogSubmissionGrading
+              user={user}
+              blogId={blog.id}
+              status={blog.status}
+            />
           )}
         </div>
       )}
