@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
-import { generatePagination } from "@/lib/utils"
+import { createQueryString, generatePagination } from "@/lib/utils"
 import {
   Pagination,
   PaginationContent,
@@ -16,6 +16,7 @@ import {
 import styles from "@/styles/components/pagination-rows.module.scss"
 
 interface PaginationRowsProps {
+  query: string
   page: number
   rows: number
   academicYearId: string
@@ -23,6 +24,7 @@ interface PaginationRowsProps {
 }
 
 export function PaginationBlogStudent({
+  query,
   page,
   rows,
   academicYearId,
@@ -33,8 +35,21 @@ export function PaginationBlogStudent({
   const totalPages = Math.ceil(totalBlogs / rows)
 
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const paginationArr = generatePagination(page, totalPages)
+
+  const queryURL = React.useCallback(() => {
+    return createQueryString(
+      {
+        q: query ? query : null,
+        page: null,
+        row: rows,
+        academicYear: academicYearId ? academicYearId : null,
+      },
+      searchParams
+    )
+  }, [academicYearId, rows, searchParams])
 
   return (
     <div className={styles["pagination-group-list"]}>
@@ -45,7 +60,7 @@ export function PaginationBlogStudent({
               aria-disabled={!canPrevPage}
               tabIndex={!canPrevPage ? -1 : undefined}
               className={!canPrevPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page - 1}&row=${rows}&academicYearId=${academicYearId}`}
+              href={`${pathname}?page=${page - 1}&${queryURL()}`}
             />
           </PaginationItem>
           {paginationArr[0] && paginationArr[0] < 1 && (
@@ -56,7 +71,7 @@ export function PaginationBlogStudent({
           {paginationArr.map((value, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`${pathname}?page=${value}&row=${rows}&academicYearId=${academicYearId}`}
+                href={`${pathname}?page=${value}&${queryURL()}`}
                 isActive={value === page}
               >
                 {value}
@@ -74,7 +89,7 @@ export function PaginationBlogStudent({
               aria-disabled={!canNextPage}
               tabIndex={!canNextPage ? -1 : undefined}
               className={!canNextPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page + 1}&row=${rows}&academicYearId=${academicYearId}`}
+              href={`${pathname}?page=${page + 1}&${queryURL()}`}
             />
           </PaginationItem>
         </PaginationContent>

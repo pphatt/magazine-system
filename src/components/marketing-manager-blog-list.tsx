@@ -1,6 +1,5 @@
 import * as React from "react"
 import Link from "next/link"
-import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
 
@@ -16,6 +15,7 @@ import { PaginationManager } from "@/components/pagination/pagination-blog-manag
 import styles from "@/styles/components/marketing-manager-blog-list.module.scss"
 
 interface MarketingManagerBlogListProps {
+  query: string
   page: number
   rows: number
   status: StatusEnum
@@ -24,6 +24,7 @@ interface MarketingManagerBlogListProps {
 }
 
 export async function MarketingManagerBlogList({
+  query,
   page,
   rows,
   status,
@@ -31,6 +32,7 @@ export async function MarketingManagerBlogList({
   facultyId,
 }: MarketingManagerBlogListProps) {
   const blogs = (await getBlogsWithUserByMarketingManager({
+    query,
     pageNumber: page,
     rowsNumber: rows,
     status,
@@ -39,6 +41,7 @@ export async function MarketingManagerBlogList({
   })) as BlogWithUser[]
 
   const totalBlogs = (await getBlogCountByMarketingManager(
+    query,
     facultyId,
     academicYearId,
     status
@@ -130,6 +133,7 @@ export async function MarketingManagerBlogList({
       </div>
 
       <PaginationManager
+        query={query}
         page={page}
         rows={rows}
         facultyId={facultyId}

@@ -27,6 +27,7 @@ export const uploadBlogSchema = z.object({
 })
 
 export const getBlogsWithUserSchema = z.object({
+  query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
   status: z.coerce.string(),
@@ -43,6 +44,7 @@ export const getBlogsWithUserByStudentSchema = z.object({
 })
 
 export const getBlogsWithUserByMarketingManagerSchema = z.object({
+  query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
   status: z.coerce.string(),

@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
-import { generatePagination } from "@/lib/utils"
+import { createQueryString, generatePagination } from "@/lib/utils"
 import {
   Pagination,
   PaginationContent,
@@ -16,6 +16,7 @@ import {
 import styles from "@/styles/components/pagination-group-list.module.scss"
 
 interface PaginationManagerProps {
+  query: string
   page: number
   rows: number
   facultyId: string
@@ -25,6 +26,7 @@ interface PaginationManagerProps {
 }
 
 export function PaginationManager({
+  query,
   page,
   rows,
   facultyId,
@@ -37,8 +39,23 @@ export function PaginationManager({
   const totalPages = Math.ceil(totalBlogs / rows)
 
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const paginationArr = generatePagination(page, totalPages)
+
+  const queryURL = React.useCallback(() => {
+    return createQueryString(
+      {
+        q: query ? query : null,
+        page: null,
+        row: rows,
+        status: status ? status.toLowerCase() : null,
+        facultyId: facultyId ? facultyId : null,
+        academicYear: academicYearId ? academicYearId : null,
+      },
+      searchParams
+    )
+  }, [academicYearId, facultyId, rows, searchParams, status])
 
   return (
     <div className={styles["pagination-group-list"]}>
@@ -49,7 +66,7 @@ export function PaginationManager({
               aria-disabled={!canPrevPage}
               tabIndex={!canPrevPage ? -1 : undefined}
               className={!canPrevPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page - 1}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
+              href={`${pathname}?page=${page - 1}&${queryURL()}`}
             />
           </PaginationItem>
           {paginationArr[0] && paginationArr[0] < 1 && (
@@ -60,7 +77,7 @@ export function PaginationManager({
           {paginationArr.map((value, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`${pathname}?page=${value}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
+                href={`${pathname}?page=${value}&${queryURL()}`}
                 isActive={value === page}
               >
                 {value}
@@ -78,7 +95,7 @@ export function PaginationManager({
               aria-disabled={!canNextPage}
               tabIndex={!canNextPage ? -1 : undefined}
               className={!canNextPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page + 1}&row=${rows}&facultyId=${facultyId}&academicYear=${academicYearId}&status=${status.toLowerCase()}`}
+              href={`${pathname}?page=${page + 1}&${queryURL()}`}
             />
           </PaginationItem>
         </PaginationContent>

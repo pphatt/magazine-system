@@ -114,6 +114,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
           {user?.role === "MARKETING_COORDINATOR" && (
             <MarketingCoorBlogsList
+              query={q}
               page={pageNumber}
               rows={rowsNumber}
               status={parserStatus.toLowerCase() as StatusEnum}
@@ -124,6 +125,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
           {(user?.role === "ADMIN" || user.role === "MARKETING_MANAGER") && (
             <MarketingManagerBlogList
+              query={q}
               page={pageNumber}
               rows={rowsNumber}
               status={parserStatus.toLowerCase() as StatusEnum}

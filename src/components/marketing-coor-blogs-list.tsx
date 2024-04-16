@@ -15,6 +15,7 @@ import { StudentSubmissionGrading } from "@/components/student-submission-gradin
 import styles from "@/styles/components/marketing-coor-blogs-list.module.scss"
 
 interface MarketingCoorBlogsListProps {
+  query: string
   page: number
   rows: number
   status: StatusEnum
@@ -23,6 +24,7 @@ interface MarketingCoorBlogsListProps {
 }
 
 export async function MarketingCoorBlogsList({
+  query,
   page,
   rows,
   status,
@@ -30,6 +32,7 @@ export async function MarketingCoorBlogsList({
   academicYearId,
 }: MarketingCoorBlogsListProps) {
   const blogs = (await getBlogsWithUser({
+    query,
     pageNumber: page,
     rowsNumber: rows,
     status,
@@ -37,7 +40,11 @@ export async function MarketingCoorBlogsList({
     academicYearId,
   })) as BlogWithUser[]
 
-  const totalBlogs = (await getBlogCount(academicYearId, status)) as number
+  const totalBlogs = (await getBlogCount(
+    query,
+    academicYearId,
+    status
+  )) as number
 
   const user = (await currentUser()) as User
 

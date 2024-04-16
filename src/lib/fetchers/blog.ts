@@ -11,22 +11,45 @@ import type {
   getRecentBlogsSchema,
 } from "@/lib/validations/blog"
 
-export async function getBlogCount(academicYearId: string, status: string) {
+export async function getBlogCount(
+  query: string,
+  academicYearId: string,
+  status: string
+) {
   try {
     if (status === "all blogs") {
       return await db.blogs.count({
-        where: { academicYearId },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          academicYearId,
+        },
       })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
-        where: { academicYearId, status: status.toUpperCase() as StatusEnum },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          academicYearId,
+          status: status.toUpperCase() as StatusEnum,
+        },
       })
     }
 
     return await db.blogs.count({
-      where: { academicYearId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        academicYearId,
+      },
     })
   } catch (err) {
     console.log(err)
@@ -37,6 +60,7 @@ export async function getBlogCount(academicYearId: string, status: string) {
 export async function getBlogsWithUser({
   pageNumber,
   rowsNumber,
+  query,
   status,
   facultyId,
   academicYearId,
@@ -46,7 +70,15 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, status: "APPROVE" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          facultyId,
+          academicYearId,
+          status: "APPROVE",
+        },
         include: {
           author: true,
           comments: true,
@@ -62,7 +94,15 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, status: "PENDING" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          facultyId,
+          academicYearId,
+          status: "PENDING",
+        },
         include: {
           author: true,
           comments: true,
@@ -78,7 +118,15 @@ export async function getBlogsWithUser({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { facultyId, academicYearId, status: "REJECT" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          facultyId,
+          academicYearId,
+          status: "REJECT",
+        },
         include: {
           author: true,
           comments: true,
@@ -93,7 +141,14 @@ export async function getBlogsWithUser({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { facultyId, academicYearId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        facultyId,
+        academicYearId,
+      },
       include: {
         author: true,
         comments: true,
@@ -109,10 +164,21 @@ export async function getBlogsWithUser({
   }
 }
 
-export async function getBlogCountByStudent(academicYearId: string) {
+export async function getBlogCountByStudent(
+  query: string,
+  academicYearId: string
+) {
   try {
     return await db.blogs.count({
-      where: { academicYearId, publicized: true, status: "APPROVE" },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        academicYearId,
+        publicized: true,
+        status: "APPROVE",
+      },
     })
   } catch (err) {
     console.log(err)
@@ -254,6 +320,7 @@ export async function getRecentBlogs({
 }
 
 export async function getBlogCountByMarketingManager(
+  query: string,
   facultyId: string,
   academicYearId: string,
   status: string
@@ -261,13 +328,24 @@ export async function getBlogCountByMarketingManager(
   try {
     if (status === "all blogs") {
       return await db.blogs.count({
-        where: { academicYearId, facultyId },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          academicYearId,
+          facultyId,
+        },
       })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
         where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
           academicYearId,
           facultyId,
           status: status.toUpperCase() as StatusEnum,
@@ -276,7 +354,14 @@ export async function getBlogCountByMarketingManager(
     }
 
     return await db.blogs.count({
-      where: { academicYearId, facultyId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        academicYearId,
+        facultyId,
+      },
     })
   } catch (err) {
     console.log(err)
@@ -285,6 +370,7 @@ export async function getBlogCountByMarketingManager(
 }
 
 export async function getBlogsWithUserByMarketingManager({
+  query,
   pageNumber,
   rowsNumber,
   status,
@@ -296,7 +382,14 @@ export async function getBlogsWithUserByMarketingManager({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { academicYearId, facultyId },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          academicYearId,
+          facultyId,
+        },
         include: {
           author: true,
           comments: true,
@@ -313,6 +406,10 @@ export async function getBlogsWithUserByMarketingManager({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
           academicYearId,
           facultyId,
           status: status.toUpperCase() as StatusEnum,
@@ -331,7 +428,14 @@ export async function getBlogsWithUserByMarketingManager({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { academicYearId, facultyId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        academicYearId,
+        facultyId,
+      },
       include: {
         author: true,
         comments: true,

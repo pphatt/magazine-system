@@ -1,9 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 
-import { generatePagination } from "@/lib/utils"
+import { createQueryString, generatePagination } from "@/lib/utils"
 import {
   Pagination,
   PaginationContent,
@@ -33,8 +33,20 @@ export function PaginationRecentBlog({
   const totalPages = Math.ceil(totalBlogs / rows)
 
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   const paginationArr = generatePagination(page, totalPages)
+
+  const queryURL = React.useCallback(() => {
+    return createQueryString(
+      {
+        page: null,
+        row: rows,
+        status: status ? status.toLowerCase() : null,
+      },
+      searchParams
+    )
+  }, [rows, searchParams, status])
 
   return (
     <div className={styles["pagination-group-list"]}>
@@ -45,7 +57,7 @@ export function PaginationRecentBlog({
               aria-disabled={!canPrevPage}
               tabIndex={!canPrevPage ? -1 : undefined}
               className={!canPrevPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page - 1}&row=${rows}&status=${status.toLowerCase()}`}
+              href={`${pathname}?page=${page - 1}&${queryURL()}`}
             />
           </PaginationItem>
           {paginationArr[0] && paginationArr[0] < 1 && (
@@ -56,7 +68,7 @@ export function PaginationRecentBlog({
           {paginationArr.map((value, index) => (
             <PaginationItem key={index}>
               <PaginationLink
-                href={`${pathname}?page=${value}&row=${rows}&status=${status.toLowerCase()}`}
+                href={`${pathname}?page=${value}&${queryURL()}`}
                 isActive={value === page}
               >
                 {value}
@@ -74,7 +86,7 @@ export function PaginationRecentBlog({
               aria-disabled={!canNextPage}
               tabIndex={!canNextPage ? -1 : undefined}
               className={!canNextPage ? styles["disabled"] : undefined}
-              href={`${pathname}?page=${page + 1}&row=${rows}&status=${status.toLowerCase()}`}
+              href={`${pathname}?page=${page + 1}&${queryURL()}`}
             />
           </PaginationItem>
         </PaginationContent>

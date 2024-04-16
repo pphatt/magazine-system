@@ -36,7 +36,7 @@ export async function StudentBlogsList({
     academicYearId,
   })) as BlogWithUser[]
 
-  const totalBlogs = (await getBlogCountByStudent(academicYearId)) as number
+  const totalBlogs = (await getBlogCountByStudent(query, academicYearId)) as number
 
   if (!blogs?.length) {
     return <div className={styles["no-results"]}>No results</div>
@@ -116,6 +116,7 @@ export async function StudentBlogsList({
       )}
 
       <PaginationBlogStudent
+        query={query}
         page={page}
         rows={rows}
         academicYearId={academicYearId}
