@@ -2,6 +2,7 @@ import { env } from "@/env"
 import { db } from "@/server/db"
 import { transporter } from "@/server/node-mailer/node-mailer"
 import { supabase } from "@/server/supabase/supabase"
+import { User } from "@prisma/client"
 import { render } from "@react-email/components"
 import { format } from "date-fns"
 import { v4 } from "uuid"
@@ -73,25 +74,9 @@ export async function POST(req: Request) {
       },
     })
 
-    // const mc = (await db.user.findFirst({
-    //   where: { facultyId, role: "MARKETING_COORDINATOR" },
-    // })) as User
-
-    // one email for student who submit the blog
-    // await resend.emails.send({
-    //   from: "noreply <onboarding@mangado.org>",
-    //   to: [user.email!],
-    //   subject: "You have submitted",
-    //   html: `<strong>yea</strong>`,
-    // })
-
-    // one email for marketing coordinator who will grading the blog
-    // const reqEmail = await resend.emails.send({
-    //   from: "Do not reply to this email <magazine@mangado.org>",
-    //   to: ["phatvu.080903@gmail.com"],
-    //   subject: "You have submitted",
-    //   html: `<strong>You have submitted successfully <a href="${env.NODE_ENV === "development" ? "http://localhost:3000" : ""}/contribution/blog/${id}">Blog link</a></strong>`,
-    // })
+    const mc = (await db.user.findFirst({
+      where: { facultyId, role: "MARKETING_COORDINATOR" },
+    })) as User
 
     const faculty = await db.faculty.findUnique({
       where: {
@@ -107,7 +92,7 @@ export async function POST(req: Request) {
 
     const marketingCoordinatorDetails = await db.user.findUnique({
       where: {
-        email: "phatvu080903@gmail.com",
+        email: mc.email ?? "",
       },
     })
 
@@ -144,7 +129,7 @@ export async function POST(req: Request) {
     await transporter.sendMail({
       from: "Do not reply to this email <magazine@greenwich.magazine.edu>",
       subject: "Grading blog pending",
-      to: "phatvu080903@gmail.com",
+      to: mc.email ?? "",
       html: marketingCoordinatorEmailHtml,
     })
 
