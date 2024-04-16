@@ -46,7 +46,7 @@ export function SelectStatusInput() {
     searchParams.get("status") &&
     sortByStatus.some(({ value }) => value === searchParams.get("status"))
       ? searchParams.get("status")!
-      : "all blogs"
+      : "pending"
 
   const [status, setStatus] = React.useState(statusParams)
   const debouncedStatus = useDebounce(status, 0)
