@@ -13,10 +13,8 @@ import { recentBlogParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import { PaginationMarketingCoor } from "@/components/pagination/pagination-marketing-coor"
+import { PaginationRecentBlog } from "@/components/pagination/pagination-recent-blog"
 import styles from "@/styles/(settings)/recent-blogs/page.module.scss"
-import {PaginationBlogStudent} from "@/components/pagination/pagination-blog-student";
-import {PaginationRecentBlog} from "@/components/pagination/pagination-recent-blog";
 
 interface SearchPageProps {
   searchParams: SearchParams
