@@ -106,7 +106,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
               query={q}
               page={pageNumber}
               rows={rowsNumber}
-              facultyId={user.facultyId ?? ""}
+              facultyId={faculty?.id ?? ""}
               academicYearId={academicYear?.id ?? ""}
             />
           )}

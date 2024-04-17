@@ -89,11 +89,9 @@ export default async function RecentBlogsPage({
           )}
       </div>
 
-      <div>
-        {!blogs.length && (
-          <div className={styles["no-results"]}>No results</div>
-        )}
+      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
 
+      <div>
         {blogs.map(
           (
             {
@@ -172,13 +170,15 @@ export default async function RecentBlogsPage({
         )}
       </div>
 
-      <PaginationRecentBlog
-        academicYearId={academicYear?.id ?? ""}
-        page={pageNumber}
-        rows={rowsNumber}
-        status={status}
-        totalBlogs={totalBlogs}
-      />
+      {!!blogs.length && (
+        <PaginationRecentBlog
+          academicYearId={academicYear?.id ?? ""}
+          page={pageNumber}
+          rows={rowsNumber}
+          status={status}
+          totalBlogs={totalBlogs}
+        />
+      )}
     </div>
   )
 }
