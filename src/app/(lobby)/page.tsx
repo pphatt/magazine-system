@@ -24,6 +24,9 @@ export default async function LobbyPage() {
   })
 
   const blogs = (await db.blogs.findMany({
+    where: { 
+      status: "APPROVE"
+    },
     take: 12,
     orderBy: {
       createdAt: "desc",
