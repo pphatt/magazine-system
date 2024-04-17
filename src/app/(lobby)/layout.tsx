@@ -14,7 +14,7 @@ export default async function LobbyLayout({ children }: LobbyLayoutProps) {
     <>
       <div className={styles["layout"]}>
         <SiteHeader user={user} />
-        <main>{children}</main>
+        <main style={{ flex: 1 }}>{children}</main>
         <SiteFooter />
       </div>
     </>
