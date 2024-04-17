@@ -139,6 +139,7 @@ export async function MarketingCoorBlogsList({
       )}
 
       <PaginationMarketingCoor
+        query={query}
         page={page}
         rows={rows}
         academicYearId={academicYearId}
