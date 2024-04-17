@@ -1,29 +1,17 @@
 import * as React from "react"
+import {currentUser} from "@/lib/auth/auth";
+import {redirect} from "next/navigation";
 
-import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
-import { SelectStatusInput } from "@/app/(lobby)/contribution/_components/select-status"
-
-export default function RecentBlogLayout({
+export default async function RecentBlogLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          gap: "0.5rem",
-          width: "100%",
-          marginBottom: "0.5rem",
-        }}
-      >
-        <SelectStatusInput />
-        <SelectRowInput />
-      </div>
+  const user = await currentUser()
 
-      {children}
-    </div>
-  )
+  if (!user || user.role !== "STUDENT") {
+    redirect("/contribution")
+  }
+
+  return <>{children}</>
 }

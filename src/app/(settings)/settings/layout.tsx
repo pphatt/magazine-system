@@ -20,7 +20,7 @@ export default async function SettingsLayout({
       <SiteHeader user={user} />
       <main className={styles["main-layout"]}>
         <div className={styles["sidebar-nav"]}>
-          <SidebarNav items={userConfig.sidebarNav} />
+          <SidebarNav user={user} items={userConfig.sidebarNav} />
         </div>
         <div className={styles["content-layout"]}>{children}</div>
       </main>

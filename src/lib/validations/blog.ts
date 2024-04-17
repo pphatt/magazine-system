@@ -57,6 +57,7 @@ export const getRecentBlogsSchema = z.object({
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
   status: z.coerce.string(),
+  academicYearId: z.coerce.string(),
 })
 
 export const blogGradingSchema = z.object({

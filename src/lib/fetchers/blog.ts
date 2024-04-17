@@ -222,22 +222,30 @@ export async function getBlogsWithUserByStudent({
   }
 }
 
-export async function getRecentBlogCount(userId: string, status: string) {
+export async function getRecentBlogCount(
+  userId: string,
+  academicYearId: string,
+  status: string
+) {
   try {
     if (status === "all blogs") {
       return await db.blogs.count({
-        where: { authorId: userId },
+        where: { authorId: userId, academicYearId },
       })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
-        where: { authorId: userId, status: status.toUpperCase() as StatusEnum },
+        where: {
+          authorId: userId,
+          academicYearId,
+          status: status.toUpperCase() as StatusEnum,
+        },
       })
     }
 
     return await db.blogs.count({
-      where: { authorId: userId },
+      where: { authorId: userId, academicYearId },
     })
   } catch (err) {
     console.log(err)
@@ -250,13 +258,14 @@ export async function getRecentBlogs({
   pageNumber,
   rowsNumber,
   status,
+  academicYearId,
 }: z.infer<typeof getRecentBlogsSchema>) {
   try {
     if (status === "approve") {
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, status: "APPROVE" },
+        where: { authorId: userId, academicYearId, status: "APPROVE" },
         include: {
           author: true,
           comments: true,
@@ -272,7 +281,7 @@ export async function getRecentBlogs({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, status: "PENDING" },
+        where: { authorId: userId, academicYearId, status: "PENDING" },
         include: {
           author: true,
           comments: true,
@@ -288,7 +297,7 @@ export async function getRecentBlogs({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, status: "REJECT" },
+        where: { authorId: userId, academicYearId, status: "REJECT" },
         include: {
           author: true,
           comments: true,
@@ -303,7 +312,7 @@ export async function getRecentBlogs({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { authorId: userId },
+      where: { authorId: userId, academicYearId },
       include: {
         author: true,
         comments: true,

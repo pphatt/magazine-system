@@ -51,11 +51,11 @@ export function PaginationManager({
         row: rows,
         status: status ? status.toLowerCase() : null,
         facultyId: facultyId ? facultyId : null,
-        academicYear: academicYearId ? academicYearId : null,
+        academicYearId: academicYearId ? academicYearId : null,
       },
       searchParams
     )
-  }, [academicYearId, facultyId, rows, searchParams, status])
+  }, [academicYearId, facultyId, query, rows, searchParams, status])
 
   return (
     <div className={styles["pagination-group-list"]}>

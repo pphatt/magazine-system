@@ -45,11 +45,11 @@ export function PaginationBlogStudent({
         q: query ? query : null,
         page: null,
         row: rows,
-        academicYear: academicYearId ? academicYearId : null,
+        academicYearId: academicYearId ? academicYearId : null,
       },
       searchParams
     )
-  }, [academicYearId, rows, searchParams])
+  }, [academicYearId, query, rows, searchParams])
 
   return (
     <div className={styles["pagination-group-list"]}>

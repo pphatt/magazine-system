@@ -19,6 +19,7 @@ interface PaginationRecentBlogProps {
   page: number
   rows: number
   status: string
+  academicYearId: string
   totalBlogs: number
 }
 
@@ -26,6 +27,7 @@ export function PaginationRecentBlog({
   page,
   rows,
   status,
+  academicYearId,
   totalBlogs,
 }: PaginationRecentBlogProps) {
   const canNextPage = totalBlogs > rows * page
@@ -42,11 +44,12 @@ export function PaginationRecentBlog({
       {
         page: null,
         row: rows,
+        academicYearId: academicYearId ? academicYearId : null,
         status: status ? status.toLowerCase() : null,
       },
       searchParams
     )
-  }, [rows, searchParams, status])
+  }, [academicYearId, rows, searchParams, status])
 
   return (
     <div className={styles["pagination-group-list"]}>

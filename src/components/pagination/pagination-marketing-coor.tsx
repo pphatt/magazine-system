@@ -47,12 +47,12 @@ export function PaginationMarketingCoor({
         q: query ? query : null,
         page: null,
         row: rows,
-        academicYear: academicYearId ? academicYearId : null,
+        academicYearId: academicYearId ? academicYearId : null,
         status: status ? status.toLowerCase() : null,
       },
       searchParams
     )
-  }, [academicYearId, rows, searchParams, status])
+  }, [academicYearId, query, rows, searchParams, status])
 
   return (
     <div className={styles["pagination-group-list"]}>

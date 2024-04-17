@@ -5,16 +5,23 @@ import Link from "next/link"
 import { useSelectedLayoutSegment } from "next/navigation"
 import type { SidebarNavItem } from "@/types"
 import { ChevronLeftIcon } from "lucide-react"
+import { User } from "next-auth"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/(settings)/_components/sidebar-nav.module.scss"
 
 export interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
+  user: User
   items: SidebarNavItem[]
 }
 
-export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
+export function SidebarNav({
+  user,
+  items,
+  className,
+  ...props
+}: SidebarNavProps) {
   const segment = useSelectedLayoutSegment()
 
   if (!items?.length) return null
@@ -23,6 +30,10 @@ export function SidebarNav({ items, className, ...props }: SidebarNavProps) {
     <div className={cn(styles["sidebar-nav-layout"], className)} {...props}>
       {items.map((item, index) => {
         const Icon = item.icon ? Icons[item.icon] : ChevronLeftIcon
+
+        if (user.role !== "STUDENT" && item.title === "Recent blogs") {
+          return
+        }
 
         return item.href ? (
           <Link
