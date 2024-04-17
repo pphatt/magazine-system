@@ -38,12 +38,21 @@ export default async function LobbyPage() {
 
   return (
     <Shell as={"div"} className={styles["shell"]}>
+      <div className={styles["home-banner-wrapper"]}>
+        <div className={styles["banner-text"]}>
+          <h2>Welcome to Magazine University System</h2>
+        </div>
+        <div className={styles["banner-image"]}>
+          <img src={"/banner.png"} alt={""} />
+        </div>
+      </div>
+
       <div className={styles["faculty-carousel"]}>
         <div className={styles["faculty-carousel-header"]}>Faculties</div>
         <FacultyCarousel faculty={faculty} />
       </div>
 
-      <div>
+      <div className={styles["blog-card"]}>
         <div className={styles["blog-card-header-wrapper"]}>
           <div className={styles["blog-card-header"]}>
             <h2>Recent blogs</h2>

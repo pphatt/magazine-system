@@ -2,9 +2,52 @@
   max-width: 100% !important;
   margin: 0 !important;
 
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+.home-banner-wrapper {
+  display: flex;
+  align-items: center;
+
+  background-color: #00033d;
+
+  height: 700px;
+
+  width: 100%;
+}
+
+.banner-text {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+
+  color: #fff;
+
+  padding: 15px 0 80px 45px;
+
+  h2 {
+    margin-left: 70px;
+
+    font-size: 2.2rem;
+
+    @media (min-width: 768px) {
+      font-size: 3rem;
+    }
+
+    @media (min-width: 1024px) {
+      font-size: 3.8rem;
+    }
+  }
+}
+
+.banner-image {
+  flex: 1;
+
+  height: 100%;
+
+  img {
+    height: 100%;
+  }
 }
 
 .faculty-carousel {
@@ -31,6 +74,21 @@
   font-size: 1.875rem;
   line-height: 2.25rem;
   font-weight: 600;
+}
+
+.blog-card {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  @media (min-width: 768px) {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
 }
 
 .blog-card-header-wrapper {

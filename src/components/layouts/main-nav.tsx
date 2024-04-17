@@ -12,7 +12,7 @@ export const MainNav = () => {
     <div className={styles["main-nav-layout"]}>
       <nav className={styles["main-nav"]}>
         <Link className={styles["name"]} href={"/"}>
-          <img src={"/logo_final.jpg"} alt={""} />
+          <img src={"/logo_final-1.jpg"} alt={""} />
           <span>Magazine University System</span>
         </Link>
       </nav>

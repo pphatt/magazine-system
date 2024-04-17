@@ -170,7 +170,7 @@
   bottom: 0;
   left: 0;
 
-  background-image: linear-gradient(to top, #fff, transparent);
+  background-image: linear-gradient(to top, hsl(var(--background)), transparent);
 
   height: 6rem;
   width: 100%;
