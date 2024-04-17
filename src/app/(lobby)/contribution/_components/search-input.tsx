@@ -46,6 +46,7 @@ export function SearchInput() {
   React.useEffect(() => {
     startTransition(() => {
       const newQueryString = createQueryString({
+        page: 1,
         q: debouncedQuery !== "" ? debouncedQuery : null,
       })
 
