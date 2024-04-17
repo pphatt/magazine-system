@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useSelectedLayoutSegment } from "next/navigation"
 import type { SidebarNavItem } from "@/types"
 import { ChevronLeftIcon } from "lucide-react"
-import { User } from "next-auth"
+import type { User } from "next-auth"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"

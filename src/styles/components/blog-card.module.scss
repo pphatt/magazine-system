@@ -1,0 +1,177 @@
+.blog-section-wrapper {
+  display: grid;
+  gap: 1rem;
+
+  width: 100%;
+  max-width: 1350px;
+
+  margin-top: 2rem;
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.blog-wrapper {
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+
+  width: 100%;
+  height: 100%;
+
+  border-width: 1px;
+  border-radius: calc(var(--radius) - 4px);
+
+  overflow: hidden;
+
+  box-shadow:
+    0 0 #0000,
+    0 0 #0000,
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.blog-image-wrapper {
+}
+
+.blog-image-container {
+  display: flex;
+  flex-direction: column;
+
+  border-bottom-width: 1px;
+
+  padding: 0;
+}
+
+.blog-image {
+  position: relative;
+
+  width: 100%;
+
+  padding-bottom: 100%;
+}
+
+.blog-image-pseudo {
+  position: absolute;
+  inset: 0;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+
+  color: transparent;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.seo-title {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  border-width: 0;
+
+  padding: 0;
+  margin: -1px;
+
+  overflow: hidden;
+
+  clip: rect(0, 0, 0, 0);
+
+  white-space: nowrap;
+}
+
+.blog-details {
+  display: flex;
+  flex-direction: column;
+
+  padding: 1rem;
+}
+
+.blog-author-details {
+  display: flex;
+  align-items: flex-start;
+
+  margin-bottom: 1.25rem;
+}
+
+.avatar {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+.avatar-image {
+  object-fit: cover;
+  object-position: top;
+}
+
+.author-name-wrapper {
+  flex: 1;
+
+  padding-left: 0.75rem;
+
+  p {
+    color: hsl(var(--muted-foreground));
+
+    font-size: 0.75rem;
+  }
+}
+
+.author-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.blog-title {
+  display: -webkit-box;
+
+  font-weight: 600;
+  line-height: 1.25;
+
+  letter-spacing: -0.025em;
+
+  -webkit-line-clamp: 2;
+
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.blog-content {
+  position: relative;
+
+  width: 100%;
+  max-height: 10rem;
+
+  margin-top: 0.5rem;
+
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  overflow: clip;
+}
+
+.blog-desc-blur {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  background-image: linear-gradient(to top, #fff, transparent);
+
+  height: 6rem;
+  width: 100%;
+}

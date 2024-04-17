@@ -1,5 +1,5 @@
 import * as React from "react"
-import { User } from "next-auth"
+import type { User } from "next-auth"
 
 import { userConfig } from "@/config/site"
 import { currentUser } from "@/lib/auth/auth"

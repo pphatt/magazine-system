@@ -17,7 +17,7 @@
 
   @media (min-width: 640px) {
     position: sticky;
-    top: 16px;
+    top: calc(16px + 65px);
 
     align-self: flex-start;
     flex-direction: column;

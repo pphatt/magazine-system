@@ -3,9 +3,6 @@
 }
 
 .carousel-content {
-  /* optional */
-  width: 100%;
-
   overflow: hidden;
 }
 
@@ -41,10 +38,10 @@
 .carousel-button {
   position: absolute;
 
-  height: 2rem;
-  width: 2rem;
+  height: 2rem !important;
+  width: 2rem !important;
 
-  border-radius: 9999px;
+  border-radius: 9999px !important;
 
   svg {
     width: 1rem;

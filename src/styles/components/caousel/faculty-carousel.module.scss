@@ -1,0 +1,87 @@
+.carousel {
+  width: 100%;
+}
+
+.carousel-item {
+  flex-basis: 25% !important;
+
+  @media (min-width: 768px) {
+    flex-basis: 20% !important;
+  }
+}
+
+.card {
+  position: relative !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  color: hsl(var(--card-foreground)) !important;
+  background-color: hsl(var(--muted)) !important;
+
+  border-width: 1px !important;
+  border-radius: 0.75rem !important;
+
+  padding: 1rem !important;
+
+  box-shadow:
+    0 0 #0000,
+    0 0 #0000,
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1) !important;
+
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.15s;
+}
+
+.carousel-item-card {
+  display: flex !important;
+  flex-direction: column !important;
+
+  padding: 0 !important;
+
+  aspect-ratio: 1 / 1;
+
+  svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+}
+
+.faculty-icon {
+  color: hsl(var(--muted-foreground));
+
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+
+.faculty-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+
+  h3 {
+    font-weight: 600;
+    line-height: 1.25;
+
+    letter-spacing: -0.025em;
+
+    text-transform: capitalize;
+  }
+
+  p {
+    color: hsl(var(--muted-foreground));
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
