@@ -91,3 +91,8 @@ export const uploadEditBlogSchema = z.object({
   academicYearId: z.string(),
   facultyId: z.string(),
 })
+
+export const guestPermissionSchema = z.object({
+  blogId: z.string(),
+  status: z.boolean(),
+})

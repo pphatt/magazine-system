@@ -17,6 +17,8 @@ import { CommentsSection } from "@/components/comments-section"
 import { Icons } from "@/components/icons"
 import { RenderBlog } from "@/components/render-blog"
 import styles from "@/styles/(blog)/page.module.scss"
+import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
+import { AllowGuest } from "@/app/(lobby)/contribution/blog/[blogId]/_components/allow-guest"
 
 const DownloadZip = dynamic(() => import("@/components/download-zip"), {
   ssr: false,
@@ -66,10 +68,28 @@ export default async function BlogPage({
 
   const content = blog.content as { blocks: Block[] }
 
-  const showBlogStatus = (user.id === blog.authorId || (user.role !== "STUDENT" && user.role !== "GUEST"))
+  const showBlogDetails =
+    user.id === blog.authorId ||
+    (user.role !== "STUDENT" && user.role !== "GUEST")
 
   return (
     <div className={styles["blog-wrapper"]}>
+      <div className={styles["action-group-wrapper"]}>
+        <div className={styles["action-group-container"]}>
+          <Button className={styles["like-btn"]}>
+            <Icons.heart />
+            <span>0</span>
+          </Button>
+
+          <Button className={styles["like-btn"]}>
+            <Icons.bookmark />
+            <span>0</span>
+          </Button>
+
+          <ActionGroupButton />
+        </div>
+      </div>
+
       <article className={styles["blog-content-wrapper"]}>
         <header className={styles["blog-header-wrapper"]}>
           {blog.backgroundImage && (
@@ -129,10 +149,21 @@ export default async function BlogPage({
               <div className={styles["extra-layout"]}>
                 Academic Year: {blog.academicYear.name ?? "-"}
               </div>
-              {showBlogStatus && (
-                <div className={styles["blog-status"]} data-status={blog.status.toLowerCase()}>
-                  {blog.status}
-                </div>
+              {showBlogDetails && (
+                <>
+                  <div
+                    className={styles["blog-status"]}
+                    data-status={blog.status.toLowerCase()}
+                  >
+                    {blog.status}
+                  </div>
+                  <div
+                    className={styles["guest-permission"]}
+                    data-permission={blog.allowGuest}
+                  >
+                    {blog.allowGuest ? "Allow Guest" : "Not allow Guest"}
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -171,13 +202,17 @@ export default async function BlogPage({
 
       {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
         <div className={styles["blog-detail"]}>
-          {blog.status.toLowerCase() === "pending" && (
-            <BlogSubmissionGrading
-              user={user}
-              blogId={blog.id}
-              status={blog.status}
-            />
-          )}
+          <BlogSubmissionGrading
+            user={user}
+            blogId={blog.id}
+            status={blog.status}
+          />
+        </div>
+      )}
+
+      {user.role === "MARKETING_COORDINATOR" && blog.status === "APPROVE" && (
+        <div className={styles["blog-detail"]}>
+          <AllowGuest blogId={blog.id} status={blog.allowGuest} />
         </div>
       )}
     </div>

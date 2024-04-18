@@ -83,4 +83,14 @@
 .accept {
   color: hsl(180.54, 100%, 21.96%) !important;
   background-color: hsl(180, 38.78%, 90.39%) !important;
+
+  &[data-permission="true"] {
+    color: hsl(0, 70%, 40%) !important;
+    background-color: hsl(0, 100%, 97%) !important;
+  }
+
+  &[data-permission="false"] {
+    color: hsl(180.54, 100%, 21.96%) !important;
+    background-color: hsl(180, 38.78%, 90.39%) !important;
+  }
 }

@@ -13,6 +13,7 @@ import { z } from "zod"
 import { currentUser } from "@/lib/auth/auth"
 import {
   blogGradingSchema,
+  guestPermissionSchema,
   type uploadBlogSchema,
   type uploadEditBlogSchema,
 } from "@/lib/validations/blog"
@@ -339,5 +340,37 @@ export const commentOnBlog = async (values: z.infer<typeof commentSchema>) => {
     }
 
     return { error: "Could not comment at this time. Please try later!" }
+  }
+}
+
+export async function guestPermission(
+  values: z.infer<typeof guestPermissionSchema>
+) {
+  try {
+    const { blogId, status } = guestPermissionSchema.parse(values)
+
+    const user = await currentUser()
+
+    if (!user || !user.id || user.role !== "MARKETING_COORDINATOR") {
+      return { error: "Unauthorized" }
+    }
+
+    await db.blogs.update({
+      where: {
+        id: blogId,
+      },
+      data: {
+        allowGuest: status,
+      },
+    })
+
+    return { success: "OK" }
+  } catch (error) {
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      return { error: JSON.stringify(error.message) }
+    }
+
+    return { error: "Could not allow guest at this time. Please try later" }
   }
 }
