@@ -212,7 +212,7 @@ export default async function BlogPage({
 
       {user.role === "MARKETING_COORDINATOR" && blog.status === "APPROVE" && (
         <div className={styles["blog-detail"]}>
-          <AllowGuest blogId={blog.id} status={blog.allowGuest} />
+          <AllowGuest blogId={blog.id} status={blog.allowGuest!} />
         </div>
       )}
     </div>

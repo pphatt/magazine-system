@@ -30,7 +30,7 @@ const options: ChartOptions<"pie"> = {
     tooltip: {
       callbacks: {
         label: (value) => {
-          const percentage = `Percentage of contributions: ${value.raw}%`
+          const percentage = `Percentage of contributions: ${(value as { raw: string }).raw}%`
           return percentage
         },
       },

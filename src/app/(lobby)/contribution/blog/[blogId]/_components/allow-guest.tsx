@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { gradingBlog, guestPermission } from "@/lib/actions/blog"
+import { guestPermission } from "@/lib/actions/blog"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { AllowGuestAlertModal } from "@/components/modals/allow-guest-alert-modal"

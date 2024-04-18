@@ -143,6 +143,7 @@ model Blogs {
   updatedAt       DateTime   @updatedAt
   gradedAt        DateTime?
   publicized      Boolean    @default(false)
+  allowGuest      Boolean?   @default(false)
   status          StatusEnum @default(PENDING)
 
   location String[] // store as array for multi contribution string[]
