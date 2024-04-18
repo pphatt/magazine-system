@@ -52,6 +52,7 @@ export function StudentSubmissionGrading({
         if ("success" in req) {
           router.refresh()
           toast.success("Graded successfully.")
+          setOpenAccept(false)
         } else {
           toast.error(req.error)
         }
@@ -80,6 +81,7 @@ export function StudentSubmissionGrading({
         if ("success" in req) {
           router.refresh()
           toast.success("Graded successfully.")
+          setOpenReject(false)
         } else {
           toast.error(req.error)
         }
