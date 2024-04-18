@@ -82,3 +82,14 @@ export type Block = BlockType<"paragraph" | "header" | "list" | "linkTool">
 export type ContentType = {
   content: Block[]
 }
+
+export type ChartData = {
+  labels: string[]
+  datasets: {
+    label: string
+    data: number[]
+    backgroundColor: string | string[]
+    borderColor?: string | string[]
+    borderWidth?: number
+  }[]
+}

@@ -43,7 +43,11 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
   // get user info
   const user = (await currentUser()) as User
 
-  const faculties = await db.faculty.findMany()
+  const faculties = await db.faculty.findMany({
+    orderBy: {
+      createdAt: "asc",
+    },
+  })
   const faculty =
     faculties.find((value) => value.id === facultyId) ?? faculties[0]
 
