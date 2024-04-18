@@ -4,7 +4,8 @@ import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
-import type {
+import {
+  getBlogsWithUserByGuestSchema,
   getBlogsWithUserByMarketingManagerSchema,
   getBlogsWithUserByStudentSchema,
   getBlogsWithUserSchema,
@@ -444,6 +445,54 @@ export async function getBlogsWithUserByMarketingManager({
         },
         academicYearId,
         facultyId,
+      },
+      include: {
+        author: true,
+        comments: true,
+        marketingCoordinator: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogCountByGuest(query: string) {
+  try {
+    return await db.blogs.count({
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        allowGuest: true,
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getBlogsWithUserByGuest({
+  query,
+  pageNumber,
+  rowsNumber,
+}: z.infer<typeof getBlogsWithUserByGuestSchema>) {
+  try {
+    return await db.blogs.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: {
+        allowGuest: true,
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
       },
       include: {
         author: true,

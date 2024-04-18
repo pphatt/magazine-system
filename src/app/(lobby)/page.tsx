@@ -1,7 +1,9 @@
 import * as React from "react"
 import Link from "next/link"
 import { db } from "@/server/db"
+import type { User } from "next-auth"
 
+import { currentUser } from "@/lib/auth/auth"
 import type { BlogWithUser } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/blog-card"
@@ -11,6 +13,8 @@ import { Shell } from "@/components/shells/shell"
 import styles from "@/styles/(lobby)/page.module.scss"
 
 export default async function LobbyPage() {
+  const user = (await currentUser()) as User
+
   const faculty = await db.faculty.findMany({
     select: {
       id: true,
@@ -23,18 +27,36 @@ export default async function LobbyPage() {
     },
   })
 
-  const blogs = (await db.blogs.findMany({
-    where: { 
-      status: "APPROVE"
-    },
-    take: 12,
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      author: true,
-    },
-  })) as BlogWithUser[]
+  let blogs: BlogWithUser[]
+
+  if (user?.role === "GUEST") {
+    blogs = (await db.blogs.findMany({
+      where: {
+        status: "APPROVE",
+        allowGuest: true,
+      },
+      take: 12,
+      orderBy: {
+        gradedAt: "desc"
+      },
+      include: {
+        author: true,
+      },
+    })) as BlogWithUser[]
+  } else {
+    blogs = (await db.blogs.findMany({
+      where: {
+        status: "APPROVE",
+      },
+      take: 12,
+      orderBy: {
+        gradedAt: "desc",
+      },
+      include: {
+        author: true,
+      },
+    })) as BlogWithUser[]
+  }
 
   return (
     <Shell as={"div"} className={styles["shell"]}>

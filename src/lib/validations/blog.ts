@@ -26,6 +26,32 @@ export const uploadBlogSchema = z.object({
   facultyId: z.string(),
 })
 
+export const uploadEditBlogSchema = z.object({
+  blogId: z.string(),
+  title: z
+    .string()
+    .min(3, {
+      message: "Title must be at least 3 characters long",
+    })
+    .max(128, {
+      message: "Title must be less than 128 characters long",
+    }),
+  content: z.any(),
+  image: z
+    .custom<File>((val) => val instanceof File, "Please upload a file")
+    .refine((file) => file?.size <= MAX_FILE_SIZE)
+    .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), {
+      message: "Please choose .jpg, .jpeg and .png format files only",
+    })
+    .optional(),
+  prevImage: z.string().optional(),
+  files: z.custom<FilePondFile[]>(),
+  newFilesCount: z.number(),
+  prevFiles: z.string().array().optional(),
+  academicYearId: z.string(),
+  facultyId: z.string(),
+})
+
 export const getBlogsWithUserSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
@@ -66,30 +92,10 @@ export const blogGradingSchema = z.object({
   marketingCoordinatorId: z.coerce.string(),
 })
 
-export const uploadEditBlogSchema = z.object({
-  blogId: z.string(),
-  title: z
-    .string()
-    .min(3, {
-      message: "Title must be at least 3 characters long",
-    })
-    .max(128, {
-      message: "Title must be less than 128 characters long",
-    }),
-  content: z.any(),
-  image: z
-    .custom<File>((val) => val instanceof File, "Please upload a file")
-    .refine((file) => file?.size <= MAX_FILE_SIZE)
-    .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), {
-      message: "Please choose .jpg, .jpeg and .png format files only",
-    })
-    .optional(),
-  prevImage: z.string().optional(),
-  files: z.custom<FilePondFile[]>(),
-  newFilesCount: z.number(),
-  prevFiles: z.string().array().optional(),
-  academicYearId: z.string(),
-  facultyId: z.string(),
+export const getBlogsWithUserByGuestSchema = z.object({
+  query: z.string(),
+  pageNumber: z.number().default(1),
+  rowsNumber: z.number().default(50),
 })
 
 export const guestPermissionSchema = z.object({

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/bread-crumb"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ContributionSelect } from "@/components/contribution-select"
+import { GuestBlogsList } from "@/components/guest-blogs-list"
 import { MarketingCoorBlogsList } from "@/components/marketing-coor-blogs-list"
 import { MarketingManagerBlogList } from "@/components/marketing-manager-blog-list"
 import { StudentBlogsList } from "@/components/student-blogs-list"
@@ -135,6 +136,10 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
               academicYearId={academicYear?.id ?? ""}
               facultyId={faculty?.id ?? ""}
             />
+          )}
+
+          {user?.role === "GUEST" && (
+            <GuestBlogsList query={q} page={pageNumber} rows={rowsNumber} />
           )}
         </>
       )}

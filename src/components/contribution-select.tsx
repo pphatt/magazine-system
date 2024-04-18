@@ -20,7 +20,7 @@ export function ContributionSelect({
 }: ContributionSelectProps) {
   return (
     <div className={styles["select-wrapper"]}>
-      {role !== "marketing_coordinator" && (
+      {role !== "marketing_coordinator" && role !== "guest" && (
         <>
           <SelectFacultyInput faculties={faculties} />
         </>

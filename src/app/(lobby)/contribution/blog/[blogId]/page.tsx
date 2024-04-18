@@ -62,7 +62,7 @@ export default async function BlogPage({
     }
   }
 
-  if (user.role === "GUEST" && !blog.publicized) {
+  if (user.role === "GUEST" && !blog.allowGuest) {
     redirect("/contribution")
   }
 
