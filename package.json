@@ -91,6 +91,7 @@
     "nodemailer": "^6.9.13",
     "prisma-json-types-generator": "^3.0.4",
     "react": "18.2.0",
+    "react-chartjs-2": "^5.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "18.2.0",
     "react-email": "2.1.1",
