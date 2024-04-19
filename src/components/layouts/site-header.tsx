@@ -2,7 +2,6 @@ import React from "react"
 import Link from "next/link"
 import { type User } from "next-auth"
 
-import { logout } from "@/lib/actions/logout"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MainNav } from "@/components/layouts/main-nav"
 import { ThemeToggle } from "@/components/layouts/theme-toggle"
-import { LogOutBtn } from "@/components/log-out-btn"
+import { LogOut } from "@/components/logout"
 import styles from "@/styles/components/layouts/site-header.module.scss"
 
 import { Icons } from "../icons"
@@ -120,7 +119,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                     className={styles["dropdown-separate-line"]}
                   />
                   <DropdownMenuItem className={styles["dropdown-item"]}>
-                    <LogOutBtn />
+                    <LogOut />
                   </DropdownMenuItem>
                 </>
               )}
