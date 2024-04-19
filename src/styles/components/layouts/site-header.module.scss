@@ -234,14 +234,24 @@
   margin: 12px 20px;
 }
 
-.sign-out {
+.sign-out-form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   width: 100%;
+}
 
-  padding: 8px 20px;
+.sign-out {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
 
-  cursor: pointer;
+  color: hsl(var(--muted-foreground)) !important;
+  background: transparent !important;
+
+  width: 100% !important;
+  height: fit-content !important;
+
+  padding: 8px 20px !important;
+
+  cursor: pointer !important;
 }

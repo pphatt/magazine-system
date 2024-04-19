@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import Link from "next/link"
 import { type User } from "next-auth"
@@ -20,6 +18,7 @@ import { ThemeToggle } from "@/components/layouts/theme-toggle"
 import styles from "@/styles/components/layouts/site-header.module.scss"
 
 import { Icons } from "../icons"
+import {LogOutBtn} from "@/components/log-out-btn";
 
 interface SideHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User | undefined
@@ -121,13 +120,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                     className={styles["dropdown-separate-line"]}
                   />
                   <DropdownMenuItem className={styles["dropdown-item"]}>
-                    <span
-                      className={styles["sign-out"]}
-                      onClick={() => logout()}
-                    >
-                      <span>Logout</span>
-                      <Icons.logout />
-                    </span>
+                    <LogOutBtn />
                   </DropdownMenuItem>
                 </>
               )}
