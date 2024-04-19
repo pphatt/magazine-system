@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import styles from "@/styles/components/layouts/site-header.module.scss"
 
-export function Logout() {
+export function LogOut() {
   return (
     <form
       className={styles["sign-out-form"]}
