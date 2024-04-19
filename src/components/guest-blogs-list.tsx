@@ -10,8 +10,8 @@ import { type BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
+import { PaginationBlogGuest } from "@/components/pagination/pagination-blog-guest"
 import styles from "@/styles/components/student-blogs-list.module.scss"
-import {PaginationBlogGuest} from "@/components/pagination/pagination-blog-guest";
 
 interface StudentBlogsListProps {
   query: string

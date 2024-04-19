@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MainNav } from "@/components/layouts/main-nav"
 import { ThemeToggle } from "@/components/layouts/theme-toggle"
+import { LogOutBtn } from "@/components/log-out-btn"
 import styles from "@/styles/components/layouts/site-header.module.scss"
 
 import { Icons } from "../icons"
-import {LogOutBtn} from "@/components/log-out-btn";
 
 interface SideHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User | undefined

@@ -4,12 +4,12 @@ import * as React from "react"
 import {
   BarElement,
   CategoryScale,
-  type ChartData,
   Chart as ChartJS,
   Legend,
   LinearScale,
   Title,
   Tooltip,
+  type ChartData,
 } from "chart.js"
 import { Bar } from "react-chartjs-2"
 

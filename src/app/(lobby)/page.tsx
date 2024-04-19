@@ -37,7 +37,7 @@ export default async function LobbyPage() {
       },
       take: 12,
       orderBy: {
-        gradedAt: "desc"
+        gradedAt: "desc",
       },
       include: {
         author: true,

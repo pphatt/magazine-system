@@ -172,7 +172,7 @@ export default async function BlogPage({
         </header>
         <div className={styles["content-wrapper"]}>
           <div className={styles["content-blocks"]}>
-            <RenderBlog content={content.blocks}/>
+            <RenderBlog content={content.blocks} />
           </div>
           <div className={styles["file-upload-wrapper"]}>
             <h3>File upload</h3>

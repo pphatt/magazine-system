@@ -1,6 +1,7 @@
 import * as React from "react"
-import {currentUser} from "@/lib/auth/auth";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation"
+
+import { currentUser } from "@/lib/auth/auth"
 
 export default async function RecentBlogLayout({
   children,

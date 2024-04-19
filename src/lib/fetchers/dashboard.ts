@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import {ChartData} from "chart.js";
+import { ChartData } from "chart.js"
 
 interface getAcademicYearIdType {
   academicYearId: string
