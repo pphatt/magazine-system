@@ -14,6 +14,7 @@ import type {
 
 export async function getBlogCount(
   query: string,
+  facultyId: string,
   academicYearId: string,
   status: string
 ) {
@@ -26,6 +27,7 @@ export async function getBlogCount(
             mode: "insensitive",
           },
           academicYearId,
+          facultyId,
         },
       })
     }
@@ -38,6 +40,7 @@ export async function getBlogCount(
             mode: "insensitive",
           },
           academicYearId,
+          facultyId,
           status: status.toUpperCase() as StatusEnum,
         },
       })
@@ -50,6 +53,7 @@ export async function getBlogCount(
           mode: "insensitive",
         },
         academicYearId,
+        facultyId,
       },
     })
   } catch (err) {

@@ -45,6 +45,7 @@ export async function MarketingCoorBlogsList({
 
   const totalBlogs = (await getBlogCount(
     query,
+    facultyId,
     academicYearId,
     status
   )) as number
