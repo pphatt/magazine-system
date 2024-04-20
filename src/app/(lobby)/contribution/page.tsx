@@ -142,7 +142,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
           )}
 
           {user?.role === "GUEST" && (
-            <GuestBlogsList query={q} page={pageNumber} rows={rowsNumber} />
+            <GuestBlogsList user={user} query={q} page={pageNumber} rows={rowsNumber} />
           )}
         </>
       )}
