@@ -4,7 +4,7 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import type { UserWithFaculty } from "@/lib/prisma"
-import { EditProfile } from "@/app/(settings)/settings/_components/edit-profile"
+import { EditProfile } from "@/app/(account)/account/_components/edit-profile"
 
 export default async function ProfilePage() {
   const user = (await currentUser()) as User

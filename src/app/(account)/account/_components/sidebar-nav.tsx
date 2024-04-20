@@ -9,7 +9,7 @@ import type { User } from "next-auth"
 
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
-import styles from "@/styles/(settings)/_components/sidebar-nav.module.scss"
+import styles from "@/styles/(account)/_components/sidebar-nav.module.scss"
 
 export interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: User

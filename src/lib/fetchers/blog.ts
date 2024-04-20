@@ -4,11 +4,12 @@ import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
-import type {
+import {
   getBlogsWithUserByGuestSchema,
   getBlogsWithUserByMarketingManagerSchema,
   getBlogsWithUserByStudentSchema,
   getBlogsWithUserSchema,
+  getLikeBlogsSchema,
   getRecentBlogsSchema,
 } from "@/lib/validations/blog"
 
@@ -508,6 +509,64 @@ export async function getBlogsWithUserByGuest({
         title: {
           contains: query,
           mode: "insensitive",
+        },
+      },
+      include: {
+        author: true,
+        comments: true,
+        marketingCoordinator: true,
+        like: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getLikeBlogsCount(query: string, userId: string) {
+  try {
+    return await db.blogs.count({
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        like: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getLikeBlogs({
+  query,
+  userId,
+  pageNumber,
+  rowsNumber,
+}: z.infer<typeof getLikeBlogsSchema>) {
+  try {
+    return await db.blogs.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        like: {
+          some: {
+            userId: userId,
+          },
         },
       },
       include: {

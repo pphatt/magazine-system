@@ -1,93 +1,54 @@
 import * as React from "react"
 import Link from "next/link"
-import { db } from "@/server/db"
 import type { SearchParams } from "@/types"
-import type { StatusEnum } from "@prisma/client"
-import { format, isBefore } from "date-fns"
+import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import { getRecentBlogCount, getRecentBlogs } from "@/lib/fetchers/blog"
+import { getLikeBlogs, getLikeBlogsCount } from "@/lib/fetchers/blog"
 import type { BlogWithUser } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
-import { recentBlogParamsSchema } from "@/lib/validations/params"
+import { likeBlogsParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
-import { PaginationRecentBlog } from "@/components/pagination/pagination-recent-blog"
-import styles from "@/styles/(settings)/recent-blogs/page.module.scss"
-import { SelectAcademicYearInput } from "@/app/(lobby)/contribution/_components/select-academic-year"
+import { PaginationLikeBlogs } from "@/components/pagination/pagination-like-blogs"
+import styles from "@/styles/(account)/like-blogs/page.module.scss"
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
-import { SelectStatusInput } from "@/app/(lobby)/contribution/_components/select-status"
+import {SearchInput} from "@/app/(lobby)/contribution/_components/search-input";
 
-interface SearchPageProps {
+interface LikeBlogsPageProps {
   searchParams: SearchParams
 }
 
-export default async function RecentBlogsPage({
+export default async function LikeBlogsPage({
   searchParams,
-}: SearchPageProps) {
+}: LikeBlogsPageProps) {
   const user = (await currentUser()) as User
 
-  const { page, row, academicYearId, status } =
-    recentBlogParamsSchema.parse(searchParams)
+  const { page, row, q } = likeBlogsParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
   const rowsNumber = parserRows(row, 10)
 
-  const academicYears = await db.academicYear.findMany({
-    where: { status: "ACTIVE" },
-    orderBy: {
-      createdAt: "asc",
-    },
-  })
-
-  const academicYear =
-    academicYears.find((value) => value.id === academicYearId) ??
-    academicYears[0]
-
-  const blogs = (await getRecentBlogs({
-    academicYearId: academicYear?.id ?? "",
+  const blogs = (await getLikeBlogs({
+    query: q,
     userId: user.id!,
     pageNumber,
     rowsNumber,
-    status: status,
   })) as BlogWithUser[]
 
-  const totalBlogs = (await getRecentBlogCount(
-    user.id!,
-    academicYear?.id ?? "",
-    status.toLowerCase() as StatusEnum
-  )) as number
+  const totalBlogs = (await getLikeBlogsCount(q, user.id!)) as number
 
   return (
     <div>
+      <SearchInput />
+
       <div className={styles["action-row-wrapper"]}>
         <div className={styles["action-row-select"]}>
-          {user.role !== "GUEST" && (
-            <SelectAcademicYearInput academicYears={academicYears} />
-          )}
-
-          <SelectStatusInput />
           <SelectRowInput />
         </div>
-
-        {user.role === "STUDENT" &&
-          isBefore(Date.now(), academicYear?.closureDate ?? Date.now()) && (
-            <Button
-              variant={"outline"}
-              className={styles["add-new-blog"]}
-              asChild
-            >
-              <Link
-                href={`/contribution/blog/create?academicYearId=${academicYear?.id ?? ""}`}
-              >
-                <Icons.circlePlus />
-                Add new blog
-              </Link>
-            </Button>
-          )}
       </div>
 
       {!blogs.length && <div className={styles["no-results"]}>No results</div>}
@@ -199,11 +160,10 @@ export default async function RecentBlogsPage({
       </div>
 
       {!!blogs.length && (
-        <PaginationRecentBlog
-          academicYearId={academicYear?.id ?? ""}
+        <PaginationLikeBlogs
+          query={q}
           page={pageNumber}
           rows={rowsNumber}
-          status={status}
           totalBlogs={totalBlogs}
         />
       )}

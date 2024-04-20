@@ -1,19 +1,24 @@
 import * as React from "react"
+import { redirect } from "next/navigation"
 import type { User } from "next-auth"
 
 import { userConfig } from "@/config/site"
 import { currentUser } from "@/lib/auth/auth"
 import { SiteHeader } from "@/components/layouts/site-header"
-import styles from "@/styles/(settings)/layout.module.scss"
+import styles from "@/styles/(account)/layout.module.scss"
 
 import { SidebarNav } from "./_components/sidebar-nav"
 
-export default async function SettingsLayout({
+export default async function AccountLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = (await currentUser()) as User
+  const user = await currentUser()
+
+  if (!user) {
+    redirect("/signin")
+  }
 
   return (
     <div className={styles["layout"]}>

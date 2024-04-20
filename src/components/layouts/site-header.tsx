@@ -31,7 +31,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
         <div className={styles["outer-nav-action"]}>
           <nav className={styles["nav-action"]}>
             <Button variant="outline" className={styles["search"]} asChild>
-              <Link href={"/contribution"}>
+              <Link href={"/contribution?page=1&row=10"}>
                 <Icons.layers aria-hidden="true" />
                 <span className={styles["search-span-metadata"]}>
                   Contributions
@@ -83,12 +83,23 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                   <DropdownMenuItem className={styles["dropdown-item"]}>
                     <Link
                       className={styles["dropdown-item-link"]}
-                      href={"/settings/profile"}
+                      href={"/account/profile"}
                     >
                       <span>Account</span>
                       <Icons.settings />
                     </Link>
                   </DropdownMenuItem>
+                  {user.role === "STUDENT" && (
+                    <DropdownMenuItem className={styles["dropdown-item"]}>
+                      <Link
+                        className={styles["dropdown-item-link"]}
+                        href={"/account/recent-blogs?page=1&row=10"}
+                      >
+                        <span>Recent Blogs</span>
+                        <Icons.layers />
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   {user.role === "ADMIN" && (
                     <DropdownMenuItem className={styles["dropdown-item"]}>
                       <Link
@@ -100,6 +111,15 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                       </Link>
                     </DropdownMenuItem>
                   )}
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <Link
+                      className={styles["dropdown-item-link"]}
+                      href={"/account/like-blogs?page=1&row=10"}
+                    >
+                      <span>Like blogs</span>
+                      <Icons.heart />
+                    </Link>
+                  </DropdownMenuItem>
                 </>
               ) : (
                 <DropdownMenuItem className={styles["dropdown-item"]}>

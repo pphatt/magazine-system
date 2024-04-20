@@ -106,3 +106,10 @@ export const guestPermissionSchema = z.object({
 export const likeBlogSchema = z.object({
   blogId: z.string(),
 })
+
+export const getLikeBlogsSchema = z.object({
+  query: z.string(),
+  pageNumber: z.number().default(1),
+  rowsNumber: z.number().default(10),
+  userId: z.string(),
+})

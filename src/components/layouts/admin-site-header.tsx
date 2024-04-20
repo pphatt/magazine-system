@@ -72,7 +72,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                   <DropdownMenuItem className={styles["dropdown-item"]}>
                     <Link
                       className={styles["dropdown-item-link"]}
-                      href={"/settings/profile"}
+                      href={"/account/profile"}
                     >
                       <span>Account</span>
                       <Icons.circleUserRound />
@@ -90,16 +90,6 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                   </Link>
                 </DropdownMenuItem>
               )}
-
-              <DropdownMenuItem className={styles["dropdown-item"]}>
-                <Link
-                  className={styles["dropdown-item-link"]}
-                  href={"/settings/all"}
-                >
-                  <span>Settings</span>
-                  <Icons.settings />
-                </Link>
-              </DropdownMenuItem>
 
               {user && (
                 <>

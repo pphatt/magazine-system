@@ -88,14 +88,20 @@ export const userConfig: DashboardConfig = {
   sidebarNav: [
     {
       title: "Profile",
-      href: "/settings/profile",
+      href: "/account/profile",
       icon: "user",
       items: [],
     },
     {
       title: "Recent blogs",
-      href: "/settings/recent-blogs",
+      href: "/account/recent-blogs?page=1&row=10",
       icon: "layers",
+      items: [],
+    },
+    {
+      title: "Liked blogs",
+      href: "/account/like-blogs?page=1&row=10",
+      icon: "heart",
       items: [],
     },
   ],

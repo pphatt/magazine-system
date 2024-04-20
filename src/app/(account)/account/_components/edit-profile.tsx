@@ -35,7 +35,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Icons } from "@/components/icons"
 import { UserChangePassword } from "@/components/modals/user-change-password"
-import styles from "@/styles/(settings)/_components/edit-profile.module.scss"
+import styles from "@/styles/(account)/_components/edit-profile.module.scss"
 
 export type EditProfileInputs = z.infer<typeof editProfileSchema>
 
@@ -209,7 +209,7 @@ export function EditProfile({ user }: EditUserProps) {
             <CardHeader>
               <CardTitle>Personal information</CardTitle>
               <CardDescription>
-                Manage personal information settings
+                Manage personal information
               </CardDescription>
             </CardHeader>
             <CardContent>
