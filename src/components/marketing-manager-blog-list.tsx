@@ -65,11 +65,11 @@ export async function MarketingManagerBlogList({
               title,
               author,
               createdAt,
-              updatedAt,
               status,
               comments,
               marketingCoordinator,
               like,
+              allowGuest
             },
             index
           ) => {
@@ -97,7 +97,7 @@ export async function MarketingManagerBlogList({
                             }}
                           />
                           <AvatarFallback>
-                            <Icons.user />
+                            <Icons.user/>
                           </AvatarFallback>
                         </Avatar>
                       </div>
@@ -106,7 +106,6 @@ export async function MarketingManagerBlogList({
                           {author.name}
                         </div>
                         <div>Created at: {format(createdAt, "PPP")}</div>
-                        <div>Updated at: {format(updatedAt, "PPP")}</div>
                       </div>
                     </div>
                     <div className={styles["status-wrapper"]}>
@@ -132,6 +131,15 @@ export async function MarketingManagerBlogList({
                         ? `Graded by: ${marketingCoordinator?.name}`
                         : "Not graded yet"}
                     </p>
+                    <div className={styles["article-description"]}>
+                      Guest permission:
+                      <div
+                        className={styles["guest-permission"]}
+                        data-permission={allowGuest}
+                      >
+                        {allowGuest ? "Allowed" : "Not allowed"}
+                      </div>
+                    </div>
                     <div className={styles["article-comments-wrapper"]}>
                       <LikeBtn
                         blogId={id}
@@ -148,7 +156,7 @@ export async function MarketingManagerBlogList({
                         variant={"ghost"}
                         className={styles["comment-btn"]}
                       >
-                        <Icons.messageCircle />
+                        <Icons.messageCircle/>
                         <span>
                           {commentsCount}{" "}
                           {commentsCount > 1 ? "comments" : "comment"}

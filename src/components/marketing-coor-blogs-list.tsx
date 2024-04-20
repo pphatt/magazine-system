@@ -8,11 +8,12 @@ import { getBlogCount, getBlogsWithUser } from "@/lib/fetchers/blog"
 import type { BlogWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { GuestPermission } from "@/components/guest-permission"
 import { Icons } from "@/components/icons"
+import { LikeBtn } from "@/components/like-btn"
 import { PaginationMarketingCoor } from "@/components/pagination/pagination-marketing-coor"
 import { StudentSubmissionGrading } from "@/components/student-submission-grading"
 import styles from "@/styles/components/marketing-coor-blogs-list.module.scss"
-import {LikeBtn} from "@/components/like-btn";
 
 interface MarketingCoorBlogsListProps {
   user: User
@@ -61,10 +62,10 @@ export async function MarketingCoorBlogsList({
             title,
             author,
             createdAt,
-            updatedAt,
             status,
             comments,
             marketingCoordinator,
+            allowGuest,
             like,
           },
           index
@@ -100,7 +101,6 @@ export async function MarketingCoorBlogsList({
                     <div>
                       <div className={styles["author-name"]}>{author.name}</div>
                       <div>Created at: {format(createdAt, "PPP")}</div>
-                      <div>Updated at: {format(updatedAt, "PPP")}</div>
                     </div>
                   </div>
                   <div className={styles["status-wrapper"]}>
@@ -126,6 +126,15 @@ export async function MarketingCoorBlogsList({
                       ? `Graded by: ${marketingCoordinator?.name}`
                       : "Not graded yet"}
                   </p>
+                  <div className={styles["article-description"]}>
+                    Guest permission:
+                    <div
+                      className={styles["guest-permission"]}
+                      data-permission={allowGuest}
+                    >
+                      {allowGuest ? "Allowed" : "Not allowed"}
+                    </div>
+                  </div>
                   <div className={styles["article-comments-wrapper"]}>
                     <LikeBtn
                       blogId={id}
@@ -139,7 +148,7 @@ export async function MarketingCoorBlogsList({
                     </LikeBtn>
 
                     <Button variant={"ghost"} className={styles["comment-btn"]}>
-                      <Icons.messageCircle/>
+                      <Icons.messageCircle />
                       <span>
                         {commentsCount}{" "}
                         {commentsCount > 1 ? "comments" : "comment"}
@@ -147,12 +156,17 @@ export async function MarketingCoorBlogsList({
                     </Button>
                   </div>
                 </div>
-                {status.toLowerCase() === "pending" && (
+
+                {status === "PENDING" && (
                   <StudentSubmissionGrading
                     user={user}
                     blogId={id}
                     status={status}
                   />
+                )}
+
+                {status === "APPROVE" && (
+                  <GuestPermission blogId={id} status={allowGuest ?? false} />
                 )}
               </div>
             </article>

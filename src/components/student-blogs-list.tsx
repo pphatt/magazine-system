@@ -58,7 +58,6 @@ export async function StudentBlogsList({
             title,
             author,
             createdAt,
-            updatedAt,
             comments,
             marketingCoordinator,
             like,
@@ -96,7 +95,6 @@ export async function StudentBlogsList({
                     <div>
                       <div className={styles["author-name"]}>{author.name}</div>
                       <div>Created at: {format(createdAt, "PPP")}</div>
-                      <div>Updated at: {format(updatedAt, "PPP")}</div>
                     </div>
                   </div>
                   <div className={styles["status-wrapper"]}>
