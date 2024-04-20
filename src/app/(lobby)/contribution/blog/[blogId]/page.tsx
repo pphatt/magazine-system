@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import { BlogSubmissionGrading } from "@/components/blog-submission-grading"
 import { CommentsSection } from "@/components/comments-section"
 import { Icons } from "@/components/icons"
+import { LikeBtn } from "@/components/like-btn"
 import { RenderBlog } from "@/components/render-blog"
 import styles from "@/styles/(blog)/page.module.scss"
 import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
@@ -37,6 +38,7 @@ export default async function BlogPage({
       author: true,
       faculty: true,
       academicYear: true,
+      like: true,
     },
   })) as BlogWithInclude
 
@@ -72,14 +74,19 @@ export default async function BlogPage({
     user.id === blog.authorId ||
     (user.role !== "STUDENT" && user.role !== "GUEST")
 
+  const initialLike = blog.like.some(
+    ({ userId, blogId }) => userId === user.id && blogId === blog.id
+  )
+
   return (
     <div className={styles["blog-wrapper"]}>
       <div className={styles["action-group-wrapper"]}>
         <div className={styles["action-group-container"]}>
-          <Button className={styles["like-btn"]}>
-            <Icons.heart />
-            <span>0</span>
-          </Button>
+          <LikeBtn
+            blogId={blog.id}
+            likeCount={blog.like.length}
+            initialLike={initialLike}
+          />
 
           <Button className={styles["like-btn"]}>
             <Icons.bookmark />

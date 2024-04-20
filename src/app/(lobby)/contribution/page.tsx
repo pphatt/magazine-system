@@ -108,6 +108,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
         <>
           {user?.role === "STUDENT" && (
             <StudentBlogsList
+              user={user}
               query={q}
               page={pageNumber}
               rows={rowsNumber}
@@ -118,6 +119,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
           {user?.role === "MARKETING_COORDINATOR" && (
             <MarketingCoorBlogsList
+              user={user}
               query={q}
               page={pageNumber}
               rows={rowsNumber}
@@ -129,6 +131,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
           {(user?.role === "ADMIN" || user.role === "MARKETING_MANAGER") && (
             <MarketingManagerBlogList
+              user={user}
               query={q}
               page={pageNumber}
               rows={rowsNumber}

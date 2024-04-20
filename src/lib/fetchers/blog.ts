@@ -4,7 +4,7 @@ import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
-import {
+import type {
   getBlogsWithUserByGuestSchema,
   getBlogsWithUserByMarketingManagerSchema,
   getBlogsWithUserByStudentSchema,
@@ -84,6 +84,7 @@ export async function getBlogsWithUser({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -108,6 +109,7 @@ export async function getBlogsWithUser({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -132,6 +134,7 @@ export async function getBlogsWithUser({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -154,6 +157,7 @@ export async function getBlogsWithUser({
         author: true,
         comments: true,
         marketingCoordinator: true,
+        like: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -212,6 +216,7 @@ export async function getBlogsWithUserByStudent({
         author: true,
         comments: true,
         marketingCoordinator: true,
+        like: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -271,6 +276,7 @@ export async function getRecentBlogs({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -287,6 +293,7 @@ export async function getRecentBlogs({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -303,6 +310,7 @@ export async function getRecentBlogs({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -318,6 +326,7 @@ export async function getRecentBlogs({
         author: true,
         comments: true,
         marketingCoordinator: true,
+        like: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -404,6 +413,7 @@ export async function getBlogsWithUserByMarketingManager({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -428,6 +438,7 @@ export async function getBlogsWithUserByMarketingManager({
           author: true,
           comments: true,
           marketingCoordinator: true,
+          like: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -450,6 +461,7 @@ export async function getBlogsWithUserByMarketingManager({
         author: true,
         comments: true,
         marketingCoordinator: true,
+        like: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -498,6 +510,7 @@ export async function getBlogsWithUserByGuest({
         author: true,
         comments: true,
         marketingCoordinator: true,
+        like: true,
       },
       orderBy: {
         createdAt: "desc",

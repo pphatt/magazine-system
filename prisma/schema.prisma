@@ -64,6 +64,7 @@ model User {
   Comment                   Comment[]
   authorBlogs               Blogs[]   @relation("Author")
   marketingCoordinatorBlogs Blogs[]   @relation("Marketing Coordinator")
+  like                      Like[]
 }
 
 model Account {
@@ -149,10 +150,10 @@ model Blogs {
   location String[] // store as array for multi contribution string[]
 
   facultyId String
-  faculty   Faculty @relation(fields: [facultyId], references: [id])
+  faculty   Faculty @relation(fields: [facultyId], references: [id], onDelete: Cascade)
 
   academicYearId String
-  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
 
   authorId String
   author   User   @relation("Author", fields: [authorId], references: [id])
@@ -161,6 +162,17 @@ model Blogs {
   marketingCoordinator   User?   @relation("Marketing Coordinator", fields: [marketingCoordinatorId], references: [id])
 
   comments Comment[]
+  like     Like[]
+}
+
+model Like {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  blog   Blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId String
+
+  @@id([userId, blogId])
 }
 
 model Comment {

@@ -17,9 +17,10 @@ export type BlogWithUser = Prisma.BlogsGetPayload<{
     author: true
     comments: true
     marketingCoordinator: true
+    like: true
   }
 }>
 
 export type BlogWithInclude = Prisma.BlogsGetPayload<{
-  include: { author: true; faculty: true; academicYear: true }
+  include: { author: true; faculty: true; academicYear: true, like: true }
 }>

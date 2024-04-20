@@ -102,3 +102,7 @@ export const guestPermissionSchema = z.object({
   blogId: z.string(),
   status: z.boolean(),
 })
+
+export const likeBlogSchema = z.object({
+  blogId: z.string(),
+})

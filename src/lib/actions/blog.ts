@@ -14,6 +14,7 @@ import { currentUser } from "@/lib/auth/auth"
 import {
   blogGradingSchema,
   guestPermissionSchema,
+  likeBlogSchema,
   type uploadBlogSchema,
   type uploadEditBlogSchema,
 } from "@/lib/validations/blog"
@@ -372,5 +373,52 @@ export async function guestPermission(
     }
 
     return { error: "Could not allow guest at this time. Please try later" }
+  }
+}
+
+export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
+  try {
+    const { blogId } = likeBlogSchema.parse(values)
+
+    const user = await currentUser()
+
+    if (!user || !user.id) {
+      return { error: "Unauthorized" }
+    }
+
+    // check if user has already like this blog
+    const existingLike = await db.like.findFirst({
+      where: {
+        userId: user.id,
+        blogId,
+      },
+    })
+
+    if (existingLike) {
+      await db.like.delete({
+        where: {
+          userId_blogId: {
+            userId: user.id,
+            blogId,
+          }
+        },
+      })
+    } else {
+      await db.like.create({
+        data: {
+          userId: user.id,
+          blogId,
+        },
+      })
+    }
+
+    return { success: "OK" }
+  } catch (error) {
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      return { error: JSON.stringify(error.message) }
+    }
+
+    return { error: "Could not like this blog at this moment. Please try later" }
   }
 }

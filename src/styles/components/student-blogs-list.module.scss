@@ -11,9 +11,10 @@
 
   overflow-wrap: anywhere;
 
-  box-shadow: 0 0 #000,
-  0 0 #000,
-  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 0 #000,
+    0 0 #000,
+    0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .article-wrapper {
@@ -25,9 +26,10 @@
 
   margin: 0 0 0.5rem;
 
-  box-shadow: 0 0 #000,
-  0 0 #000,
-  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 0 #000,
+    0 0 #000,
+    0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .article-container {
@@ -122,6 +124,42 @@
 
 .article-comments-wrapper {
   display: flex;
+}
+
+.like-btn {
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  color: hsl(var(--foreground)) !important;
+  background-color: transparent !important;
+
+  height: 36px !important;
+  width: fit-content !important;
+
+  border-radius: calc(0.5rem - 2px) !important;
+
+  padding: 0 0.5rem !important;
+
+  svg {
+    width: 1rem !important;
+    height: 1rem !important;
+
+    padding: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+
+  &:hover {
+    background-color: hsl(var(--accent)) !important;
+  }
+}
+
+.current-like {
+  svg {
+    stroke: none;
+
+    fill: hsl(351.36, 100%, 76.86%) !important;
+  }
 }
 
 .comment-btn {
