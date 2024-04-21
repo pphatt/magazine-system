@@ -18,6 +18,7 @@ export type BlogWithUser = Prisma.BlogsGetPayload<{
     comments: true
     marketingCoordinator: true
     like: true
+    save: true
   }
 }>
 
@@ -36,6 +37,23 @@ export type LikeIncludeBlog = Prisma.LikeGetPayload<{
       like: true
       comments: true
       marketingCoordinator: true,
+      save: true
+    }
+  }>
+}
+
+export type SaveIncludeBlog = Prisma.SaveBlogsGetPayload<{
+  include: { blog: true }
+}> & {
+  blog: Prisma.BlogsGetPayload<{
+    include: {
+      author: true
+      faculty: true
+      academicYear: true
+      like: true
+      comments: true
+      marketingCoordinator: true,
+      save: true
     }
   }>
 }

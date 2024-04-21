@@ -217,3 +217,31 @@
     background-color: hsl(var(--accent)) !important;
   }
 }
+
+.save-btn {
+  flex-direction: row !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  color: hsl(var(--foreground)) !important;
+  background-color: transparent !important;
+
+  height: 36px !important;
+  width: fit-content !important;
+
+  border-radius: calc(0.5rem - 2px) !important;
+
+  padding: 0 0.5rem !important;
+
+  svg {
+    width: 1rem !important;
+    height: 1rem !important;
+
+    padding: 0 !important;
+    margin-right: 0.5rem !important;
+  }
+
+  &:hover {
+    background-color: hsl(var(--accent)) !important;
+  }
+}

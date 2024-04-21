@@ -15,6 +15,7 @@ import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationManager } from "@/components/pagination/pagination-blog-manager"
 import styles from "@/styles/components/marketing-manager-blog-list.module.scss"
+import {SaveBlog} from "@/components/save-blog";
 
 interface MarketingManagerBlogListProps {
   user: User
@@ -69,7 +70,8 @@ export async function MarketingManagerBlogList({
               comments,
               marketingCoordinator,
               like,
-              allowGuest
+              save,
+              allowGuest,
             },
             index
           ) => {
@@ -78,6 +80,10 @@ export async function MarketingManagerBlogList({
             ).length
 
             const initialLike = like.some(
+              ({ userId, blogId }) => userId === user.id && blogId === id
+            )
+
+            const initialSave = save.some(
               ({ userId, blogId }) => userId === user.id && blogId === id
             )
 
@@ -151,6 +157,14 @@ export async function MarketingManagerBlogList({
                           {like.length} {like.length > 1 ? "likes" : "like"}
                         </span>
                       </LikeBtn>
+
+                      <SaveBlog
+                        blogId={id}
+                        initialSave={initialSave}
+                        className={styles["save-btn"]}
+                      >
+                        <span>Save blog</span>
+                      </SaveBlog>
 
                       <Button
                         variant={"ghost"}

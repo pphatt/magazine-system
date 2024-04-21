@@ -96,7 +96,6 @@ export default async function BlogPage({
 
           <SaveBlog
             blogId={blog.id}
-            saveCount={blog.save.length}
             initialSave={initialSave}
           />
 

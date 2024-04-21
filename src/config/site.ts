@@ -104,5 +104,11 @@ export const userConfig: DashboardConfig = {
       icon: "heart",
       items: [],
     },
+    {
+      title: "Save blogs",
+      href: "/account/save-blogs?page=1&row=10",
+      icon: "bookmark",
+      items: [],
+    },
   ],
 }

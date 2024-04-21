@@ -17,6 +17,7 @@ import { PaginationLikeBlogs } from "@/components/pagination/pagination-like-blo
 import styles from "@/styles/(account)/like-blogs/page.module.scss"
 import { SearchInput } from "@/app/(lobby)/contribution/_components/search-input"
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
+import {SaveBlog} from "@/components/save-blog";
 
 interface LikeBlogsPageProps {
   searchParams: SearchParams
@@ -57,6 +58,7 @@ export default async function LikeBlogsPage({
         {blogs.map(({ blog }, index) => {
           const comments = blog.comments
           const like = blog.like
+          const save = blog.save
           const marketingCoordinator = blog.marketingCoordinator
 
           const { id, title, author, status, createdAt } = blog
@@ -66,6 +68,10 @@ export default async function LikeBlogsPage({
           ).length
 
           const initialLike = like.some(
+            ({ userId, blogId }) => userId === user.id && blogId === id
+          )
+
+          const initialSave = save.some(
             ({ userId, blogId }) => userId === user.id && blogId === id
           )
 
@@ -128,6 +134,14 @@ export default async function LikeBlogsPage({
                         {like.length} {like.length > 1 ? "likes" : "like"}
                       </span>
                     </LikeBtn>
+
+                    <SaveBlog
+                      blogId={id}
+                      initialSave={initialSave}
+                      className={styles["save-btn"]}
+                    >
+                      <span>Save blog</span>
+                    </SaveBlog>
 
                     <Button variant={"ghost"} className={styles["comment-btn"]}>
                       <Icons.messageCircle />

@@ -90,6 +90,7 @@ export async function getBlogsWithUser({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -115,6 +116,7 @@ export async function getBlogsWithUser({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -140,6 +142,7 @@ export async function getBlogsWithUser({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -163,6 +166,7 @@ export async function getBlogsWithUser({
         comments: true,
         marketingCoordinator: true,
         like: true,
+        save: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -222,6 +226,7 @@ export async function getBlogsWithUserByStudent({
         comments: true,
         marketingCoordinator: true,
         like: true,
+        save: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -310,6 +315,7 @@ export async function getRecentBlogs({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -335,6 +341,7 @@ export async function getRecentBlogs({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -360,6 +367,7 @@ export async function getRecentBlogs({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "asc",
@@ -383,6 +391,7 @@ export async function getRecentBlogs({
         comments: true,
         marketingCoordinator: true,
         like: true,
+        save: true,
       },
       orderBy: {
         createdAt: "asc",
@@ -470,6 +479,7 @@ export async function getBlogsWithUserByMarketingManager({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -495,6 +505,7 @@ export async function getBlogsWithUserByMarketingManager({
           comments: true,
           marketingCoordinator: true,
           like: true,
+          save: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -518,6 +529,7 @@ export async function getBlogsWithUserByMarketingManager({
         comments: true,
         marketingCoordinator: true,
         like: true,
+        save: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -567,6 +579,7 @@ export async function getBlogsWithUserByGuest({
         comments: true,
         marketingCoordinator: true,
         like: true,
+        save: true,
       },
       orderBy: {
         createdAt: "desc",
@@ -625,6 +638,68 @@ export async function getLikeBlogs({
             author: true,
             comments: true,
             marketingCoordinator: true,
+            save: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getSaveBlogsCount(query: string, userId: string) {
+  try {
+    return await db.blogs.count({
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        save: {
+          some: {
+            userId: userId,
+          },
+        },
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+export async function getSaveBlogs({
+  query,
+  userId,
+  pageNumber,
+  rowsNumber,
+}: z.infer<typeof getLikeBlogsSchema>) {
+  try {
+    return await db.saveBlogs.findMany({
+      skip: (pageNumber - 1) * rowsNumber,
+      take: rowsNumber,
+      where: {
+        userId: userId,
+        blog: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      },
+      include: {
+        blog: {
+          include: {
+            like: true,
+            author: true,
+            comments: true,
+            marketingCoordinator: true,
+            save: true,
           },
         },
       },

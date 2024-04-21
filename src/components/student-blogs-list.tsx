@@ -14,6 +14,7 @@ import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationBlogStudent } from "@/components/pagination/pagination-blog-student"
 import styles from "@/styles/components/student-blogs-list.module.scss"
+import {SaveBlog} from "@/components/save-blog";
 
 interface StudentBlogsListProps {
   user: User
@@ -61,6 +62,7 @@ export async function StudentBlogsList({
             comments,
             marketingCoordinator,
             like,
+            save
           },
           index
         ) => {
@@ -69,6 +71,10 @@ export async function StudentBlogsList({
           ).length
 
           const initialLike = like.some(
+            ({ userId, blogId }) => userId === user.id && blogId === id
+          )
+
+          const initialSave = save.some(
             ({ userId, blogId }) => userId === user.id && blogId === id
           )
 
@@ -126,6 +132,14 @@ export async function StudentBlogsList({
                         {like.length} {like.length > 1 ? "likes" : "like"}
                       </span>
                     </LikeBtn>
+
+                    <SaveBlog
+                      blogId={id}
+                      initialSave={initialSave}
+                      className={styles["save-btn"]}
+                    >
+                      <span>Save blog</span>
+                    </SaveBlog>
 
                     <Button variant={"ghost"} className={styles["comment-btn"]}>
                       <Icons.messageCircle />

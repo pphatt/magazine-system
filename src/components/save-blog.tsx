@@ -12,13 +12,11 @@ import styles from "@/styles/components/save-blog.module.scss"
 
 interface SaveBlogProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   blogId: string
-  saveCount: number
   initialSave: boolean
 }
 
 export function SaveBlog({
   blogId,
-  saveCount,
   initialSave,
   className,
   children,
@@ -58,7 +56,7 @@ export function SaveBlog({
       disabled={isPending}
     >
       <Icons.bookmark />
-      {children ?? <span>{saveCount}</span>}
+      {children}
     </Button>
   )
 }

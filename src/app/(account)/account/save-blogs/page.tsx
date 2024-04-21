@@ -1,78 +1,68 @@
 import * as React from "react"
 import Link from "next/link"
-import { type StatusEnum } from "@prisma/client"
+import type { SearchParams } from "@/types"
 import { format } from "date-fns"
 import type { User } from "next-auth"
 
-import { getBlogCount, getBlogsWithUser } from "@/lib/fetchers/blog"
-import type { BlogWithUser } from "@/lib/prisma"
+import { currentUser } from "@/lib/auth/auth"
+import { getSaveBlogs, getSaveBlogsCount } from "@/lib/fetchers/blog"
+import type { SaveIncludeBlog } from "@/lib/prisma"
+import { parserPage, parserRows } from "@/lib/utils"
+import { likeBlogsParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { GuestPermission } from "@/components/guest-permission"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
-import { PaginationMarketingCoor } from "@/components/pagination/pagination-marketing-coor"
-import { SaveBlog } from "@/components/save-blog"
-import { StudentSubmissionGrading } from "@/components/student-submission-grading"
-import styles from "@/styles/components/marketing-coor-blogs-list.module.scss"
+import { PaginationLikeBlogs } from "@/components/pagination/pagination-like-blogs"
+import styles from "@/styles/(account)/save-blogs/page.module.scss"
+import { SearchInput } from "@/app/(lobby)/contribution/_components/search-input"
+import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
+import {SaveBlog} from "@/components/save-blog";
 
-interface MarketingCoorBlogsListProps {
-  user: User
-  query: string
-  page: number
-  rows: number
-  status: StatusEnum
-  facultyId: string
-  academicYearId: string
+interface SaveBlogsPageProps {
+  searchParams: SearchParams
 }
 
-export async function MarketingCoorBlogsList({
-  user,
-  query,
-  page,
-  rows,
-  status,
-  facultyId,
-  academicYearId,
-}: MarketingCoorBlogsListProps) {
-  const blogs = (await getBlogsWithUser({
-    query,
-    pageNumber: page,
-    rowsNumber: rows,
-    status,
-    facultyId,
-    academicYearId,
-  })) as BlogWithUser[]
+export default async function SaveBlogsPage({
+  searchParams,
+}: SaveBlogsPageProps) {
+  const user = (await currentUser()) as User
 
-  const totalBlogs = (await getBlogCount(
-    query,
-    facultyId,
-    academicYearId,
-    status
-  )) as number
+  const { page, row, q } = likeBlogsParamsSchema.parse(searchParams)
 
-  if (!blogs?.length) {
-    return <div className={styles["no-results"]}>No results</div>
-  }
+  const pageNumber = parserPage(page)
+  const rowsNumber = parserRows(row, 10)
+
+  const blogs = (await getSaveBlogs({
+    query: q,
+    userId: user.id!,
+    pageNumber,
+    rowsNumber,
+  })) as SaveIncludeBlog[]
+
+  const totalBlogs = (await getSaveBlogsCount(q, user.id!)) as number
 
   return (
     <div>
-      {blogs.map(
-        (
-          {
-            id,
-            title,
-            author,
-            createdAt,
-            status,
-            comments,
-            marketingCoordinator,
-            allowGuest,
-            like,
-            save,
-          },
-          index
-        ) => {
+      <SearchInput />
+
+      <div className={styles["action-row-wrapper"]}>
+        <div className={styles["action-row-select"]}>
+          <SelectRowInput />
+        </div>
+      </div>
+
+      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
+
+      <div>
+        {blogs.map(({ blog }, index) => {
+          const comments = blog.comments
+          const like = blog.like
+          const save = blog.save
+          const marketingCoordinator = blog.marketingCoordinator
+
+          const { id, title, author, status, createdAt } = blog
+
           const commentsCount = comments.filter(
             (comment) => !comment.replyToId
           ).length
@@ -133,15 +123,6 @@ export async function MarketingCoorBlogsList({
                       ? `Graded by: ${marketingCoordinator?.name}`
                       : "Not graded yet"}
                   </p>
-                  <div className={styles["article-description"]}>
-                    Guest permission:
-                    <div
-                      className={styles["guest-permission"]}
-                      data-permission={allowGuest}
-                    >
-                      {allowGuest ? "Allowed" : "Not allowed"}
-                    </div>
-                  </div>
                   <div className={styles["article-comments-wrapper"]}>
                     <LikeBtn
                       blogId={id}
@@ -171,32 +152,20 @@ export async function MarketingCoorBlogsList({
                     </Button>
                   </div>
                 </div>
-
-                {status === "PENDING" && (
-                  <StudentSubmissionGrading
-                    user={user}
-                    blogId={id}
-                    status={status}
-                  />
-                )}
-
-                {status === "APPROVE" && (
-                  <GuestPermission blogId={id} status={allowGuest ?? false} />
-                )}
               </div>
             </article>
           )
-        }
-      )}
+        })}
+      </div>
 
-      <PaginationMarketingCoor
-        query={query}
-        page={page}
-        rows={rows}
-        academicYearId={academicYearId}
-        status={status}
-        totalBlogs={totalBlogs}
-      />
+      {!!blogs.length && (
+        <PaginationLikeBlogs
+          query={q}
+          page={pageNumber}
+          rows={rowsNumber}
+          totalBlogs={totalBlogs}
+        />
+      )}
     </div>
   )
 }

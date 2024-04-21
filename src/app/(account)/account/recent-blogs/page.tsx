@@ -21,6 +21,7 @@ import { SelectAcademicYearInput } from "@/app/(lobby)/contribution/_components/
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
 import { SelectStatusInput } from "@/app/(lobby)/contribution/_components/select-status"
 import {SearchInput} from "@/app/(lobby)/contribution/_components/search-input";
+import {SaveBlog} from "@/components/save-blog";
 
 interface SearchPageProps {
   searchParams: SearchParams
@@ -109,6 +110,7 @@ export default async function RecentBlogsPage({
               comments,
               marketingCoordinator,
               like,
+              save
             },
             index
           ) => {
@@ -117,6 +119,10 @@ export default async function RecentBlogsPage({
             ).length
 
             const initialLike = like.some(
+              ({ userId, blogId }) => userId === user.id && blogId === id
+            )
+
+            const initialSave = save.some(
               ({ userId, blogId }) => userId === user.id && blogId === id
             )
 
@@ -181,6 +187,14 @@ export default async function RecentBlogsPage({
                           {like.length} {like.length > 1 ? "likes" : "like"}
                         </span>
                       </LikeBtn>
+
+                      <SaveBlog
+                        blogId={id}
+                        initialSave={initialSave}
+                        className={styles["save-btn"]}
+                      >
+                        <span>Save blog</span>
+                      </SaveBlog>
 
                       <Button
                         variant={"ghost"}
