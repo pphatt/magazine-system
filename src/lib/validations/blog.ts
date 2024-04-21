@@ -79,6 +79,7 @@ export const getBlogsWithUserByMarketingManagerSchema = z.object({
 })
 
 export const getRecentBlogsSchema = z.object({
+  query: z.string(),
   userId: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),

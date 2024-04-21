@@ -17,6 +17,7 @@ export const contributionParamsSchema = z.object({
 })
 
 export const recentBlogParamsSchema = z.object({
+  q: z.coerce.string().default(""),
   page: z.coerce.string().default("1"),
   row: z.coerce.string(),
   academicYearId: z.coerce.string(),

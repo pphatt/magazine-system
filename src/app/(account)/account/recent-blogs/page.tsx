@@ -20,6 +20,7 @@ import styles from "@/styles/(account)/recent-blogs/page.module.scss"
 import { SelectAcademicYearInput } from "@/app/(lobby)/contribution/_components/select-academic-year"
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
 import { SelectStatusInput } from "@/app/(lobby)/contribution/_components/select-status"
+import {SearchInput} from "@/app/(lobby)/contribution/_components/search-input";
 
 interface SearchPageProps {
   searchParams: SearchParams
@@ -30,7 +31,7 @@ export default async function RecentBlogsPage({
 }: SearchPageProps) {
   const user = (await currentUser()) as User
 
-  const { page, row, academicYearId, status } =
+  const { page, row, academicYearId, status, q } =
     recentBlogParamsSchema.parse(searchParams)
 
   const pageNumber = parserPage(page)
@@ -48,6 +49,7 @@ export default async function RecentBlogsPage({
     academicYears[0]
 
   const blogs = (await getRecentBlogs({
+    query: q,
     academicYearId: academicYear?.id ?? "",
     userId: user.id!,
     pageNumber,
@@ -56,6 +58,7 @@ export default async function RecentBlogsPage({
   })) as BlogWithUser[]
 
   const totalBlogs = (await getRecentBlogCount(
+    q,
     user.id!,
     academicYear?.id ?? "",
     status.toLowerCase() as StatusEnum
@@ -63,6 +66,8 @@ export default async function RecentBlogsPage({
 
   return (
     <div>
+      <SearchInput />
+
       <div className={styles["action-row-wrapper"]}>
         <div className={styles["action-row-select"]}>
           {user.role !== "GUEST" && (

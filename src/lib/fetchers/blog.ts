@@ -234,6 +234,7 @@ export async function getBlogsWithUserByStudent({
 }
 
 export async function getRecentBlogCount(
+  query: string,
   userId: string,
   academicYearId: string,
   status: string
@@ -241,13 +242,24 @@ export async function getRecentBlogCount(
   try {
     if (status === "all blogs") {
       return await db.blogs.count({
-        where: { authorId: userId, academicYearId },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          authorId: userId,
+          academicYearId,
+        },
       })
     }
 
     if (status !== "undefined") {
       return await db.blogs.count({
         where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
           authorId: userId,
           academicYearId,
           status: status.toUpperCase() as StatusEnum,
@@ -256,7 +268,14 @@ export async function getRecentBlogCount(
     }
 
     return await db.blogs.count({
-      where: { authorId: userId, academicYearId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        authorId: userId,
+        academicYearId,
+      },
     })
   } catch (err) {
     console.log(err)
@@ -265,6 +284,7 @@ export async function getRecentBlogCount(
 }
 
 export async function getRecentBlogs({
+  query,
   userId,
   pageNumber,
   rowsNumber,
@@ -276,7 +296,15 @@ export async function getRecentBlogs({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, academicYearId, status: "APPROVE" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          authorId: userId,
+          academicYearId,
+          status: "APPROVE",
+        },
         include: {
           author: true,
           comments: true,
@@ -293,7 +321,15 @@ export async function getRecentBlogs({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, academicYearId, status: "PENDING" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          authorId: userId,
+          academicYearId,
+          status: "PENDING",
+        },
         include: {
           author: true,
           comments: true,
@@ -310,7 +346,15 @@ export async function getRecentBlogs({
       return await db.blogs.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
-        where: { authorId: userId, academicYearId, status: "REJECT" },
+        where: {
+          title: {
+            contains: query,
+            mode: "insensitive",
+          },
+          authorId: userId,
+          academicYearId,
+          status: "REJECT",
+        },
         include: {
           author: true,
           comments: true,
@@ -326,7 +370,14 @@ export async function getRecentBlogs({
     return await db.blogs.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
-      where: { authorId: userId, academicYearId },
+      where: {
+        title: {
+          contains: query,
+          mode: "insensitive",
+        },
+        authorId: userId,
+        academicYearId,
+      },
       include: {
         author: true,
         comments: true,
@@ -578,8 +629,8 @@ export async function getLikeBlogs({
         },
       },
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     })
   } catch (err) {
     console.log(err)
