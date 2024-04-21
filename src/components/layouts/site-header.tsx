@@ -116,6 +116,38 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                       </DropdownMenuItem>
                     </>
                   )}
+                  {user.role === "MARKETING_COORDINATOR" && (
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/contribution/manage"}
+                        >
+                          <span>Manage contribution</span>
+                          <Icons.building />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {user.role === "MARKETING_MANAGER" && (
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/contribution/manage"}
+                        >
+                          <span>Manage faculty</span>
+                          <Icons.building />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator
                     className={styles["dropdown-separate-line"]}
                   />
