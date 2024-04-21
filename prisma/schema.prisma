@@ -62,9 +62,10 @@ model User {
 
   accounts                  Account[]
   Comment                   Comment[]
-  authorBlogs               Blogs[]   @relation("Author")
-  marketingCoordinatorBlogs Blogs[]   @relation("Marketing Coordinator")
+  authorBlogs               Blogs[]     @relation("Author")
+  marketingCoordinatorBlogs Blogs[]     @relation("Marketing Coordinator")
   like                      Like[]
+  save                      SaveBlogs[]
 }
 
 model Account {
@@ -163,9 +164,22 @@ model Blogs {
 
   comments Comment[]
   like     Like[]
+  save     SaveBlogs[]
 }
 
 model Like {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  blog   Blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  blogId String
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, blogId])
+}
+
+model SaveBlogs {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 

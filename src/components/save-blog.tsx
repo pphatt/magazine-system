@@ -4,26 +4,26 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { likeBlog } from "@/lib/actions/blog"
+import { saveBlog } from "@/lib/actions/blog"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
-import styles from "@/styles/components/like-btn.module.scss"
+import styles from "@/styles/components/save-blog.module.scss"
 
-interface LikeBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface SaveBlogProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   blogId: string
-  likeCount: number
-  initialLike: boolean
+  saveCount: number
+  initialSave: boolean
 }
 
-export function LikeBtn({
+export function SaveBlog({
   blogId,
-  likeCount,
-  initialLike,
+  saveCount,
+  initialSave,
   className,
   children,
   ...props
-}: LikeBtnProps) {
+}: SaveBlogProps) {
   const router = useRouter()
   const [isPending, startTransition] = React.useTransition()
 
@@ -34,10 +34,11 @@ export function LikeBtn({
           blogId,
         }
 
-        const req = await likeBlog(payload)
+        const req = await saveBlog(payload)
 
         if ("success" in req) {
           router.refresh()
+          toast.success(req.success)
         } else {
           toast.error(req.error)
         }
@@ -50,14 +51,14 @@ export function LikeBtn({
   return (
     <Button
       {...props}
-      className={cn(className ?? styles["like-btn"], {
-        [`${styles["current-like"]}`]: initialLike,
+      className={cn(className ?? styles["save-blog-btn"], {
+        [`${styles["current-save-blog"]}`]: initialSave,
       })}
       onClick={onSubmit}
       disabled={isPending}
     >
-      <Icons.heart />
-      {children ?? <span>{likeCount}</span>}
+      <Icons.bookmark />
+      {children ?? <span>{saveCount}</span>}
     </Button>
   )
 }

@@ -59,7 +59,7 @@ export default async function LikeBlogsPage({
           const like = blog.like
           const marketingCoordinator = blog.marketingCoordinator
 
-          const { id, title, author, status, createdAt, updatedAt } = blog
+          const { id, title, author, status, createdAt } = blog
 
           const commentsCount = comments.filter(
             (comment) => !comment.replyToId

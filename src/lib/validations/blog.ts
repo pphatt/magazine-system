@@ -108,6 +108,10 @@ export const likeBlogSchema = z.object({
   blogId: z.string(),
 })
 
+export const saveBlogSchema = z.object({
+  blogId: z.string(),
+})
+
 export const getLikeBlogsSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),

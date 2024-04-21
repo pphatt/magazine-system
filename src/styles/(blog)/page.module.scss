@@ -62,46 +62,6 @@
   }
 }
 
-.like-btn {
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-
-  width: fit-content !important;
-  height: fit-content !important;
-
-  color: hsl(var(--foreground)) !important;
-  background-color: transparent !important;
-
-  padding: 0 !important;
-
-  border-radius: 9999px !important;
-
-  &:hover {
-    color: hsl(var(--foreground)) !important;
-    background-color: hsl(var(--muted)) !important;
-  }
-
-  svg {
-    width: 2.5rem;
-    height: 2.5rem;
-
-    padding: 0.5rem;
-
-    transition-duration: 0.15s;
-    transition-property: fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-}
-
-.current-like {
-  svg {
-    stroke: none;
-
-    fill: hsl(351.36, 100%, 76.86%) !important;
-  }
-}
-
 .blog-content-wrapper {
   flex: 1;
 

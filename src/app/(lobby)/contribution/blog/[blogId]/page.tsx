@@ -20,6 +20,7 @@ import { RenderBlog } from "@/components/render-blog"
 import styles from "@/styles/(blog)/page.module.scss"
 import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
 import { AllowGuest } from "@/app/(lobby)/contribution/blog/[blogId]/_components/allow-guest"
+import {SaveBlog} from "@/components/save-blog";
 
 const DownloadZip = dynamic(() => import("@/components/download-zip"), {
   ssr: false,
@@ -39,6 +40,7 @@ export default async function BlogPage({
       faculty: true,
       academicYear: true,
       like: true,
+      save: true,
     },
   })) as BlogWithInclude
 
@@ -78,6 +80,10 @@ export default async function BlogPage({
     ({ userId, blogId }) => userId === user.id && blogId === blog.id
   )
 
+  const initialSave = blog.save.some(
+    ({ userId, blogId }) => userId === user.id && blogId === blog.id
+  )
+
   return (
     <div className={styles["blog-wrapper"]}>
       <div className={styles["action-group-wrapper"]}>
@@ -88,10 +94,11 @@ export default async function BlogPage({
             initialLike={initialLike}
           />
 
-          <Button className={styles["like-btn"]}>
-            <Icons.bookmark />
-            <span>0</span>
-          </Button>
+          <SaveBlog
+            blogId={blog.id}
+            saveCount={blog.save.length}
+            initialSave={initialSave}
+          />
 
           <ActionGroupButton />
         </div>

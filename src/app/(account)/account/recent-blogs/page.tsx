@@ -105,7 +105,6 @@ export default async function RecentBlogsPage({
               title,
               author,
               createdAt,
-              updatedAt,
               status,
               comments,
               marketingCoordinator,

@@ -15,6 +15,7 @@ import {
   blogGradingSchema,
   guestPermissionSchema,
   likeBlogSchema,
+  saveBlogSchema,
   type uploadBlogSchema,
   type uploadEditBlogSchema,
 } from "@/lib/validations/blog"
@@ -400,7 +401,7 @@ export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
           userId_blogId: {
             userId: user.id,
             blogId,
-          }
+          },
         },
       })
     } else {
@@ -419,6 +420,59 @@ export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
       return { error: JSON.stringify(error.message) }
     }
 
-    return { error: "Could not like this blog at this moment. Please try later" }
+    return {
+      error: "Could not like this blog at this moment. Please try later",
+    }
+  }
+}
+
+export async function saveBlog(values: z.infer<typeof saveBlogSchema>) {
+  try {
+    const { blogId } = saveBlogSchema.parse(values)
+
+    const user = await currentUser()
+
+    if (!user || !user.id) {
+      return { error: "Unauthorized" }
+    }
+
+    // check if user has already save this blog
+    const existingSaveBlog = await db.saveBlogs.findFirst({
+      where: {
+        userId: user.id,
+        blogId,
+      },
+    })
+
+    if (existingSaveBlog) {
+      await db.saveBlogs.delete({
+        where: {
+          userId_blogId: {
+            userId: user.id,
+            blogId,
+          },
+        },
+      })
+
+      return { success: "Unsaved blog successfully." }
+    }
+
+    await db.saveBlogs.create({
+      data: {
+        userId: user.id,
+        blogId,
+      },
+    })
+
+    return { success: "Save blog successfully." }
+  } catch (error) {
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      return { error: JSON.stringify(error.message) }
+    }
+
+    return {
+      error: "Could not save this blog at this moment. Please try later",
+    }
   }
 }

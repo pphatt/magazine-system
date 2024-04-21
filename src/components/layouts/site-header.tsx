@@ -131,7 +131,7 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                   <DropdownMenuItem className={styles["dropdown-item"]}>
                     <Link
                       className={styles["dropdown-item-link"]}
-                      href={"/account/like-blogs?page=1&row=10"}
+                      href={"/account/save-blogs?page=1&row=10"}
                     >
                       <span>Save blogs</span>
                       <Icons.bookmarks />
