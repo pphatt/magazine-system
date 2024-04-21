@@ -6,7 +6,7 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import { getLikeBlogs, getLikeBlogsCount } from "@/lib/fetchers/blog"
-import type { BlogWithUser } from "@/lib/prisma"
+import type { LikeIncludeBlog } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
 import { likeBlogsParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -15,8 +15,8 @@ import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationLikeBlogs } from "@/components/pagination/pagination-like-blogs"
 import styles from "@/styles/(account)/like-blogs/page.module.scss"
+import { SearchInput } from "@/app/(lobby)/contribution/_components/search-input"
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
-import {SearchInput} from "@/app/(lobby)/contribution/_components/search-input";
 
 interface LikeBlogsPageProps {
   searchParams: SearchParams
@@ -37,7 +37,7 @@ export default async function LikeBlogsPage({
     userId: user.id!,
     pageNumber,
     rowsNumber,
-  })) as BlogWithUser[]
+  })) as LikeIncludeBlog[]
 
   const totalBlogs = (await getLikeBlogsCount(q, user.id!)) as number
 
@@ -54,109 +54,95 @@ export default async function LikeBlogsPage({
       {!blogs.length && <div className={styles["no-results"]}>No results</div>}
 
       <div>
-        {blogs.map(
-          (
-            {
-              id,
-              title,
-              author,
-              createdAt,
-              updatedAt,
-              status,
-              comments,
-              marketingCoordinator,
-              like,
-            },
-            index
-          ) => {
-            const commentsCount = comments.filter(
-              (comment) => !comment.replyToId
-            ).length
+        {blogs.map(({ blog }, index) => {
+          const comments = blog.comments
+          const like = blog.like
+          const marketingCoordinator = blog.marketingCoordinator
 
-            const initialLike = like.some(
-              ({ userId, blogId }) => userId === user.id && blogId === id
-            )
+          const { id, title, author, status, createdAt, updatedAt } = blog
 
-            return (
-              <article className={styles["article-wrapper"]} key={index}>
-                <div className={styles["article-container"]}>
-                  <div className={styles["article-header-wrapper"]}>
-                    <div className={styles["article-header-container"]}>
-                      <div className={styles["author-avatar-wrapper"]}>
-                        <Avatar className={styles["avatar"]}>
-                          <AvatarImage
-                            src={author.image ?? ""}
-                            alt={""}
-                            style={{
-                              objectFit: "cover",
-                              objectPosition: "top",
-                            }}
-                          />
-                          <AvatarFallback>
-                            <Icons.user />
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
-                      <div>
-                        <div className={styles["author-name"]}>
-                          {author.name}
-                        </div>
-                        <div>Created at: {format(createdAt, "PPP")}</div>
-                        <div>Updated at: {format(updatedAt, "PPP")}</div>
-                      </div>
+          const commentsCount = comments.filter(
+            (comment) => !comment.replyToId
+          ).length
+
+          const initialLike = like.some(
+            ({ userId, blogId }) => userId === user.id && blogId === id
+          )
+
+          return (
+            <article className={styles["article-wrapper"]} key={index}>
+              <div className={styles["article-container"]}>
+                <div className={styles["article-header-wrapper"]}>
+                  <div className={styles["article-header-container"]}>
+                    <div className={styles["author-avatar-wrapper"]}>
+                      <Avatar className={styles["avatar"]}>
+                        <AvatarImage
+                          src={author.image ?? ""}
+                          alt={""}
+                          style={{
+                            objectFit: "cover",
+                            objectPosition: "top",
+                          }}
+                        />
+                        <AvatarFallback>
+                          <Icons.user />
+                        </AvatarFallback>
+                      </Avatar>
                     </div>
-                    <div className={styles["status-wrapper"]}>
-                      <div
-                        className={styles["upload-status"]}
-                        data-submit={status.toLowerCase()}
-                      >
-                        {status.toLowerCase()}
-                      </div>
+                    <div>
+                      <div className={styles["author-name"]}>{author.name}</div>
+                      <div>Created at: {format(createdAt, "PPP")}</div>
+                      <div>Updated at: {format(updatedAt, "PPP")}</div>
                     </div>
                   </div>
-                  <div className={styles["article-content-wrapper"]}>
-                    <h3 className={styles["article-title"]}>
-                      <Link
-                        href={`/contribution/blog/${id}`}
-                        className={styles["article-link"]}
-                      >
-                        {title}
-                      </Link>
-                    </h3>
-                    <p className={styles["article-description"]}>
-                      {marketingCoordinator?.name
-                        ? `Graded by: ${marketingCoordinator?.name}`
-                        : "Not graded yet"}
-                    </p>
-                    <div className={styles["article-comments-wrapper"]}>
-                      <LikeBtn
-                        blogId={id}
-                        likeCount={like.length}
-                        initialLike={initialLike}
-                        className={styles["like-btn"]}
-                      >
-                        <span>
-                          {like.length} {like.length > 1 ? "likes" : "like"}
-                        </span>
-                      </LikeBtn>
-
-                      <Button
-                        variant={"ghost"}
-                        className={styles["comment-btn"]}
-                      >
-                        <Icons.messageCircle />
-                        <span>
-                          {commentsCount}{" "}
-                          {commentsCount > 1 ? "comments" : "comment"}
-                        </span>
-                      </Button>
+                  <div className={styles["status-wrapper"]}>
+                    <div
+                      className={styles["upload-status"]}
+                      data-submit={status.toLowerCase()}
+                    >
+                      {status.toLowerCase()}
                     </div>
                   </div>
                 </div>
-              </article>
-            )
-          }
-        )}
+                <div className={styles["article-content-wrapper"]}>
+                  <h3 className={styles["article-title"]}>
+                    <Link
+                      href={`/contribution/blog/${id}`}
+                      className={styles["article-link"]}
+                    >
+                      {title}
+                    </Link>
+                  </h3>
+                  <p className={styles["article-description"]}>
+                    {marketingCoordinator?.name
+                      ? `Graded by: ${marketingCoordinator?.name}`
+                      : "Not graded yet"}
+                  </p>
+                  <div className={styles["article-comments-wrapper"]}>
+                    <LikeBtn
+                      blogId={id}
+                      likeCount={like.length}
+                      initialLike={initialLike}
+                      className={styles["like-btn"]}
+                    >
+                      <span>
+                        {like.length} {like.length > 1 ? "likes" : "like"}
+                      </span>
+                    </LikeBtn>
+
+                    <Button variant={"ghost"} className={styles["comment-btn"]}>
+                      <Icons.messageCircle />
+                      <span>
+                        {commentsCount}{" "}
+                        {commentsCount > 1 ? "comments" : "comment"}
+                      </span>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          )
+        })}
       </div>
 
       {!!blogs.length && (

@@ -4,7 +4,7 @@ import { db } from "@/server/db"
 import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
-import {
+import type {
   getBlogsWithUserByGuestSchema,
   getBlogsWithUserByMarketingManagerSchema,
   getBlogsWithUserByStudentSchema,
@@ -555,29 +555,31 @@ export async function getLikeBlogs({
   rowsNumber,
 }: z.infer<typeof getLikeBlogsSchema>) {
   try {
-    return await db.blogs.findMany({
+    return await db.like.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
-        title: {
-          contains: query,
-          mode: "insensitive",
-        },
-        like: {
-          some: {
-            userId: userId,
+        userId: userId,
+        blog: {
+          title: {
+            contains: query,
+            mode: "insensitive",
           },
         },
       },
       include: {
-        author: true,
-        comments: true,
-        marketingCoordinator: true,
-        like: true,
+        blog: {
+          include: {
+            like: true,
+            author: true,
+            comments: true,
+            marketingCoordinator: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: "desc",
-      },
+        createdAt: "desc"
+      }
     })
   } catch (err) {
     console.log(err)

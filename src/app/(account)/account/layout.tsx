@@ -1,6 +1,5 @@
 import * as React from "react"
 import { redirect } from "next/navigation"
-import type { User } from "next-auth"
 
 import { userConfig } from "@/config/site"
 import { currentUser } from "@/lib/auth/auth"
