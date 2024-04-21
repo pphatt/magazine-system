@@ -146,7 +146,6 @@ export default async function RecentBlogsPage({
                           {author.name}
                         </div>
                         <div>Created at: {format(createdAt, "PPP")}</div>
-                        <div>Updated at: {format(updatedAt, "PPP")}</div>
                       </div>
                     </div>
                     <div className={styles["status-wrapper"]}>

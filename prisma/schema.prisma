@@ -172,6 +172,8 @@ model Like {
   blog   Blogs  @relation(fields: [blogId], references: [id], onDelete: Cascade)
   blogId String
 
+  createdAt DateTime @default(now())
+
   @@id([userId, blogId])
 }
 

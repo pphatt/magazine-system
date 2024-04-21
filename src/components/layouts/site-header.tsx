@@ -101,16 +101,24 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                     </DropdownMenuItem>
                   )}
                   {user.role === "ADMIN" && (
-                    <DropdownMenuItem className={styles["dropdown-item"]}>
-                      <Link
-                        className={styles["dropdown-item-link"]}
-                        href={"/admin"}
-                      >
-                        <span>Admin</span>
-                        <Icons.circleUserRound />
-                      </Link>
-                    </DropdownMenuItem>
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/admin"}
+                        >
+                          <span>Admin</span>
+                          <Icons.circleUserRound />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
                   )}
+                  <DropdownMenuSeparator
+                    className={styles["dropdown-separate-line"]}
+                  />
                   <DropdownMenuItem className={styles["dropdown-item"]}>
                     <Link
                       className={styles["dropdown-item-link"]}
@@ -118,6 +126,15 @@ export const SiteHeader = ({ user, style }: SideHeaderProps) => {
                     >
                       <span>Like blogs</span>
                       <Icons.heart />
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <Link
+                      className={styles["dropdown-item-link"]}
+                      href={"/account/like-blogs?page=1&row=10"}
+                    >
+                      <span>Save blogs</span>
+                      <Icons.bookmarks />
                     </Link>
                   </DropdownMenuItem>
                 </>

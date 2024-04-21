@@ -92,7 +92,6 @@ export default async function LikeBlogsPage({
                     <div>
                       <div className={styles["author-name"]}>{author.name}</div>
                       <div>Created at: {format(createdAt, "PPP")}</div>
-                      <div>Updated at: {format(updatedAt, "PPP")}</div>
                     </div>
                   </div>
                   <div className={styles["status-wrapper"]}>
