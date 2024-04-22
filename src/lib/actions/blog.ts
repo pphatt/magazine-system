@@ -97,9 +97,9 @@ export const createBlog = async (formData: FormData) => {
       },
     })
 
-    const marketingCoordinatorDetails = await db.user.findUnique({
+    const studentDetails = await db.user.findUnique({
       where: {
-        email: mc.email ?? "",
+        email: user.email ?? "",
       },
     })
 
@@ -121,7 +121,7 @@ export const createBlog = async (formData: FormData) => {
         title,
         uploadedAt: format(createdAt, "PPP"),
         academicYear: academicYear?.name ?? "-",
-        author: marketingCoordinatorDetails!,
+        author: studentDetails!,
         blogUrl,
       })
     )

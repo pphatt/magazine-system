@@ -1,5 +1,5 @@
 import { db } from "@/server/db"
-import { ChartData } from "chart.js"
+import type { ChartData } from "chart.js"
 
 interface getAcademicYearIdType {
   academicYearId: string
@@ -110,6 +110,62 @@ export async function getPieChartData({
       data.datasets[0]!.data.push(percentage)
     }
   }
+
+  return data
+}
+
+export async function getData() {
+  const academicYear = await db.academicYear.findMany({
+    orderBy: {
+      createdAt: "asc"
+    }
+  })
+
+  const data: ChartData<"line"> = {
+    labels: academicYear.map(({ name }) => name),
+    datasets: [],
+  }
+
+  const facultiesWithBlogs = await db.faculty.findMany({
+    include: {
+      blogs: {
+        select: {
+          academicYear: true,
+        },
+      },
+    },
+  })
+
+  facultiesWithBlogs.map((faculty) => {
+    const academicYearCounts: { [year: string]: number } = {}
+
+    faculty.blogs.forEach((blog) => {
+      const year = blog.academicYear ? `${blog.academicYear.name}` : "Unknown"
+      academicYearCounts[year] = (academicYearCounts[year] || 0) + 1
+    })
+
+    academicYear.forEach(({ name }) => {
+      if (!academicYearCounts[name]) {
+        academicYearCounts[name] = 0
+      }
+    })
+
+    const countsArray = Array.from(
+      Object.entries(academicYearCounts),
+      ([_, value]) => value
+    )
+
+    const randomColor = () => Math.floor(Math.random() * 256)
+
+    const color = `${randomColor()}, ${randomColor()}, ${randomColor()}`
+
+    data.datasets.push({
+      label: faculty.name,
+      data: countsArray,
+      borderColor: `rgb(${color})`,
+      backgroundColor: `rgb(${color})`,
+    })
+  })
 
   return data
 }
