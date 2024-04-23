@@ -5,6 +5,7 @@ import {
   getContributionPercentageData,
   getData,
 } from "@/lib/fetchers/dashboard"
+import { BlogStatusPercentageChart } from "@/components/dashboard/blog-status-percentage"
 import { ManageChart } from "@/components/dashboard/chart"
 import { ContributionPercentageChart } from "@/components/dashboard/contribution-percentage-chart"
 import styles from "@/styles/(lobby)/contribution/manage/page.module.scss"
@@ -14,10 +15,15 @@ export default async function ManagePage() {
 
   const blogsWithAcademicYear = await getContributionPercentageData()
 
-  const blogs = await db.blogs.findMany()
+  const contributions = await db.blogs.findMany({
+    include: {
+      faculty: true,
+      academicYear: true,
+    },
+  })
 
-  const faculty = await db.faculty.findMany()
-  const academicYear = await db.academicYear.findMany({
+  const faculties = await db.faculty.findMany()
+  const academicYears = await db.academicYear.findMany({
     orderBy: [
       {
         createdAt: "asc",
@@ -25,8 +31,12 @@ export default async function ManagePage() {
     ],
   })
 
-  const approve_blogs = blogs.filter((blog) => blog.status === "APPROVE")
-  const reject_blogs = blogs.filter((blog) => blog.status === "REJECT")
+  const approve_blogs = contributions.filter(
+    (contribution) => contribution.status === "APPROVE"
+  )
+  const reject_blogs = contributions.filter(
+    (contribution) => contribution.status === "REJECT"
+  )
 
   return (
     <div className={styles["manage-page-wrapper"]}>
@@ -37,7 +47,7 @@ export default async function ManagePage() {
         <div className={styles["card-wrapper"]}>
           <div className={styles["card-container"]}>
             <h4>Total blogs</h4>
-            <div className={styles["count"]}>{blogs.length}</div>
+            <div className={styles["count"]}>{contributions.length}</div>
           </div>
         </div>
         <div className={styles["card-wrapper"]}>
@@ -59,8 +69,20 @@ export default async function ManagePage() {
       <div className={styles["chart"]}>
         <ContributionPercentageChart
           blogs={blogsWithAcademicYear}
-          faculty={faculty}
-          academicYear={academicYear}
+          faculty={faculties}
+          academicYear={academicYears}
+        />
+      </div>
+      <div className={styles["chart"]} style={{ display: "flex" }}>
+        <BlogStatusPercentageChart
+          contributions={contributions}
+          faculties={faculties}
+          academicYears={academicYears}
+        />
+        <BlogStatusPercentageChart
+          contributions={contributions}
+          faculties={faculties}
+          academicYears={academicYears}
         />
       </div>
     </div>

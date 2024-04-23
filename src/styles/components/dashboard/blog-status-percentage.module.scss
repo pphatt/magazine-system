@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 0.5rem;
 
-  flex: 1;
+  flex: 0.5;
 
   color: hsl(var(--card-foreground));
   background-color: hsl(var(--card));
@@ -27,14 +27,26 @@
   margin: 1.75rem 1.75rem 0 1.75rem;
 }
 
-.select {
-  width: 180px !important;
+.filter-wrapper {
+  display: flex;
+  gap: 1rem;
 
   margin: 1rem 1.75rem 0 1.75rem;
 }
 
+.select {
+  width: 180px !important;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
 .chart {
-  width: 100% !important;
+  width: 500px !important;
+  height: 500px !important;
 
   padding: 0 1rem 1rem;
 }

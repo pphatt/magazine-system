@@ -34,10 +34,6 @@ export const options = {
     legend: {
       position: "right" as const,
     },
-    title: {
-      display: true,
-      text: "Total blogs of each faculty of each academic year",
-    },
   },
   scales: {
     x: {
@@ -73,7 +69,12 @@ interface ManageChartProps {
 }
 
 export function ManageChart({ data }: ManageChartProps) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return <Line className={styles["chart"]} options={options} data={data} />
+  return (
+    <div className={styles['wrapper']}>
+      <h2 className={styles["text"]}>Total blogs of each faculty of each academic year</h2>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-expect-error*/}
+      <Line className={styles["chart"]} options={options} data={data} />
+    </div>
+  )
 }

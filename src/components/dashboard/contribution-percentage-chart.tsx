@@ -39,10 +39,6 @@ export const options = {
     legend: {
       position: "right" as const,
     },
-    title: {
-      display: true,
-      text: "Percentage of Blogs",
-    },
   },
   scales: {
     x: {
@@ -105,10 +101,12 @@ export function ContributionPercentageChart({
   }
 
   return (
-    <>
+    <div className={styles["wrapper"]}>
+      <h2 className={styles["text"]}>Percentage of Blogs</h2>
+
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger className={styles["select"]}>
-          <SelectValue />
+          <SelectValue/>
         </SelectTrigger>
         <SelectContent>
           {academicYear.map(({id, name}) => (
@@ -117,7 +115,7 @@ export function ContributionPercentageChart({
         </SelectContent>
       </Select>
 
-      <Bar options={options} data={data} />
-    </>
+      <Bar className={styles["chart"]} options={options} data={data}/>
+    </div>
   )
 }
