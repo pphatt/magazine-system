@@ -33,7 +33,7 @@ export function GradingBlogStudentNotifyEmail({
   return (
     <Html>
       <Head />
-      <Preview>Your blog has been graded</Preview>
+      <Preview>Your contribution has been graded</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={track.container}>
@@ -66,7 +66,7 @@ export function GradingBlogStudentNotifyEmail({
               </Column>
               <Column align="right">
                 <Link style={global.button} href={blogUrl}>
-                  View Blog
+                  View Contribution
                 </Link>
               </Column>
             </Row>

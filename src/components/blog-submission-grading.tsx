@@ -6,8 +6,8 @@ import type { User } from "next-auth"
 import { toast } from "sonner"
 import type { z } from "zod"
 
-import { gradingBlog } from "@/lib/actions/blog"
-import type { blogGradingSchema } from "@/lib/validations/blog"
+import { gradingBlog } from "@/lib/actions/contribution"
+import type { contributionGradingSchema } from "@/lib/validations/contribution"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { AcceptGradingAlertModal } from "@/components/modals/accept-grading-blog"
@@ -16,15 +16,15 @@ import styles from "@/styles/components/blog-submission-grading.module.scss"
 
 interface BlogSubmissionGradingProps {
   user: User
-  blogId: string
+  contributionId: string
   status: string
 }
 
-export type BlogGradingFormInputs = z.infer<typeof blogGradingSchema>
+export type BlogGradingFormInputs = z.infer<typeof contributionGradingSchema>
 
 export function BlogSubmissionGrading({
   user,
-  blogId,
+  contributionId,
   status,
 }: BlogSubmissionGradingProps) {
   const [openAccept, setOpenAccept] = React.useState(false)
@@ -42,7 +42,7 @@ export function BlogSubmissionGrading({
     startTransition(async () => {
       try {
         const payload = {
-          blogId,
+          contributionId,
           status: "APPROVE",
           marketingCoordinatorId: user.id ?? "",
         }
@@ -70,7 +70,7 @@ export function BlogSubmissionGrading({
     startTransition(async () => {
       try {
         const payload = {
-          blogId,
+          contributionId,
           status: "REJECT",
           marketingCoordinatorId: user.id ?? "",
         }

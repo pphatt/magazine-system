@@ -10,7 +10,7 @@ import TextareaAutosize from "react-textarea-autosize"
 import { toast } from "sonner"
 import type { z } from "zod"
 
-import { uploadEditBlogSchema } from "@/lib/validations/blog"
+import { uploadEditContributionSchema } from "@/lib/validations/contribution"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -48,7 +48,7 @@ import type { Block } from "@/types"
 import { useMutation } from "@tanstack/react-query"
 import type { FilePondFile, FilePondInitialFile } from "filepond"
 
-import { editBlog } from "@/lib/actions/blog"
+import { editBlog } from "@/lib/actions/contribution"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Icons } from "@/components/icons"
 
@@ -59,7 +59,7 @@ registerPlugin(
   FilePondPluginFileValidateType
 )
 
-export type BlogInputs = z.infer<typeof uploadEditBlogSchema>
+export type BlogInputs = z.infer<typeof uploadEditContributionSchema>
 
 interface EditorProps {
   blogId: string
@@ -102,9 +102,9 @@ export default function EditBlogEditor({
   const [isMounted, setIsMounted] = React.useState<boolean>(false)
 
   const form = useForm<BlogInputs>({
-    resolver: zodResolver(uploadEditBlogSchema),
+    resolver: zodResolver(uploadEditContributionSchema),
     defaultValues: {
-      blogId,
+      contributionId: blogId,
       title: title,
       content: content,
       academicYearId: "",

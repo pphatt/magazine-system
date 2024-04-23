@@ -4,7 +4,7 @@ import * as React from "react"
 import {
   ArcElement,
   Chart as ChartJS,
-  ChartOptions,
+  type ChartOptions,
   Legend,
   Tooltip,
   type ChartData,

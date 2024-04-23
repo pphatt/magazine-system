@@ -11,15 +11,15 @@ import { v4 } from "uuid"
 import { z } from "zod"
 
 import { currentUser } from "@/lib/auth/auth"
-import {
-  blogGradingSchema,
-  guestPermissionSchema,
-  likeBlogSchema,
-  saveBlogSchema,
-  type uploadBlogSchema,
-  type uploadEditBlogSchema,
-} from "@/lib/validations/blog"
 import { commentSchema } from "@/lib/validations/comment"
+import {
+  contributionGradingSchema,
+  guestPermissionSchema,
+  likeContributionSchema,
+  saveContributionSchema,
+  type uploadContributionSchema,
+  type uploadEditContributionSchema,
+} from "@/lib/validations/contribution"
 import { GradingBlogEmail } from "@/components/emails/grading-blog-email"
 import { GradingBlogStudentNotifyEmail } from "@/components/emails/grading-blog-notify-student-email"
 import { SubmitBlogEmail } from "@/components/emails/submit-blog-email"
@@ -29,7 +29,7 @@ export const createBlog = async (formData: FormData) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { title, content, facultyId, academicYearId } = JSON.parse(
       formData.get("data") as string
-    ) as z.infer<typeof uploadBlogSchema>
+    ) as z.infer<typeof uploadContributionSchema>
 
     const user = await currentUser()
 
@@ -68,7 +68,7 @@ export const createBlog = async (formData: FormData) => {
       imageUrl = data?.path ?? ""
     }
 
-    const { id, createdAt } = await db.blogs.create({
+    const { id, createdAt } = await db.contributions.create({
       data: {
         title,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -154,7 +154,7 @@ export const createBlog = async (formData: FormData) => {
 export const editBlog = async (formData: FormData) => {
   try {
     const {
-      blogId,
+      contributionId,
       title,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       content,
@@ -164,7 +164,7 @@ export const editBlog = async (formData: FormData) => {
       prevFiles,
       newFilesCount,
     } = JSON.parse(formData.get("data") as string) as z.infer<
-      typeof uploadEditBlogSchema
+      typeof uploadEditContributionSchema
     >
 
     const user = await currentUser()
@@ -212,9 +212,9 @@ export const editBlog = async (formData: FormData) => {
       imageUrl = data?.path ?? ""
     }
 
-    const { id } = await db.blogs.update({
+    const { id } = await db.contributions.update({
       where: {
-        id: blogId,
+        id: contributionId,
       },
       data: {
         title,
@@ -242,11 +242,11 @@ export const editBlog = async (formData: FormData) => {
 export const deleteBlog = async () => {}
 
 export const gradingBlog = async (
-  values: z.infer<typeof blogGradingSchema>
+  values: z.infer<typeof contributionGradingSchema>
 ) => {
   try {
-    const { blogId, status, marketingCoordinatorId } =
-      blogGradingSchema.parse(values)
+    const { contributionId, status, marketingCoordinatorId } =
+      contributionGradingSchema.parse(values)
 
     const user = await currentUser()
 
@@ -260,8 +260,8 @@ export const gradingBlog = async (
       status: blogStatus,
       gradedAt,
       authorId,
-    } = await db.blogs.update({
-      where: { id: blogId },
+    } = await db.contributions.update({
+      where: { id: contributionId },
       data: {
         marketingCoordinatorId,
         publicized: true,
@@ -272,7 +272,7 @@ export const gradingBlog = async (
 
     await db.comment.deleteMany({
       where: {
-        blogId: id,
+        contributionId: id,
       },
     })
 
@@ -317,7 +317,7 @@ export const gradingBlog = async (
 
 export const commentOnBlog = async (values: z.infer<typeof commentSchema>) => {
   try {
-    const { text, blogId, replyToId } = commentSchema.parse(values)
+    const { text, contributionId, replyToId } = commentSchema.parse(values)
 
     const user = await currentUser()
 
@@ -329,7 +329,7 @@ export const commentOnBlog = async (values: z.infer<typeof commentSchema>) => {
       data: {
         text,
         replyToId,
-        blogId,
+        contributionId,
         authorId: user.id,
       },
     })
@@ -349,7 +349,7 @@ export async function guestPermission(
   values: z.infer<typeof guestPermissionSchema>
 ) {
   try {
-    const { blogId, status } = guestPermissionSchema.parse(values)
+    const { contributionId, status } = guestPermissionSchema.parse(values)
 
     const user = await currentUser()
 
@@ -357,9 +357,9 @@ export async function guestPermission(
       return { error: "Unauthorized" }
     }
 
-    await db.blogs.update({
+    await db.contributions.update({
       where: {
-        id: blogId,
+        id: contributionId,
       },
       data: {
         allowGuest: status,
@@ -377,9 +377,9 @@ export async function guestPermission(
   }
 }
 
-export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
+export async function likeBlog(values: z.infer<typeof likeContributionSchema>) {
   try {
-    const { blogId } = likeBlogSchema.parse(values)
+    const { contributionId } = likeContributionSchema.parse(values)
 
     const user = await currentUser()
 
@@ -388,27 +388,27 @@ export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
     }
 
     // check if user has already like this blog
-    const existingLike = await db.like.findFirst({
+    const existingLike = await db.likeContributions.findFirst({
       where: {
         userId: user.id,
-        blogId,
+        contributionId,
       },
     })
 
     if (existingLike) {
-      await db.like.delete({
+      await db.likeContributions.delete({
         where: {
-          userId_blogId: {
+          userId_contributionId: {
             userId: user.id,
-            blogId,
+            contributionId,
           },
         },
       })
     } else {
-      await db.like.create({
+      await db.likeContributions.create({
         data: {
           userId: user.id,
-          blogId,
+          contributionId,
         },
       })
     }
@@ -426,9 +426,9 @@ export async function likeBlog(values: z.infer<typeof likeBlogSchema>) {
   }
 }
 
-export async function saveBlog(values: z.infer<typeof saveBlogSchema>) {
+export async function saveBlog(values: z.infer<typeof saveContributionSchema>) {
   try {
-    const { blogId } = saveBlogSchema.parse(values)
+    const { contributionId } = saveContributionSchema.parse(values)
 
     const user = await currentUser()
 
@@ -437,19 +437,19 @@ export async function saveBlog(values: z.infer<typeof saveBlogSchema>) {
     }
 
     // check if user has already save this blog
-    const existingSaveBlog = await db.saveBlogs.findFirst({
+    const existingSaveBlog = await db.saveContributions.findFirst({
       where: {
         userId: user.id,
-        blogId,
+        contributionId,
       },
     })
 
     if (existingSaveBlog) {
-      await db.saveBlogs.delete({
+      await db.saveContributions.delete({
         where: {
-          userId_blogId: {
+          userId_contributionId: {
             userId: user.id,
-            blogId,
+            contributionId,
           },
         },
       })
@@ -457,10 +457,10 @@ export async function saveBlog(values: z.infer<typeof saveBlogSchema>) {
       return { success: "Unsaved blog successfully." }
     }
 
-    await db.saveBlogs.create({
+    await db.saveContributions.create({
       data: {
         userId: user.id,
-        blogId,
+        contributionId,
       },
     })
 

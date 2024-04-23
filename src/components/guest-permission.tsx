@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { guestPermission } from "@/lib/actions/blog"
+import { guestPermission } from "@/lib/actions/contribution"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { AllowGuestAlertModal } from "@/components/modals/allow-guest-alert-modal"
@@ -25,7 +25,7 @@ export function GuestPermission({ blogId, status }: GuestPermissionProps) {
     startTransition(async () => {
       try {
         const payload = {
-          blogId,
+          contributionId: blogId,
           status: !status,
         }
 

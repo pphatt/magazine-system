@@ -29,7 +29,7 @@ export async function getAcceptAndRejectInFaculty({
   }
 
   for (const { name } of faculty) {
-    const facultyBlogs = await db.blogs.findMany({
+    const facultyBlogs = await db.contributions.findMany({
       where: {
         faculty: { name },
         academicYearId: {
@@ -92,12 +92,12 @@ export async function getPieChartData({
     ],
   }
 
-  const total = await db.blogs.findMany({
+  const total = await db.contributions.findMany({
     where: { academicYearId },
   })
 
   for (const { name } of faculty) {
-    const countBlogs = await db.blogs.count({
+    const countBlogs = await db.contributions.count({
       where: {
         faculty: { name },
         academicYearId,
@@ -130,7 +130,7 @@ export async function getData() {
 
   const facultiesWithBlogs = await db.faculty.findMany({
     include: {
-      blogs: {
+      contributions: {
         select: {
           academicYear: true,
         },
@@ -141,7 +141,7 @@ export async function getData() {
   facultiesWithBlogs.map((faculty) => {
     const academicYearCounts: { [year: string]: number } = {}
 
-    faculty.blogs.forEach((blog) => {
+    faculty.contributions.forEach((blog) => {
       const year = blog.academicYear ? `${blog.academicYear.name}` : "Unknown"
       academicYearCounts[year] = (academicYearCounts[year] || 0) + 1
     })
@@ -171,16 +171,16 @@ export async function getData() {
 }
 
 export async function getContributionPercentageData() {
-  const blogs = await db.academicYear.findMany({
+  const contributions = await db.academicYear.findMany({
     orderBy: [
       {
         createdAt: "asc",
       },
     ],
     include: {
-      blogs: true,
+      contributions: true,
     },
   })
 
-  return blogs
+  return contributions
 }

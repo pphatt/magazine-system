@@ -4,18 +4,18 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { guestPermission } from "@/lib/actions/blog"
+import { guestPermission } from "@/lib/actions/contribution"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { AllowGuestAlertModal } from "@/components/modals/allow-guest-alert-modal"
 import styles from "@/styles/(lobby)/contribution/blog/_components/allow-guest.module.scss"
 
 interface AllowGuestProps {
-  blogId: string
+  contributionId: string
   status: boolean
 }
 
-export function AllowGuest({ blogId, status }: AllowGuestProps) {
+export function AllowGuest({ contributionId, status }: AllowGuestProps) {
   const [openAllowed, setOpenAllowed] = React.useState(false)
 
   const router = useRouter()
@@ -25,7 +25,7 @@ export function AllowGuest({ blogId, status }: AllowGuestProps) {
     startTransition(async () => {
       try {
         const payload = {
-          blogId,
+          contributionId,
           status: !status,
         }
 

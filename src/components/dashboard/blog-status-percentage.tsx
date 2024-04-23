@@ -42,7 +42,7 @@ const options: ChartOptions<"pie"> = {
 }
 
 interface BlogStatusPercentageChartProps {
-  contributions: Prisma.BlogsGetPayload<{
+  contributions: Prisma.ContributionsGetPayload<{
     include: {
       faculty: true
       academicYear: true

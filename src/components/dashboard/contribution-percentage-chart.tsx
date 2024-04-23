@@ -14,7 +14,7 @@ import {
 } from "chart.js"
 import { Bar } from "react-chartjs-2"
 
-import type { BlogsWithAcademicYear } from "@/lib/prisma"
+import type { ContributionsWithAcademicYear } from "@/lib/prisma"
 import { getRandomColor } from "@/lib/utils"
 import {
   Select,
@@ -66,19 +66,21 @@ export const options = {
 }
 
 interface ContributionPercentageChartProps {
-  blogs: BlogsWithAcademicYear[]
+  contributions: ContributionsWithAcademicYear[]
   faculty: Faculty[]
   academicYear: AcademicYear[]
 }
 
 export function ContributionPercentageChart({
-  blogs,
+  contributions,
   faculty,
   academicYear,
 }: ContributionPercentageChartProps) {
   const [select, setSelect] = React.useState(academicYear[0]?.id ?? "")
 
-  const getTheSameAcademicYearBlogs = blogs.find(({ id }) => id === select)!
+  const getTheSameAcademicYearContributions = contributions.find(
+    ({ id }) => id === select
+  )!
 
   const data: ChartData<"bar"> = {
     labels: faculty.map(({ name }) => name),
@@ -87,11 +89,11 @@ export function ContributionPercentageChart({
     datasets: faculty.map(({ id, name }) => {
       let total = 0
 
-      total += getTheSameAcademicYearBlogs.blogs.filter(
+      total += getTheSameAcademicYearContributions.contributions.filter(
         ({ facultyId }) => facultyId === id
       ).length
 
-      const totalBlogsInYear = getTheSameAcademicYearBlogs.blogs.length
+      const totalBlogsInYear = getTheSameAcademicYearContributions.contributions.length
 
       const percentageData = Math.round((total / totalBlogsInYear) * 100)
 

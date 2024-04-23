@@ -4,17 +4,17 @@ import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import {
-  getBlogCountByStudent,
-  getBlogsWithUserByStudent,
-} from "@/lib/fetchers/blog"
-import { type BlogWithUser } from "@/lib/prisma"
+  getContributionCountByStudent,
+  getContributionsWithUserByStudent,
+} from "@/lib/fetchers/contribution"
+import { type ContributionWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationBlogStudent } from "@/components/pagination/pagination-blog-student"
+import { SaveBlog } from "@/components/save-blog"
 import styles from "@/styles/components/student-blogs-list.module.scss"
-import {SaveBlog} from "@/components/save-blog";
 
 interface StudentBlogsListProps {
   user: User
@@ -33,26 +33,26 @@ export async function StudentBlogsList({
   facultyId,
   academicYearId,
 }: StudentBlogsListProps) {
-  const blogs = (await getBlogsWithUserByStudent({
+  const contributions = (await getContributionsWithUserByStudent({
     query,
     pageNumber: page,
     rowsNumber: rows,
     facultyId,
     academicYearId,
-  })) as BlogWithUser[]
+  })) as ContributionWithUser[]
 
-  const totalBlogs = (await getBlogCountByStudent(
+  const totalContributions = (await getContributionCountByStudent(
     query,
     academicYearId
   )) as number
 
-  if (!blogs?.length) {
+  if (!contributions?.length) {
     return <div className={styles["no-results"]}>No results</div>
   }
 
   return (
     <div>
-      {blogs.map(
+      {contributions.map(
         (
           {
             id,
@@ -62,7 +62,7 @@ export async function StudentBlogsList({
             comments,
             marketingCoordinator,
             like,
-            save
+            save,
           },
           index
         ) => {
@@ -71,11 +71,13 @@ export async function StudentBlogsList({
           ).length
 
           const initialLike = like.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) =>
+              userId === user.id && contributionId === id
           )
 
           const initialSave = save.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) =>
+              userId === user.id && contributionId === id
           )
 
           return (
@@ -161,7 +163,7 @@ export async function StudentBlogsList({
         page={page}
         rows={rows}
         academicYearId={academicYearId}
-        totalBlogs={totalBlogs}
+        totalBlogs={totalContributions}
       />
     </div>
   )

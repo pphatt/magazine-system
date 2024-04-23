@@ -4,7 +4,7 @@ import * as z from "zod"
 const MAX_FILE_SIZE = 5000000
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "image/png"]
 
-export const uploadBlogSchema = z.object({
+export const uploadContributionSchema = z.object({
   title: z
     .string()
     .min(3, {
@@ -26,8 +26,8 @@ export const uploadBlogSchema = z.object({
   facultyId: z.string(),
 })
 
-export const uploadEditBlogSchema = z.object({
-  blogId: z.string(),
+export const uploadEditContributionSchema = z.object({
+  contributionId: z.string(),
   title: z
     .string()
     .min(3, {
@@ -52,7 +52,7 @@ export const uploadEditBlogSchema = z.object({
   facultyId: z.string(),
 })
 
-export const getBlogsWithUserSchema = z.object({
+export const getContributionsWithUserSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
@@ -61,7 +61,7 @@ export const getBlogsWithUserSchema = z.object({
   academicYearId: z.coerce.string(),
 })
 
-export const getBlogsWithUserByStudentSchema = z.object({
+export const getContributionWithUserByStudentSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
@@ -69,7 +69,7 @@ export const getBlogsWithUserByStudentSchema = z.object({
   academicYearId: z.coerce.string(),
 })
 
-export const getBlogsWithUserByMarketingManagerSchema = z.object({
+export const getContributionWithUserByMarketingManagerSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
@@ -78,7 +78,7 @@ export const getBlogsWithUserByMarketingManagerSchema = z.object({
   facultyId: z.coerce.string(),
 })
 
-export const getRecentBlogsSchema = z.object({
+export const getRecentContributionSchema = z.object({
   query: z.string(),
   userId: z.string(),
   pageNumber: z.number().default(1),
@@ -87,32 +87,32 @@ export const getRecentBlogsSchema = z.object({
   academicYearId: z.coerce.string(),
 })
 
-export const blogGradingSchema = z.object({
-  blogId: z.coerce.string(),
+export const contributionGradingSchema = z.object({
+  contributionId: z.coerce.string(),
   status: z.coerce.string(),
   marketingCoordinatorId: z.coerce.string(),
 })
 
-export const getBlogsWithUserByGuestSchema = z.object({
+export const getContributionWithUserByGuestSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(50),
 })
 
 export const guestPermissionSchema = z.object({
-  blogId: z.string(),
+  contributionId: z.string(),
   status: z.boolean(),
 })
 
-export const likeBlogSchema = z.object({
-  blogId: z.string(),
+export const likeContributionSchema = z.object({
+  contributionId: z.string(),
 })
 
-export const saveBlogSchema = z.object({
-  blogId: z.string(),
+export const saveContributionSchema = z.object({
+  contributionId: z.string(),
 })
 
-export const getLikeBlogsSchema = z.object({
+export const getLikeContributionSchema = z.object({
   query: z.string(),
   pageNumber: z.number().default(1),
   rowsNumber: z.number().default(10),

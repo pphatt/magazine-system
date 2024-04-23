@@ -15,7 +15,7 @@ import { MessageSquare } from "lucide-react"
 import type { User } from "next-auth"
 import { toast } from "sonner"
 
-import { commentOnBlog } from "@/lib/actions/blog"
+import { commentOnBlog } from "@/lib/actions/contribution"
 import { formatTimeToNow } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -66,7 +66,7 @@ export function PostComments({ comment, blogId }: PostCommentsProps) {
     startTransition(async () => {
       try {
         const req = await commentOnBlog({
-          blogId,
+          contributionId: blogId,
           replyToId: comment.replyToId ?? comment.id,
           text: editorState,
         })

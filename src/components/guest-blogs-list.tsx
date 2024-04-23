@@ -4,10 +4,10 @@ import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import {
-  getBlogCountByGuest,
-  getBlogsWithUserByGuest,
-} from "@/lib/fetchers/blog"
-import { type BlogWithUser } from "@/lib/prisma"
+  getContributionCountByGuest,
+  getContributionsWithUserByGuest,
+} from "@/lib/fetchers/contribution"
+import { type ContributionWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -28,21 +28,21 @@ export async function GuestBlogsList({
   page,
   rows,
 }: StudentBlogsListProps) {
-  const blogs = (await getBlogsWithUserByGuest({
+  const contributions = (await getContributionsWithUserByGuest({
     query,
     pageNumber: page,
     rowsNumber: rows,
-  })) as BlogWithUser[]
+  })) as ContributionWithUser[]
 
-  const totalBlogs = (await getBlogCountByGuest(query)) as number
+  const totalContributions = (await getContributionCountByGuest(query)) as number
 
-  if (!blogs?.length) {
+  if (!contributions?.length) {
     return <div className={styles["no-results"]}>No results</div>
   }
 
   return (
     <div>
-      {blogs.map(
+      {contributions.map(
         (
           {
             id,
@@ -61,7 +61,7 @@ export async function GuestBlogsList({
           ).length
 
           const initialLike = like.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) => userId === user.id && contributionId === id
           )
 
           return (
@@ -139,7 +139,7 @@ export async function GuestBlogsList({
         query={query}
         page={page}
         rows={rows}
-        totalBlogs={totalBlogs}
+        totalBlogs={totalContributions}
       />
     </div>
   )

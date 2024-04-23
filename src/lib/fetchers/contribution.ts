@@ -5,15 +5,15 @@ import { type StatusEnum } from "@prisma/client"
 import type { z } from "zod"
 
 import type {
-  getBlogsWithUserByGuestSchema,
-  getBlogsWithUserByMarketingManagerSchema,
-  getBlogsWithUserByStudentSchema,
-  getBlogsWithUserSchema,
-  getLikeBlogsSchema,
-  getRecentBlogsSchema,
-} from "@/lib/validations/blog"
+  getContributionWithUserByGuestSchema,
+  getContributionWithUserByMarketingManagerSchema,
+  getContributionWithUserByStudentSchema,
+  getContributionsWithUserSchema,
+  getLikeContributionSchema,
+  getRecentContributionSchema,
+} from "@/lib/validations/contribution"
 
-export async function getBlogCount(
+export async function getContributionCount(
   query: string,
   facultyId: string,
   academicYearId: string,
@@ -21,7 +21,7 @@ export async function getBlogCount(
 ) {
   try {
     if (status === "all blogs") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -34,7 +34,7 @@ export async function getBlogCount(
     }
 
     if (status !== "undefined") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -47,7 +47,7 @@ export async function getBlogCount(
       })
     }
 
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -63,17 +63,17 @@ export async function getBlogCount(
   }
 }
 
-export async function getBlogsWithUser({
+export async function getContributionsWithUser({
   pageNumber,
   rowsNumber,
   query,
   status,
   facultyId,
   academicYearId,
-}: z.infer<typeof getBlogsWithUserSchema>) {
+}: z.infer<typeof getContributionsWithUserSchema>) {
   try {
     if (status === "approve") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -99,7 +99,7 @@ export async function getBlogsWithUser({
     }
 
     if (status === "pending") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -125,7 +125,7 @@ export async function getBlogsWithUser({
     }
 
     if (status === "reject") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -150,7 +150,7 @@ export async function getBlogsWithUser({
       })
     }
 
-    return await db.blogs.findMany({
+    return await db.contributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
@@ -178,12 +178,12 @@ export async function getBlogsWithUser({
   }
 }
 
-export async function getBlogCountByStudent(
+export async function getContributionCountByStudent(
   query: string,
   academicYearId: string
 ) {
   try {
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -200,15 +200,15 @@ export async function getBlogCountByStudent(
   }
 }
 
-export async function getBlogsWithUserByStudent({
+export async function getContributionsWithUserByStudent({
   query,
   pageNumber,
   rowsNumber,
   facultyId,
   academicYearId,
-}: z.infer<typeof getBlogsWithUserByStudentSchema>) {
+}: z.infer<typeof getContributionWithUserByStudentSchema>) {
   try {
-    return await db.blogs.findMany({
+    return await db.contributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
@@ -238,7 +238,7 @@ export async function getBlogsWithUserByStudent({
   }
 }
 
-export async function getRecentBlogCount(
+export async function getRecentContributionCount(
   query: string,
   userId: string,
   academicYearId: string,
@@ -246,7 +246,7 @@ export async function getRecentBlogCount(
 ) {
   try {
     if (status === "all blogs") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -259,7 +259,7 @@ export async function getRecentBlogCount(
     }
 
     if (status !== "undefined") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -272,7 +272,7 @@ export async function getRecentBlogCount(
       })
     }
 
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -288,17 +288,17 @@ export async function getRecentBlogCount(
   }
 }
 
-export async function getRecentBlogs({
+export async function getRecentContributions({
   query,
   userId,
   pageNumber,
   rowsNumber,
   status,
   academicYearId,
-}: z.infer<typeof getRecentBlogsSchema>) {
+}: z.infer<typeof getRecentContributionSchema>) {
   try {
     if (status === "approve") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -324,7 +324,7 @@ export async function getRecentBlogs({
     }
 
     if (status === "pending") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -350,7 +350,7 @@ export async function getRecentBlogs({
     }
 
     if (status === "reject") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -375,7 +375,7 @@ export async function getRecentBlogs({
       })
     }
 
-    return await db.blogs.findMany({
+    return await db.contributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
@@ -403,7 +403,7 @@ export async function getRecentBlogs({
   }
 }
 
-export async function getBlogCountByMarketingManager(
+export async function getContributionCountByMarketingManager(
   query: string,
   facultyId: string,
   academicYearId: string,
@@ -411,7 +411,7 @@ export async function getBlogCountByMarketingManager(
 ) {
   try {
     if (status === "all blogs") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -424,7 +424,7 @@ export async function getBlogCountByMarketingManager(
     }
 
     if (status !== "undefined") {
-      return await db.blogs.count({
+      return await db.contributions.count({
         where: {
           title: {
             contains: query,
@@ -437,7 +437,7 @@ export async function getBlogCountByMarketingManager(
       })
     }
 
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -453,17 +453,17 @@ export async function getBlogCountByMarketingManager(
   }
 }
 
-export async function getBlogsWithUserByMarketingManager({
+export async function getContributionsWithUserByMarketingManager({
   query,
   pageNumber,
   rowsNumber,
   status,
   academicYearId,
   facultyId,
-}: z.infer<typeof getBlogsWithUserByMarketingManagerSchema>) {
+}: z.infer<typeof getContributionWithUserByMarketingManagerSchema>) {
   try {
     if (status === "all blogs") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -488,7 +488,7 @@ export async function getBlogsWithUserByMarketingManager({
     }
 
     if (status !== "undefined") {
-      return await db.blogs.findMany({
+      return await db.contributions.findMany({
         skip: (pageNumber - 1) * rowsNumber,
         take: rowsNumber,
         where: {
@@ -513,7 +513,7 @@ export async function getBlogsWithUserByMarketingManager({
       })
     }
 
-    return await db.blogs.findMany({
+    return await db.contributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
@@ -541,9 +541,9 @@ export async function getBlogsWithUserByMarketingManager({
   }
 }
 
-export async function getBlogCountByGuest(query: string) {
+export async function getContributionCountByGuest(query: string) {
   try {
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -558,13 +558,13 @@ export async function getBlogCountByGuest(query: string) {
   }
 }
 
-export async function getBlogsWithUserByGuest({
+export async function getContributionsWithUserByGuest({
   query,
   pageNumber,
   rowsNumber,
-}: z.infer<typeof getBlogsWithUserByGuestSchema>) {
+}: z.infer<typeof getContributionWithUserByGuestSchema>) {
   try {
-    return await db.blogs.findMany({
+    return await db.contributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
@@ -591,9 +591,9 @@ export async function getBlogsWithUserByGuest({
   }
 }
 
-export async function getLikeBlogsCount(query: string, userId: string) {
+export async function getLikeContributionsCount(query: string, userId: string) {
   try {
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -612,19 +612,19 @@ export async function getLikeBlogsCount(query: string, userId: string) {
   }
 }
 
-export async function getLikeBlogs({
+export async function getLikeContributions({
   query,
   userId,
   pageNumber,
   rowsNumber,
-}: z.infer<typeof getLikeBlogsSchema>) {
+}: z.infer<typeof getLikeContributionSchema>) {
   try {
-    return await db.like.findMany({
+    return await db.likeContributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
         userId: userId,
-        blog: {
+        contribution: {
           title: {
             contains: query,
             mode: "insensitive",
@@ -632,7 +632,7 @@ export async function getLikeBlogs({
         },
       },
       include: {
-        blog: {
+        contribution: {
           include: {
             like: true,
             author: true,
@@ -652,9 +652,9 @@ export async function getLikeBlogs({
   }
 }
 
-export async function getSaveBlogsCount(query: string, userId: string) {
+export async function getSaveContributionCount(query: string, userId: string) {
   try {
-    return await db.blogs.count({
+    return await db.contributions.count({
       where: {
         title: {
           contains: query,
@@ -673,19 +673,19 @@ export async function getSaveBlogsCount(query: string, userId: string) {
   }
 }
 
-export async function getSaveBlogs({
+export async function getSaveContributions({
   query,
   userId,
   pageNumber,
   rowsNumber,
-}: z.infer<typeof getLikeBlogsSchema>) {
+}: z.infer<typeof getLikeContributionSchema>) {
   try {
-    return await db.saveBlogs.findMany({
+    return await db.saveContributions.findMany({
       skip: (pageNumber - 1) * rowsNumber,
       take: rowsNumber,
       where: {
         userId: userId,
-        blog: {
+        contribution: {
           title: {
             contains: query,
             mode: "insensitive",
@@ -693,7 +693,7 @@ export async function getSaveBlogs({
         },
       },
       include: {
-        blog: {
+        contribution: {
           include: {
             like: true,
             author: true,

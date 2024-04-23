@@ -4,8 +4,8 @@ import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
 import type { User } from "next-auth"
 
-import { getBlogCount, getBlogsWithUser } from "@/lib/fetchers/blog"
-import type { BlogWithUser } from "@/lib/prisma"
+import { getContributionCount, getContributionsWithUser } from "@/lib/fetchers/contribution"
+import type { ContributionWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { GuestPermission } from "@/components/guest-permission"
@@ -35,29 +35,29 @@ export async function MarketingCoorBlogsList({
   facultyId,
   academicYearId,
 }: MarketingCoorBlogsListProps) {
-  const blogs = (await getBlogsWithUser({
+  const contributions = (await getContributionsWithUser({
     query,
     pageNumber: page,
     rowsNumber: rows,
     status,
     facultyId,
     academicYearId,
-  })) as BlogWithUser[]
+  })) as ContributionWithUser[]
 
-  const totalBlogs = (await getBlogCount(
+  const totalContributions = (await getContributionCount(
     query,
     facultyId,
     academicYearId,
     status
   )) as number
 
-  if (!blogs?.length) {
+  if (!contributions?.length) {
     return <div className={styles["no-results"]}>No results</div>
   }
 
   return (
     <div>
-      {blogs.map(
+      {contributions.map(
         (
           {
             id,
@@ -78,11 +78,11 @@ export async function MarketingCoorBlogsList({
           ).length
 
           const initialLike = like.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) => userId === user.id && contributionId === id
           )
 
           const initialSave = save.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) => userId === user.id && contributionId === id
           )
 
           return (
@@ -175,7 +175,7 @@ export async function MarketingCoorBlogsList({
                 {status === "PENDING" && (
                   <StudentSubmissionGrading
                     user={user}
-                    blogId={id}
+                    contributionId={id}
                     status={status}
                   />
                 )}
@@ -195,7 +195,7 @@ export async function MarketingCoorBlogsList({
         rows={rows}
         academicYearId={academicYearId}
         status={status}
-        totalBlogs={totalBlogs}
+        totalBlogs={totalContributions}
       />
     </div>
   )

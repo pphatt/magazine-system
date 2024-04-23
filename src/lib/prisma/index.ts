@@ -12,7 +12,7 @@ export type AcademicYearWithUser = Prisma.AcademicYearGetPayload<{
   include: { creator: true }
 }>
 
-export type BlogWithUser = Prisma.BlogsGetPayload<{
+export type ContributionWithUser = Prisma.ContributionsGetPayload<{
   include: {
     author: true
     comments: true
@@ -22,7 +22,7 @@ export type BlogWithUser = Prisma.BlogsGetPayload<{
   }
 }>
 
-export type BlogWithInclude = Prisma.BlogsGetPayload<{
+export type ContributionWithUserWithInclude = Prisma.ContributionsGetPayload<{
   include: {
     author: true
     faculty: true
@@ -32,10 +32,10 @@ export type BlogWithInclude = Prisma.BlogsGetPayload<{
   }
 }>
 
-export type LikeIncludeBlog = Prisma.LikeGetPayload<{
-  include: { blog: true }
+export type LikeIncludeContribution = Prisma.LikeContributionsGetPayload<{
+  include: { contribution: true }
 }> & {
-  blog: Prisma.BlogsGetPayload<{
+  contribution: Prisma.ContributionsGetPayload<{
     include: {
       author: true
       faculty: true
@@ -48,10 +48,10 @@ export type LikeIncludeBlog = Prisma.LikeGetPayload<{
   }>
 }
 
-export type SaveIncludeBlog = Prisma.SaveBlogsGetPayload<{
-  include: { blog: true }
+export type SaveIncludeBlog = Prisma.SaveContributionsGetPayload<{
+  include: { contribution: true }
 }> & {
-  blog: Prisma.BlogsGetPayload<{
+  contribution: Prisma.ContributionsGetPayload<{
     include: {
       author: true
       faculty: true
@@ -64,6 +64,6 @@ export type SaveIncludeBlog = Prisma.SaveBlogsGetPayload<{
   }>
 }
 
-export type BlogsWithAcademicYear = Prisma.AcademicYearGetPayload<{
-  include: { blogs: true }
+export type ContributionsWithAcademicYear = Prisma.AcademicYearGetPayload<{
+  include: { contributions: true }
 }>

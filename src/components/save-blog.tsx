@@ -4,7 +4,7 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-import { saveBlog } from "@/lib/actions/blog"
+import { saveBlog } from "@/lib/actions/contribution"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
@@ -29,7 +29,7 @@ export function SaveBlog({
     startTransition(async () => {
       try {
         const payload = {
-          blogId,
+          contributionId: blogId,
         }
 
         const req = await saveBlog(payload)

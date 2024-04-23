@@ -2,20 +2,20 @@ import * as React from "react"
 import Link from "next/link"
 import { type StatusEnum } from "@prisma/client"
 import { format } from "date-fns"
-import { User } from "next-auth"
+import type { User } from "next-auth"
 
 import {
-  getBlogCountByMarketingManager,
-  getBlogsWithUserByMarketingManager,
-} from "@/lib/fetchers/blog"
-import type { BlogWithUser } from "@/lib/prisma"
+  getContributionCountByMarketingManager,
+  getContributionsWithUserByMarketingManager,
+} from "@/lib/fetchers/contribution"
+import type { ContributionWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationManager } from "@/components/pagination/pagination-blog-manager"
+import { SaveBlog } from "@/components/save-blog"
 import styles from "@/styles/components/marketing-manager-blog-list.module.scss"
-import {SaveBlog} from "@/components/save-blog";
 
 interface MarketingManagerBlogListProps {
   user: User
@@ -36,30 +36,30 @@ export async function MarketingManagerBlogList({
   academicYearId,
   facultyId,
 }: MarketingManagerBlogListProps) {
-  const blogs = (await getBlogsWithUserByMarketingManager({
+  const contributions = (await getContributionsWithUserByMarketingManager({
     query,
     pageNumber: page,
     rowsNumber: rows,
     status,
     academicYearId,
     facultyId,
-  })) as BlogWithUser[]
+  })) as ContributionWithUser[]
 
-  const totalBlogs = (await getBlogCountByMarketingManager(
+  const totalContributions = (await getContributionCountByMarketingManager(
     query,
     facultyId,
     academicYearId,
     status
   )) as number
 
-  if (!blogs?.length) {
+  if (!contributions?.length) {
     return <div className={styles["no-results"]}>No results</div>
   }
 
   return (
     <div>
       <div>
-        {blogs.map(
+        {contributions.map(
           (
             {
               id,
@@ -80,11 +80,13 @@ export async function MarketingManagerBlogList({
             ).length
 
             const initialLike = like.some(
-              ({ userId, blogId }) => userId === user.id && blogId === id
+              ({ userId, contributionId }) =>
+                userId === user.id && contributionId === id
             )
 
             const initialSave = save.some(
-              ({ userId, blogId }) => userId === user.id && blogId === id
+              ({ userId, contributionId }) =>
+                userId === user.id && contributionId === id
             )
 
             return (
@@ -103,7 +105,7 @@ export async function MarketingManagerBlogList({
                             }}
                           />
                           <AvatarFallback>
-                            <Icons.user/>
+                            <Icons.user />
                           </AvatarFallback>
                         </Avatar>
                       </div>
@@ -170,7 +172,7 @@ export async function MarketingManagerBlogList({
                         variant={"ghost"}
                         className={styles["comment-btn"]}
                       >
-                        <Icons.messageCircle/>
+                        <Icons.messageCircle />
                         <span>
                           {commentsCount}{" "}
                           {commentsCount > 1 ? "comments" : "comment"}
@@ -192,7 +194,7 @@ export async function MarketingManagerBlogList({
         facultyId={facultyId}
         academicYearId={academicYearId}
         status={status}
-        totalBlogs={totalBlogs}
+        totalBlogs={totalContributions}
       />
     </div>
   )

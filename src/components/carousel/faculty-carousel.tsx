@@ -16,7 +16,7 @@ import { Icons } from "@/components/icons"
 import styles from "@/styles/components/caousel/faculty-carousel.module.scss"
 
 interface FacultyCarouselProps {
-  faculty: { id: string; name: string; _count: { blogs: number } }[]
+  faculty: { id: string; name: string; _count: { contributions: number } }[]
 }
 
 export function FacultyCarousel({ faculty }: FacultyCarouselProps) {
@@ -44,7 +44,7 @@ export function FacultyCarousel({ faculty }: FacultyCarouselProps) {
                     <div className={styles["faculty-name"]}>
                       <h3>{name}</h3>
                     </div>
-                    <p>Total blogs have published: {count.blogs}</p>
+                    <p>Total contributions have published: {count.contributions}</p>
                   </CardContent>
                 </Card>
               </Link>

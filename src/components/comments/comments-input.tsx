@@ -12,7 +12,7 @@ import { type EditorState } from "lexical"
 import { toast } from "sonner"
 import type { z } from "zod"
 
-import { commentOnBlog } from "@/lib/actions/blog"
+import { commentOnBlog } from "@/lib/actions/contribution"
 import type { commentSchema } from "@/lib/validations/comment"
 import { OnChangePlugin } from "@/components/comments/plugins/onchange-plugin"
 import { SubmitPlugin } from "@/components/comments/plugins/submit-plugin"
@@ -69,7 +69,7 @@ export default function CommentsInput({
     startTransition(async () => {
       try {
         const req = await commentOnBlog({
-          blogId,
+          contributionId: blogId,
           replyToId,
           text: editorState,
         })

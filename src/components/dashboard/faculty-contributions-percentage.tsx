@@ -2,10 +2,10 @@
 
 import * as React from "react"
 import type { AcademicYear, Faculty } from "@prisma/client"
-import { ChartData, ChartOptions } from "chart.js"
+import type { ChartData, ChartOptions } from "chart.js"
 import { Pie } from "react-chartjs-2"
 
-import type { BlogsWithAcademicYear } from "@/lib/prisma"
+import type { ContributionsWithAcademicYear } from "@/lib/prisma"
 import {
   Select,
   SelectContent,
@@ -34,13 +34,13 @@ const options: ChartOptions<"pie"> = {
 }
 
 interface FacultyContributionsPercentageChartProps {
-  blogs: BlogsWithAcademicYear[]
+  contributions: ContributionsWithAcademicYear[]
   faculty: Faculty[]
   academicYears: AcademicYear[]
 }
 
 export function FacultyContributionsPercentageChart({
-  blogs,
+  contributions,
   faculty,
   academicYears,
 }: FacultyContributionsPercentageChartProps) {
@@ -48,7 +48,7 @@ export function FacultyContributionsPercentageChart({
     academicYears[0]?.id ?? ""
   )
 
-  const getTheSameAcademicYearBlogs = blogs.find(
+  const getTheSameAcademicYearContributions = contributions.find(
     ({ id }) => id === selectAcademicYear
   )!
 
@@ -60,11 +60,12 @@ export function FacultyContributionsPercentageChart({
         data: faculty.map(({ id }) => {
           let total = 0
 
-          total += getTheSameAcademicYearBlogs.blogs.filter(
+          total += getTheSameAcademicYearContributions.contributions.filter(
             ({ facultyId }) => facultyId === id
           ).length
 
-          const totalBlogsInYear = getTheSameAcademicYearBlogs.blogs.length
+          const totalBlogsInYear =
+            getTheSameAcademicYearContributions.contributions.length
 
           const percentageData = Math.round((total / totalBlogsInYear) * 100)
 

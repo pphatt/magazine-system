@@ -5,8 +5,8 @@ import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import { getLikeBlogs, getLikeBlogsCount } from "@/lib/fetchers/blog"
-import type { LikeIncludeBlog } from "@/lib/prisma"
+import {getLikeContributions, getLikeContributionsCount} from "@/lib/fetchers/contribution"
+import type { LikeIncludeContribution } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
 import { likeBlogsParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -33,14 +33,14 @@ export default async function LikeBlogsPage({
   const pageNumber = parserPage(page)
   const rowsNumber = parserRows(row, 10)
 
-  const blogs = (await getLikeBlogs({
+  const contributions = (await getLikeContributions({
     query: q,
     userId: user.id!,
     pageNumber,
     rowsNumber,
-  })) as LikeIncludeBlog[]
+  })) as LikeIncludeContribution[]
 
-  const totalBlogs = (await getLikeBlogsCount(q, user.id!)) as number
+  const totalContributions = (await getLikeContributionsCount(q, user.id!)) as number
 
   return (
     <div>
@@ -52,27 +52,27 @@ export default async function LikeBlogsPage({
         </div>
       </div>
 
-      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
+      {!contributions.length && <div className={styles["no-results"]}>No results</div>}
 
       <div>
-        {blogs.map(({ blog }, index) => {
-          const comments = blog.comments
-          const like = blog.like
-          const save = blog.save
-          const marketingCoordinator = blog.marketingCoordinator
+        {contributions.map(({ contribution }, index) => {
+          const comments = contribution.comments
+          const like = contribution.like
+          const save = contribution.save
+          const marketingCoordinator = contribution.marketingCoordinator
 
-          const { id, title, author, status, createdAt } = blog
+          const { id, title, author, status, createdAt } = contribution
 
           const commentsCount = comments.filter(
             (comment) => !comment.replyToId
           ).length
 
           const initialLike = like.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) => userId === user.id && contributionId === id
           )
 
           const initialSave = save.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) => userId === user.id && contributionId === id
           )
 
           return (
@@ -158,12 +158,12 @@ export default async function LikeBlogsPage({
         })}
       </div>
 
-      {!!blogs.length && (
+      {!!contributions.length && (
         <PaginationLikeBlogs
           query={q}
           page={pageNumber}
           rows={rowsNumber}
-          totalBlogs={totalBlogs}
+          totalBlogs={totalContributions}
         />
       )}
     </div>

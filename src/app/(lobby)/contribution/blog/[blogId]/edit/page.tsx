@@ -9,7 +9,7 @@ import { format, isAfter } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import type { BlogWithInclude } from "@/lib/prisma"
+import type { ContributionWithUserWithInclude } from "@/lib/prisma"
 import styles from "@/styles/(lobby)/contribution/blog/edit/page.module.scss"
 
 const EditBlogEditor = dynamic(
@@ -24,14 +24,14 @@ export default async function EditBlogPage({
 }) {
   const { blogId } = params
 
-  const blog = (await db.blogs.findUnique({
+  const blog = (await db.contributions.findUnique({
     where: { id: blogId },
     include: {
       author: true,
       faculty: true,
       academicYear: true,
     },
-  })) as BlogWithInclude
+  })) as ContributionWithUserWithInclude
 
   if (!blog || isAfter(Date.now(), blog.academicYear.finalClosureDate)) {
     redirect(`/contribution/blog/${blogId}`)

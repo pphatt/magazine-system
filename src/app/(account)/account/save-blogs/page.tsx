@@ -5,7 +5,10 @@ import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import { getSaveBlogs, getSaveBlogsCount } from "@/lib/fetchers/blog"
+import {
+  getSaveContributionCount,
+  getSaveContributions,
+} from "@/lib/fetchers/contribution"
 import type { SaveIncludeBlog } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
 import { likeBlogsParamsSchema } from "@/lib/validations/params"
@@ -14,10 +17,10 @@ import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { PaginationLikeBlogs } from "@/components/pagination/pagination-like-blogs"
+import { SaveBlog } from "@/components/save-blog"
 import styles from "@/styles/(account)/save-blogs/page.module.scss"
 import { SearchInput } from "@/app/(lobby)/contribution/_components/search-input"
 import { SelectRowInput } from "@/app/(lobby)/contribution/_components/select-row"
-import {SaveBlog} from "@/components/save-blog";
 
 interface SaveBlogsPageProps {
   searchParams: SearchParams
@@ -33,14 +36,17 @@ export default async function SaveBlogsPage({
   const pageNumber = parserPage(page)
   const rowsNumber = parserRows(row, 10)
 
-  const blogs = (await getSaveBlogs({
+  const contributions = (await getSaveContributions({
     query: q,
     userId: user.id!,
     pageNumber,
     rowsNumber,
   })) as SaveIncludeBlog[]
 
-  const totalBlogs = (await getSaveBlogsCount(q, user.id!)) as number
+  const totalContributions = (await getSaveContributionCount(
+    q,
+    user.id!
+  )) as number
 
   return (
     <div>
@@ -52,27 +58,31 @@ export default async function SaveBlogsPage({
         </div>
       </div>
 
-      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
+      {!contributions.length && (
+        <div className={styles["no-results"]}>No results</div>
+      )}
 
       <div>
-        {blogs.map(({ blog }, index) => {
-          const comments = blog.comments
-          const like = blog.like
-          const save = blog.save
-          const marketingCoordinator = blog.marketingCoordinator
+        {contributions.map(({ contribution }, index) => {
+          const comments = contribution.comments
+          const like = contribution.like
+          const save = contribution.save
+          const marketingCoordinator = contribution.marketingCoordinator
 
-          const { id, title, author, status, createdAt } = blog
+          const { id, title, author, status, createdAt } = contribution
 
           const commentsCount = comments.filter(
             (comment) => !comment.replyToId
           ).length
 
           const initialLike = like.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) =>
+              userId === user.id && contributionId === id
           )
 
           const initialSave = save.some(
-            ({ userId, blogId }) => userId === user.id && blogId === id
+            ({ userId, contributionId }) =>
+              userId === user.id && contributionId === id
           )
 
           return (
@@ -158,12 +168,12 @@ export default async function SaveBlogsPage({
         })}
       </div>
 
-      {!!blogs.length && (
+      {!!contributions.length && (
         <PaginationLikeBlogs
           query={q}
           page={pageNumber}
           rows={rowsNumber}
-          totalBlogs={totalBlogs}
+          totalBlogs={totalContributions}
         />
       )}
     </div>

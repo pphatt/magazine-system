@@ -6,18 +6,18 @@ import { env } from "@/env"
 import type { Block } from "@/types"
 import { format } from "date-fns"
 
-import type { BlogWithUser } from "@/lib/prisma"
+import type { ContributionWithUser } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import styles from "@/styles/components/blog-card.module.scss"
 
 interface BlogCardProps {
-  blogs: BlogWithUser[]
+  contributions: ContributionWithUser[]
 }
 
-export function BlogCard({ blogs }: BlogCardProps) {
+export function BlogCard({ contributions }: BlogCardProps) {
   return (
     <div className={styles["blog-section-wrapper"]}>
-      {blogs.map(
+      {contributions.map(
         ({ id, title, content, backgroundImage, createdAt, author }, index) => {
           const desc = content as { blocks: Block[] }
 

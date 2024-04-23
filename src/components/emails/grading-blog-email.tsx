@@ -34,7 +34,7 @@ export function GradingBlogEmail({
   return (
     <Html>
       <Head />
-      <Preview>Blog has to be graded within 14 days</Preview>
+      <Preview>Contribution has to be graded within 14 days</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={track.container}>
@@ -67,7 +67,7 @@ export function GradingBlogEmail({
               </Column>
               <Column align="right">
                 <Link style={global.button} href={blogUrl}>
-                  Grading Blog
+                  Grading Contribution
                 </Link>
               </Column>
             </Row>

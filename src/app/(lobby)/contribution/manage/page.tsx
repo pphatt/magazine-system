@@ -16,7 +16,7 @@ export default async function ManagePage() {
 
   const blogsWithAcademicYear = await getContributionPercentageData()
 
-  const contributions = await db.blogs.findMany({
+  const contributions = await db.contributions.findMany({
     include: {
       faculty: true,
       academicYear: true,
@@ -69,7 +69,7 @@ export default async function ManagePage() {
       </div>
       <div className={styles["chart"]}>
         <ContributionPercentageChart
-          blogs={blogsWithAcademicYear}
+          contributions={blogsWithAcademicYear}
           faculty={faculties}
           academicYear={academicYears}
         />
@@ -81,7 +81,7 @@ export default async function ManagePage() {
           academicYears={academicYears}
         />
         <FacultyContributionsPercentageChart
-          blogs={blogsWithAcademicYear}
+          contributions={blogsWithAcademicYear}
           faculty={faculties}
           academicYears={academicYears}
         />

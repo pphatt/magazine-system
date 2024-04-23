@@ -40,12 +40,12 @@ export function SubmitBlogEmail({
           <Section style={track.container}>
             <Row>
               <Column>
-                <Text style={global.paragraphWithBold}>Blog ID number</Text>
+                <Text style={global.paragraphWithBold}>Contribution ID number</Text>
                 <Text style={track.number}>{id}</Text>
               </Column>
               <Column align="right">
                 <Link style={global.button} href={blogUrl}>
-                  View Blog
+                  View Contribution
                 </Link>
               </Column>
             </Row>
@@ -53,7 +53,7 @@ export function SubmitBlogEmail({
           <Hr style={global.hr} />
           <Section style={message}>
             <Heading style={global.heading}>
-              Submitted blog successfully
+              Submitted contribution successfully
             </Heading>
             <Text style={global.text}>
               Wait around 14 days to get accepted.

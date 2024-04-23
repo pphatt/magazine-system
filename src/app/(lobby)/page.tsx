@@ -4,7 +4,7 @@ import { db } from "@/server/db"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import type { BlogWithUser } from "@/lib/prisma"
+import type { ContributionWithUser } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/blog-card"
 import { FacultyCarousel } from "@/components/carousel/faculty-carousel"
@@ -21,16 +21,16 @@ export default async function LobbyPage() {
       name: true,
       _count: {
         select: {
-          blogs: true,
+          contributions: true,
         },
       },
     },
   })
 
-  let blogs: BlogWithUser[]
+  let contributions: ContributionWithUser[]
 
   if (user?.role === "GUEST") {
-    blogs = (await db.blogs.findMany({
+    contributions = (await db.contributions.findMany({
       where: {
         status: "APPROVE",
         allowGuest: true,
@@ -42,9 +42,9 @@ export default async function LobbyPage() {
       include: {
         author: true,
       },
-    })) as BlogWithUser[]
+    })) as ContributionWithUser[]
   } else {
-    blogs = (await db.blogs.findMany({
+    contributions = (await db.contributions.findMany({
       where: {
         status: "APPROVE",
       },
@@ -55,7 +55,7 @@ export default async function LobbyPage() {
       include: {
         author: true,
       },
-    })) as BlogWithUser[]
+    })) as ContributionWithUser[]
   }
 
   return (
@@ -90,7 +90,7 @@ export default async function LobbyPage() {
             </Link>
           </Button>
         </div>
-        <BlogCard blogs={blogs} />
+        <BlogCard contributions={contributions} />
       </div>
     </Shell>
   )

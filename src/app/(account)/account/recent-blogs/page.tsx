@@ -7,8 +7,8 @@ import { format, isBefore } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import { getRecentBlogCount, getRecentBlogs } from "@/lib/fetchers/blog"
-import type { BlogWithUser } from "@/lib/prisma"
+import {getRecentContributionCount, getRecentContributions} from "@/lib/fetchers/contribution"
+import type { ContributionWithUser } from "@/lib/prisma"
 import { parserPage, parserRows } from "@/lib/utils"
 import { recentBlogParamsSchema } from "@/lib/validations/params"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -49,16 +49,16 @@ export default async function RecentBlogsPage({
     academicYears.find((value) => value.id === academicYearId) ??
     academicYears[0]
 
-  const blogs = (await getRecentBlogs({
+  const contributions = (await getRecentContributions({
     query: q,
     academicYearId: academicYear?.id ?? "",
     userId: user.id!,
     pageNumber,
     rowsNumber,
     status: status,
-  })) as BlogWithUser[]
+  })) as ContributionWithUser[]
 
-  const totalBlogs = (await getRecentBlogCount(
+  const totalContributions = (await getRecentContributionCount(
     q,
     user.id!,
     academicYear?.id ?? "",
@@ -96,10 +96,10 @@ export default async function RecentBlogsPage({
           )}
       </div>
 
-      {!blogs.length && <div className={styles["no-results"]}>No results</div>}
+      {!contributions.length && <div className={styles["no-results"]}>No results</div>}
 
       <div>
-        {blogs.map(
+        {contributions.map(
           (
             {
               id,
@@ -119,11 +119,11 @@ export default async function RecentBlogsPage({
             ).length
 
             const initialLike = like.some(
-              ({ userId, blogId }) => userId === user.id && blogId === id
+              ({ userId, contributionId }) => userId === user.id && contributionId === id
             )
 
             const initialSave = save.some(
-              ({ userId, blogId }) => userId === user.id && blogId === id
+              ({ userId, contributionId }) => userId === user.id && contributionId === id
             )
 
             return (
@@ -215,13 +215,13 @@ export default async function RecentBlogsPage({
         )}
       </div>
 
-      {!!blogs.length && (
+      {!!contributions.length && (
         <PaginationRecentBlog
           academicYearId={academicYear?.id ?? ""}
           page={pageNumber}
           rows={rowsNumber}
           status={status}
-          totalBlogs={totalBlogs}
+          totalBlogs={totalContributions}
         />
       )}
     </div>

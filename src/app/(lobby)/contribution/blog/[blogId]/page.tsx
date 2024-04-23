@@ -9,7 +9,7 @@ import { format } from "date-fns"
 import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
-import type { BlogWithInclude } from "@/lib/prisma"
+import type { ContributionWithUserWithInclude } from "@/lib/prisma"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { BlogSubmissionGrading } from "@/components/blog-submission-grading"
@@ -17,10 +17,10 @@ import { CommentsSection } from "@/components/comments-section"
 import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { RenderBlog } from "@/components/render-blog"
+import { SaveBlog } from "@/components/save-blog"
 import styles from "@/styles/(blog)/page.module.scss"
 import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
 import { AllowGuest } from "@/app/(lobby)/contribution/blog/[blogId]/_components/allow-guest"
-import {SaveBlog} from "@/components/save-blog";
 
 const DownloadZip = dynamic(() => import("@/components/download-zip"), {
   ssr: false,
@@ -33,7 +33,7 @@ export default async function BlogPage({
 }) {
   const { blogId } = params
 
-  const blog = (await db.blogs.findUnique({
+  const contribution = (await db.contributions.findUnique({
     where: { id: blogId },
     include: {
       author: true,
@@ -42,9 +42,9 @@ export default async function BlogPage({
       like: true,
       save: true,
     },
-  })) as BlogWithInclude
+  })) as ContributionWithUserWithInclude
 
-  if (!blog) {
+  if (!contribution) {
     redirect("/contribution")
   }
 
@@ -53,35 +53,40 @@ export default async function BlogPage({
   // check if the faculty and academic of the blog is suspense or not
   // the author allow viewing it in recent blog even though the academic year or faculty is still suspense
   if (
-    (blog.faculty.status === "SUSPENDED" ||
-      blog.academicYear.status === "SUSPENDED") &&
-    blog.authorId !== user.id
+    (contribution.faculty.status === "SUSPENDED" ||
+      contribution.academicYear.status === "SUSPENDED") &&
+    contribution.authorId !== user.id
   ) {
     redirect("/contribution")
   }
 
   if (user.role === "STUDENT") {
-    if (blog.authorId !== user.id && blog.status !== "APPROVE") {
+    if (
+      contribution.authorId !== user.id &&
+      contribution.status !== "APPROVE"
+    ) {
       redirect("/contribution")
     }
   }
 
-  if (user.role === "GUEST" && !blog.allowGuest) {
+  if (user.role === "GUEST" && !contribution.allowGuest) {
     redirect("/contribution")
   }
 
-  const content = blog.content as { blocks: Block[] }
+  const content = contribution.content as { blocks: Block[] }
 
   const showBlogDetails =
-    user.id === blog.authorId ||
+    user.id === contribution.authorId ||
     (user.role !== "STUDENT" && user.role !== "GUEST")
 
-  const initialLike = blog.like.some(
-    ({ userId, blogId }) => userId === user.id && blogId === blog.id
+  const initialLike = contribution.like.some(
+    ({ userId, contributionId }) =>
+      userId === user.id && contributionId === contribution.id
   )
 
-  const initialSave = blog.save.some(
-    ({ userId, blogId }) => userId === user.id && blogId === blog.id
+  const initialSave = contribution.save.some(
+    ({ userId, contributionId }) =>
+      userId === user.id && contributionId === contribution.id
   )
 
   return (
@@ -89,15 +94,12 @@ export default async function BlogPage({
       <div className={styles["action-group-wrapper"]}>
         <div className={styles["action-group-container"]}>
           <LikeBtn
-            blogId={blog.id}
-            likeCount={blog.like.length}
+            blogId={contribution.id}
+            likeCount={contribution.like.length}
             initialLike={initialLike}
           />
 
-          <SaveBlog
-            blogId={blog.id}
-            initialSave={initialSave}
-          />
+          <SaveBlog blogId={contribution.id} initialSave={initialSave} />
 
           <ActionGroupButton />
         </div>
@@ -105,10 +107,10 @@ export default async function BlogPage({
 
       <article className={styles["blog-content-wrapper"]}>
         <header className={styles["blog-header-wrapper"]}>
-          {blog.backgroundImage && (
+          {contribution.backgroundImage && (
             <div className={styles["background-image-wrapper"]}>
               <img
-                src={`${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/student-contributions/${blog.backgroundImage}`}
+                src={`${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/student-contributions/${contribution.backgroundImage}`}
                 alt={""}
                 className={styles["background-image"]}
               />
@@ -120,7 +122,7 @@ export default async function BlogPage({
                 <div className={styles["blog-author-details"]}>
                   <Avatar className={styles["avatar"]}>
                     <AvatarImage
-                      src={blog.author.image ?? ""}
+                      src={contribution.author.image ?? ""}
                       alt={""}
                       style={{
                         objectFit: "cover",
@@ -128,56 +130,59 @@ export default async function BlogPage({
                       }}
                     />
                     <AvatarFallback>
-                      {blog.author.name?.charAt(0).toUpperCase() ?? ""}
+                      {contribution.author.name?.charAt(0).toUpperCase() ?? ""}
                     </AvatarFallback>
                   </Avatar>
                   <div className={styles["author-name-wrapper"]}>
                     <div className={styles["author-name"]}>
-                      {blog.author.name}
+                      {contribution.author.name}
                     </div>
-                    <p>Posted on {format(blog.createdAt, "LLLL do")}</p>
+                    <p>Posted on {format(contribution.createdAt, "LLLL do")}</p>
                   </div>
                 </div>
-                {blog.status === "PENDING" && blog.authorId === user.id && (
-                  <div className={styles["manage-blog-wrapper"]}>
-                    <Button asChild variant={"ghost"}>
-                      <Link href={`/contribution/blog/${blogId}/edit`}>
-                        Edit
-                      </Link>
-                    </Button>
-                    <Button asChild variant={"ghost"}>
-                      <Link href={`/contribution/blog/${blogId}/edit`}>
-                        Delete
-                      </Link>
-                    </Button>
-                  </div>
-                )}
+                {contribution.status === "PENDING" &&
+                  contribution.authorId === user.id && (
+                    <div className={styles["manage-blog-wrapper"]}>
+                      <Button asChild variant={"ghost"}>
+                        <Link href={`/contribution/blog/${blogId}/edit`}>
+                          Edit
+                        </Link>
+                      </Button>
+                      <Button asChild variant={"ghost"}>
+                        <Link href={`/contribution/blog/${blogId}/edit`}>
+                          Delete
+                        </Link>
+                      </Button>
+                    </div>
+                  )}
               </div>
             </div>
-            <h1 className={styles["blog-title"]}>{blog.title ?? "-"}</h1>
+            <h1 className={styles["blog-title"]}>
+              {contribution.title ?? "-"}
+            </h1>
             <div className={styles["blog-extra"]}>
               <div className={styles["extra-layout"]}>
-                Faculty: {blog.faculty.name ?? "-"}
+                Faculty: {contribution.faculty.name ?? "-"}
               </div>
               <div className={styles["extra-layout"]}>
-                Academic Year: {blog.academicYear.name ?? "-"}
+                Academic Year: {contribution.academicYear.name ?? "-"}
               </div>
               {showBlogDetails && (
                 <>
                   <div
                     className={styles["blog-status"]}
-                    data-status={blog.status.toLowerCase()}
+                    data-status={contribution.status.toLowerCase()}
                   >
-                    {blog.status}
+                    {contribution.status}
                   </div>
                 </>
               )}
               {user.role !== "STUDENT" && user.role !== "GUEST" && (
                 <div
                   className={styles["guest-permission"]}
-                  data-permission={blog.allowGuest}
+                  data-permission={contribution.allowGuest}
                 >
-                  {blog.allowGuest ? "Allow Guest" : "Not allow Guest"}
+                  {contribution.allowGuest ? "Allow Guest" : "Not allow Guest"}
                 </div>
               )}
             </div>
@@ -190,7 +195,7 @@ export default async function BlogPage({
           <div className={styles["file-upload-wrapper"]}>
             <h3>File upload</h3>
             <div className={styles["files"]}>
-              {blog.location.map((value) => {
+              {contribution.location.map((value) => {
                 const _split = value.split("/")
                 const name = _split[_split.length - 1] ?? ""
 
@@ -207,29 +212,37 @@ export default async function BlogPage({
               })}
             </div>
             <div className={styles["files"]}>
-              <DownloadZip name={blog.title} location={blog.location} />
+              <DownloadZip
+                name={contribution.title}
+                location={contribution.location}
+              />
             </div>
           </div>
         </div>
 
-        <CommentsSection blogId={blog.id} />
+        <CommentsSection blogId={contribution.id} />
       </article>
 
-      {user.role === "MARKETING_COORDINATOR" && blog.status === "PENDING" && (
-        <div className={styles["blog-detail"]}>
-          <BlogSubmissionGrading
-            user={user}
-            blogId={blog.id}
-            status={blog.status}
-          />
-        </div>
-      )}
+      {user.role === "MARKETING_COORDINATOR" &&
+        contribution.status === "PENDING" && (
+          <div className={styles["blog-detail"]}>
+            <BlogSubmissionGrading
+              user={user}
+              contributionId={contribution.id}
+              status={contribution.status}
+            />
+          </div>
+        )}
 
-      {user.role === "MARKETING_COORDINATOR" && blog.status === "APPROVE" && (
-        <div className={styles["blog-detail"]}>
-          <AllowGuest blogId={blog.id} status={blog.allowGuest!} />
-        </div>
-      )}
+      {user.role === "MARKETING_COORDINATOR" &&
+        contribution.status === "APPROVE" && (
+          <div className={styles["blog-detail"]}>
+            <AllowGuest
+              contributionId={contribution.id}
+              status={contribution.allowGuest!}
+            />
+          </div>
+        )}
     </div>
   )
 }

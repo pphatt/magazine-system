@@ -13,7 +13,7 @@ interface CommentsSectionProps {
 export async function CommentsSection({ blogId }: CommentsSectionProps) {
   const comments = await db.comment.findMany({
     where: {
-      blogId: blogId,
+      contributionId: blogId,
       replyToId: null, // only fetch top-level comments
     },
     include: {
