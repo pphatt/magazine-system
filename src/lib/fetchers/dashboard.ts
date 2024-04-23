@@ -134,6 +134,11 @@ export async function getData() {
         select: {
           academicYear: true,
         },
+        orderBy: {
+          academicYear: {
+            createdAt: 'asc'
+          }
+        }
       },
     },
   })
