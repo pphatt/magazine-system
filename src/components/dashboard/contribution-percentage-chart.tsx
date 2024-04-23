@@ -39,6 +39,14 @@ export const options = {
     legend: {
       position: "right" as const,
     },
+    tooltip: {
+      callbacks: {
+        label: (value: { label: string; formattedValue: string }) => {
+          const percentage = `${value.label}: ${value.formattedValue}%`
+          return percentage
+        },
+      },
+    },
   },
   scales: {
     x: {
@@ -70,9 +78,7 @@ export function ContributionPercentageChart({
 }: ContributionPercentageChartProps) {
   const [select, setSelect] = React.useState(academicYear[0]?.id ?? "")
 
-  const getTheSameAcademicYearBlogs = blogs.find(
-    ({ id }) => id === select
-  )!
+  const getTheSameAcademicYearBlogs = blogs.find(({ id }) => id === select)!
 
   const data: ChartData<"bar"> = {
     labels: faculty.map(({ name }) => name),
@@ -106,16 +112,16 @@ export function ContributionPercentageChart({
 
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger className={styles["select"]}>
-          <SelectValue/>
+          <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {academicYear.map(({id, name}) => (
+          {academicYear.map(({ id, name }) => (
             <SelectItem value={id}>{name}</SelectItem>
           ))}
         </SelectContent>
       </Select>
 
-      <Bar className={styles["chart"]} options={options} data={data}/>
+      <Bar className={styles["chart"]} options={options} data={data} />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import type { AcademicYear, Faculty, Prisma } from "@prisma/client"
 import {
   ArcElement,
   Chart as ChartJS,
+  ChartOptions,
   Legend,
   Tooltip,
   type ChartData,
@@ -22,25 +23,22 @@ import styles from "@/styles/components/dashboard/blog-status-percentage.module.
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export const data = {
-  labels: ["Accept", "Reject", "Pending"],
-  datasets: [
-    {
-      label: "# of Votes",
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.2)",
-        "rgba(75, 192, 192, 0.2)",
-        "rgb(245, 239, 230, 0.2)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(75, 192, 192, 1)",
-        "rgb(245, 239, 230, 1)",
-      ],
-      borderWidth: 1,
+const options: ChartOptions<"pie"> = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
     },
-  ],
+    tooltip: {
+      callbacks: {
+        label: (value) => {
+          const parserValue = value as { raw: string; label: string }
+          const percentage = `${parserValue.label}: ${parserValue.raw}%`
+          return percentage
+        },
+      },
+    },
+  },
 }
 
 interface BlogStatusPercentageChartProps {
@@ -141,7 +139,7 @@ export function BlogStatusPercentageChart({
       </div>
 
       <div className={styles["chart-wrapper"]}>
-        <Pie className={styles["chart"]} data={data} />
+        <Pie className={styles["chart"]} options={options} data={data} />
       </div>
     </div>
   )
