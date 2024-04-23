@@ -52,7 +52,7 @@ export const options = {
     x: {
       title: {
         display: true,
-        text: "Percentage of Blogs %",
+        text: "Percentage of Contributions %",
       },
       max: 100,
     },
@@ -108,7 +108,7 @@ export function ContributionPercentageChart({
 
   return (
     <div className={styles["wrapper"]}>
-      <h2 className={styles["text"]}>Percentage of Blogs</h2>
+      <h2 className={styles["text"]}>Percentage of Contributions</h2>
 
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger className={styles["select"]}>

@@ -8,6 +8,7 @@ import {
 import { BlogStatusPercentageChart } from "@/components/dashboard/blog-status-percentage"
 import { ManageChart } from "@/components/dashboard/chart"
 import { ContributionPercentageChart } from "@/components/dashboard/contribution-percentage-chart"
+import { FacultyContributionsPercentageChart } from "@/components/dashboard/faculty-contributions-percentage"
 import styles from "@/styles/(lobby)/contribution/manage/page.module.scss"
 
 export default async function ManagePage() {
@@ -31,10 +32,10 @@ export default async function ManagePage() {
     ],
   })
 
-  const approve_blogs = contributions.filter(
+  const approve_contributions = contributions.filter(
     (contribution) => contribution.status === "APPROVE"
   )
-  const reject_blogs = contributions.filter(
+  const reject_contributions = contributions.filter(
     (contribution) => contribution.status === "REJECT"
   )
 
@@ -46,20 +47,20 @@ export default async function ManagePage() {
       <div className={styles["manage-card"]}>
         <div className={styles["card-wrapper"]}>
           <div className={styles["card-container"]}>
-            <h4>Total blogs</h4>
+            <h4>Total contributions</h4>
             <div className={styles["count"]}>{contributions.length}</div>
           </div>
         </div>
         <div className={styles["card-wrapper"]}>
           <div className={styles["card-container"]}>
-            <h4>Total accept blogs</h4>
-            <div className={styles["count"]}>{approve_blogs.length}</div>
+            <h4>Total accept contributions</h4>
+            <div className={styles["count"]}>{approve_contributions.length}</div>
           </div>
         </div>
         <div className={styles["card-wrapper"]}>
           <div className={styles["card-container"]}>
-            <h4>Total reject blogs</h4>
-            <div className={styles["count"]}>{reject_blogs.length}</div>
+            <h4>Total reject contributions</h4>
+            <div className={styles["count"]}>{reject_contributions.length}</div>
           </div>
         </div>
       </div>
@@ -79,9 +80,9 @@ export default async function ManagePage() {
           faculties={faculties}
           academicYears={academicYears}
         />
-        <BlogStatusPercentageChart
-          contributions={contributions}
-          faculties={faculties}
+        <FacultyContributionsPercentageChart
+          blogs={blogsWithAcademicYear}
+          faculty={faculties}
           academicYears={academicYears}
         />
       </div>

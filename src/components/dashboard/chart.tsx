@@ -71,7 +71,7 @@ interface ManageChartProps {
 export function ManageChart({ data }: ManageChartProps) {
   return (
     <div className={styles['wrapper']}>
-      <h2 className={styles["text"]}>Total blogs of each faculty of each academic year</h2>
+      <h2 className={styles["text"]}>Total contributions of each faculty of each academic year</h2>
       {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
       {/* @ts-expect-error*/}
       <Line className={styles["chart"]} options={options} data={data} />

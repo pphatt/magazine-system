@@ -27,7 +27,7 @@ const options = {
     },
     title: {
       display: true,
-      text: "Total accept and reject blogs in a faculty",
+      text: "Total accept and reject contributions in a faculty",
     },
   },
   scales: {

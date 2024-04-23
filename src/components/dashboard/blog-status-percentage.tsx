@@ -86,7 +86,7 @@ export function BlogStatusPercentageChart({
     labels: ["Accept", "Reject", "Pending"],
     datasets: [
       {
-        label: "Percentage of Blog Status",
+        label: "Percentage of Contributions Status",
         data: [
           Math.round((approveTotal / totalContributions.length) * 100),
           Math.round((rejectTotal / totalContributions.length) * 100),
@@ -94,9 +94,9 @@ export function BlogStatusPercentageChart({
         ],
         borderWidth: 1,
         backgroundColor: [
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(173, 167, 159, 0.2)",
+          "rgba(75, 192, 192, 0.5)",
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(173, 167, 159, 0.5)",
         ],
         borderColor: [
           "rgba(75, 192, 192, 1)",
