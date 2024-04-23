@@ -23,7 +23,13 @@ export type BlogWithUser = Prisma.BlogsGetPayload<{
 }>
 
 export type BlogWithInclude = Prisma.BlogsGetPayload<{
-  include: { author: true; faculty: true; academicYear: true; like: true, save: true }
+  include: {
+    author: true
+    faculty: true
+    academicYear: true
+    like: true
+    save: true
+  }
 }>
 
 export type LikeIncludeBlog = Prisma.LikeGetPayload<{
@@ -36,7 +42,7 @@ export type LikeIncludeBlog = Prisma.LikeGetPayload<{
       academicYear: true
       like: true
       comments: true
-      marketingCoordinator: true,
+      marketingCoordinator: true
       save: true
     }
   }>
@@ -52,8 +58,12 @@ export type SaveIncludeBlog = Prisma.SaveBlogsGetPayload<{
       academicYear: true
       like: true
       comments: true
-      marketingCoordinator: true,
+      marketingCoordinator: true
       save: true
     }
   }>
 }
+
+export type BlogsWithAcademicYear = Prisma.AcademicYearGetPayload<{
+  include: { blogs: true }
+}>

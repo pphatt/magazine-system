@@ -1,14 +1,29 @@
 import * as React from "react"
 import { db } from "@/server/db"
 
-import { getData } from "@/lib/fetchers/dashboard"
+import {
+  getContributionPercentageData,
+  getData,
+} from "@/lib/fetchers/dashboard"
 import { ManageChart } from "@/components/dashboard/chart"
+import { ContributionPercentageChart } from "@/components/dashboard/contribution-percentage-chart"
 import styles from "@/styles/(lobby)/contribution/manage/page.module.scss"
 
 export default async function ManagePage() {
   const data = await getData()
 
+  const blogsWithAcademicYear = await getContributionPercentageData()
+
   const blogs = await db.blogs.findMany()
+
+  const faculty = await db.faculty.findMany()
+  const academicYear = await db.academicYear.findMany({
+    orderBy: [
+      {
+        createdAt: "asc",
+      },
+    ],
+  })
 
   const approve_blogs = blogs.filter((blog) => blog.status === "APPROVE")
   const reject_blogs = blogs.filter((blog) => blog.status === "REJECT")
@@ -40,6 +55,13 @@ export default async function ManagePage() {
       </div>
       <div className={styles["chart"]}>
         <ManageChart data={data} />
+      </div>
+      <div className={styles["chart"]}>
+        <ContributionPercentageChart
+          blogs={blogsWithAcademicYear}
+          faculty={faculty}
+          academicYear={academicYear}
+        />
       </div>
     </div>
   )

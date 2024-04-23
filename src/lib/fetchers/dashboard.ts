@@ -1,6 +1,8 @@
 import { db } from "@/server/db"
 import type { ChartData } from "chart.js"
 
+import { getRandomColor } from "@/lib/utils"
+
 interface getAcademicYearIdType {
   academicYearId: string
 }
@@ -117,8 +119,8 @@ export async function getPieChartData({
 export async function getData() {
   const academicYear = await db.academicYear.findMany({
     orderBy: {
-      createdAt: "asc"
-    }
+      createdAt: "asc",
+    },
   })
 
   const data: ChartData<"line"> = {
@@ -155,9 +157,7 @@ export async function getData() {
       ([_, value]) => value
     )
 
-    const randomColor = () => Math.floor(Math.random() * 256)
-
-    const color = `${randomColor()}, ${randomColor()}, ${randomColor()}`
+    const color = getRandomColor()
 
     data.datasets.push({
       label: faculty.name,
@@ -168,4 +168,19 @@ export async function getData() {
   })
 
   return data
+}
+
+export async function getContributionPercentageData() {
+  const blogs = await db.academicYear.findMany({
+    orderBy: [
+      {
+        createdAt: "asc",
+      },
+    ],
+    include: {
+      blogs: true,
+    },
+  })
+
+  return blogs
 }
