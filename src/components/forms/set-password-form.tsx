@@ -109,6 +109,7 @@ export default function SetPasswordForm() {
           type={"submit"}
           disabled={isPending}
           style={{ height: "2.25rem" }}
+          className={styles["login"]}
         >
           {isPending && (
             <Icons.spinner className={styles["icon"]} aria-hidden="true" />

@@ -38,6 +38,14 @@
   clip: rect(0, 0, 0, 0);
 }
 
+.login {
+  background-color: hsl(232.55, 68.84%, 60.98%) !important;
+
+  &:hover {
+    background-color: hsl(234.22, 80.84%, 67.25%) !important;
+  }
+}
+
 .icon {
   width: 1rem;
   height: 1rem;
