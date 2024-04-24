@@ -1,0 +1,52 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  flex: 0.5;
+
+  color: hsl(var(--card-foreground));
+  background-color: hsl(var(--card));
+
+  min-height: 100px;
+
+  border-width: 1px;
+  border-radius: calc(0.5rem - 4px);
+
+  margin: 0 1.5rem;
+
+  box-shadow:
+          0 0 #000,
+          0 0 #000,
+          0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  overflow-wrap: break-word;
+}
+
+.text {
+  margin: 1.75rem 1.75rem 0 1.75rem;
+}
+
+.filter-wrapper {
+  display: flex;
+  gap: 1rem;
+
+  margin: 1rem 1.75rem 0 1.75rem;
+}
+
+.select {
+  width: 180px !important;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.chart {
+  width: 500px !important;
+  height: 500px !important;
+
+  padding: 0 1rem 1rem;
+}

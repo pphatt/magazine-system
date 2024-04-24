@@ -2,6 +2,7 @@ import * as React from "react"
 import { db } from "@/server/db"
 import type { User } from "next-auth"
 
+import { StatusPercentageChart } from "@/components/dashboard/marketing-coordinator/status-percentage"
 import { TopContributorsChart } from "@/components/dashboard/marketing-coordinator/top-contributors"
 import styles from "@/styles/components/dashboard/coordinator-dashboard.module.scss"
 
@@ -83,6 +84,12 @@ export async function CoordinatorDashboard({
       <div className={styles["chart"]}>
         <TopContributorsChart
           contributors={topContributors}
+          academicYears={academicYears}
+        />
+      </div>
+      <div className={styles["chart"]}>
+        <StatusPercentageChart
+          contributions={contributions}
           academicYears={academicYears}
         />
       </div>
