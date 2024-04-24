@@ -67,3 +67,10 @@ export type SaveIncludeBlog = Prisma.SaveContributionsGetPayload<{
 export type ContributionsWithAcademicYear = Prisma.AcademicYearGetPayload<{
   include: { contributions: true }
 }>
+
+export type Contributors = Prisma.PickEnumerable<
+  Prisma.ContributionsGroupByOutputType,
+  ("facultyId" | "academicYearId" | "authorId")[]
+> & {
+  _count: { authorId: number }
+}

@@ -9,6 +9,7 @@ import { BlogStatusPercentageChart } from "@/components/dashboard/blog-status-pe
 import { ManageChart } from "@/components/dashboard/chart"
 import { ContributionPercentageChart } from "@/components/dashboard/contribution-percentage-chart"
 import { FacultyContributionsPercentageChart } from "@/components/dashboard/faculty-contributions-percentage"
+import { TotalContributorsChart } from "@/components/dashboard/total-contributors"
 import styles from "@/styles/(lobby)/contribution/manage/page.module.scss"
 
 export default async function ManagePage() {
@@ -54,7 +55,9 @@ export default async function ManagePage() {
         <div className={styles["card-wrapper"]}>
           <div className={styles["card-container"]}>
             <h4>Total accept contributions</h4>
-            <div className={styles["count"]}>{approve_contributions.length}</div>
+            <div className={styles["count"]}>
+              {approve_contributions.length}
+            </div>
           </div>
         </div>
         <div className={styles["card-wrapper"]}>
@@ -84,6 +87,13 @@ export default async function ManagePage() {
           contributions={blogsWithAcademicYear}
           faculty={faculties}
           academicYears={academicYears}
+        />
+      </div>
+      <div className={styles["chart"]}>
+        <TotalContributorsChart
+          contributors={blogsWithAcademicYear}
+          faculty={faculties}
+          academicYear={academicYears}
         />
       </div>
     </div>
