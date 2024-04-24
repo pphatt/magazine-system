@@ -17,7 +17,7 @@ export default function AuthLayout({
         <div className={styles["image-filter"]} />
         <Link href="/" className={styles["home-icon"]}>
           <img src={"/logo_final-1.jpg"} alt={""} className={styles["logo"]} />
-          <span>{siteConfig.name}</span>
+          <span>Magazine University System</span>
         </Link>
       </AspectRatio>
       <main className={styles["auth-layout"]}>{children}</main>
