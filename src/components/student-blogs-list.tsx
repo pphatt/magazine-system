@@ -43,6 +43,7 @@ export async function StudentBlogsList({
 
   const totalContributions = (await getContributionCountByStudent(
     query,
+    facultyId,
     academicYearId
   )) as number
 

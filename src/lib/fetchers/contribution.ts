@@ -180,6 +180,7 @@ export async function getContributionsWithUser({
 
 export async function getContributionCountByStudent(
   query: string,
+  facultyId: string,
   academicYearId: string
 ) {
   try {
@@ -189,6 +190,7 @@ export async function getContributionCountByStudent(
           contains: query,
           mode: "insensitive",
         },
+        facultyId,
         academicYearId,
         publicized: true,
         status: "APPROVE",
