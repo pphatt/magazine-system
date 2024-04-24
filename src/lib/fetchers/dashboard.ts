@@ -107,7 +107,7 @@ export async function getPieChartData({
     if (countBlogs > 0) {
       data.labels!.push(name)
 
-      const percentage = (countBlogs / total.length) * 100
+      const percentage = Math.round((countBlogs / total.length) * 100)
 
       data.datasets[0]!.data.push(percentage)
     }
@@ -136,9 +136,9 @@ export async function getData() {
         },
         orderBy: {
           academicYear: {
-            createdAt: 'asc'
-          }
-        }
+            createdAt: "asc",
+          },
+        },
       },
     },
   })
