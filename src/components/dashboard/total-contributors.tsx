@@ -113,7 +113,7 @@ export function TotalContributorsChart({
 
   return (
     <div className={styles["wrapper"]}>
-      <h2 className={styles["text"]}>Percentage of Contributions</h2>
+      <h2 className={styles["text"]}>Numbers of Contributors</h2>
 
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger className={styles["select"]}>
