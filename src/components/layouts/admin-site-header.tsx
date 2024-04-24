@@ -1,10 +1,7 @@
-"use client"
-
 import * as React from "react"
 import Link from "next/link"
 import { type User } from "next-auth"
 
-import { logout } from "@/lib/actions/logout"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +13,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Icons } from "@/components/icons"
+import { MainNav } from "@/components/layouts/main-nav"
+import { ThemeToggle } from "@/components/layouts/theme-toggle"
+import { LogOut } from "@/components/logout"
 import styles from "@/styles/components/layouts/admin-site-header.module.scss"
 
 interface AdminSiteHeaderProps {
@@ -24,14 +24,24 @@ interface AdminSiteHeaderProps {
 
 export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
   return (
-    <div className={styles["site-header-wrapper"]}>
+    <header className={styles["site-header-wrapper"]}>
       <div className={styles["site-header-container"]}>
-        <div className={styles["site-header-logo"]}>
-          <Link href={"/"}>
-            <img src={"/logo_final.png"} alt={""} className={styles["logo"]} />
-          </Link>
+        <MainNav />
+        <div className={styles["outer-nav-action"]}>
+          <nav className={styles["nav-action"]}>
+            <Button variant="outline" className={styles["search"]} asChild>
+              <Link href={"/contribution?page=1&row=10"}>
+                <Icons.layers aria-hidden="true" />
+                <span className={styles["search-span-metadata"]}>
+                  Contributions
+                </span>
+                <span className={styles["search-span"]}>Contribution</span>
+              </Link>
+            </Button>
+          </nav>
         </div>
         <div className={styles["site-header-option"]}>
+          <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant={"outline"} className={styles["avatar-trigger"]}>
@@ -75,7 +85,87 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                       href={"/account/profile"}
                     >
                       <span>Account</span>
-                      <Icons.circleUserRound />
+                      <Icons.settings />
+                    </Link>
+                  </DropdownMenuItem>
+                  {user.role === "STUDENT" && (
+                    <DropdownMenuItem className={styles["dropdown-item"]}>
+                      <Link
+                        className={styles["dropdown-item-link"]}
+                        href={"/account/recent-blogs?page=1&row=10"}
+                      >
+                        <span>Recent Blogs</span>
+                        <Icons.layers />
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  {user.role === "ADMIN" && (
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/admin"}
+                        >
+                          <span>Admin</span>
+                          <Icons.circleUserRound />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {user.role === "MARKETING_COORDINATOR" && (
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/contribution/manage"}
+                        >
+                          <span>Manage contribution</span>
+                          <Icons.building />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {user.role === "MARKETING_MANAGER" && (
+                    <>
+                      <DropdownMenuSeparator
+                        className={styles["dropdown-separate-line"]}
+                      />
+                      <DropdownMenuItem className={styles["dropdown-item"]}>
+                        <Link
+                          className={styles["dropdown-item-link"]}
+                          href={"/contribution/manage"}
+                        >
+                          <span>Manage faculty</span>
+                          <Icons.building />
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator
+                    className={styles["dropdown-separate-line"]}
+                  />
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <Link
+                      className={styles["dropdown-item-link"]}
+                      href={"/account/like-blogs?page=1&row=10"}
+                    >
+                      <span>Like blogs</span>
+                      <Icons.heart />
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className={styles["dropdown-item"]}>
+                    <Link
+                      className={styles["dropdown-item-link"]}
+                      href={"/account/save-blogs?page=1&row=10"}
+                    >
+                      <span>Save blogs</span>
+                      <Icons.bookmark />
                     </Link>
                   </DropdownMenuItem>
                 </>
@@ -97,13 +187,7 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
                     className={styles["dropdown-separate-line"]}
                   />
                   <DropdownMenuItem className={styles["dropdown-item"]}>
-                    <span
-                      className={styles["sign-out"]}
-                      onClick={() => logout()}
-                    >
-                      <span>Logout</span>
-                      <Icons.logout />
-                    </span>
+                    <LogOut />
                   </DropdownMenuItem>
                 </>
               )}
@@ -111,6 +195,6 @@ export function AdminSiteHeader({ user }: AdminSiteHeaderProps) {
           </DropdownMenu>
         </div>
       </div>
-    </div>
+    </header>
   )
 }
