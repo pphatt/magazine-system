@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import styles from "@/styles/components/dashboard/faculty-contributions-percentage.module.scss"
+import styles from "@/styles/components/dashboard/marketing-manager/faculty-contributions-percentage.module.scss"
 
 const options: ChartOptions<"pie"> = {
   responsive: true,

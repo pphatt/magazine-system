@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import styles from "@/styles/components/dashboard/blog-status-percentage.module.scss"
+import styles from "@/styles/components/dashboard/marketing-manager/blog-status-percentage.module.scss"
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 

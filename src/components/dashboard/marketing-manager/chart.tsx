@@ -15,7 +15,7 @@ import {
 } from "chart.js"
 import { Line } from "react-chartjs-2"
 
-import styles from "@/styles/components/dashboard/chart.module.scss"
+import styles from "@/styles/components/dashboard/marketing-manager/chart.module.scss"
 
 ChartJS.register(
   CategoryScale,

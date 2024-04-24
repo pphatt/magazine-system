@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import styles from "@/styles/components/dashboard/contribution-percentage-chart.module.scss"
+import styles from "@/styles/components/dashboard/marketing-manager/contribution-percentage-chart.module.scss"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 

@@ -7,8 +7,8 @@ import {
   getPieChartData,
 } from "@/lib/fetchers/dashboard"
 import { dashboardParamsSchema } from "@/lib/validations/dashboard"
-import { AcademicYearChart } from "@/components/dashboard/academic-year-chart"
-import { PieChart } from "@/components/dashboard/pie-chart"
+import { AcademicYearChart } from "@/components/dashboard/admin/academic-year-chart"
+import { PieChart } from "@/components/dashboard/admin/pie-chart"
 import { SelectAcademicYear } from "@/components/select-academic-year"
 import styles from "@/styles/(admin)/page.module.scss"
 

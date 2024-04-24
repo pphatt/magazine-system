@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import type { AcademicYear, Faculty } from "@prisma/client"
+import type { AcademicYear, Prisma } from "@prisma/client"
 import {
   BarElement,
   CategoryScale,
@@ -14,7 +14,6 @@ import {
 } from "chart.js"
 import { Bar } from "react-chartjs-2"
 
-import type { ContributionsWithAcademicYear, Contributors } from "@/lib/prisma"
 import { getRandomColor } from "@/lib/utils"
 import {
   Select,
@@ -23,11 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import styles from "@/styles/components/dashboard/contribution-percentage-chart.module.scss"
+import styles from "@/styles/components/dashboard/marketing-coordinator/top-contrbutors.module.scss"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 export const options = {
+  indexAxis: "y" as const,
   elements: {
     bar: {
       borderWidth: 2,
@@ -41,7 +41,7 @@ export const options = {
     tooltip: {
       callbacks: {
         label: (value: { label: string; formattedValue: string }) => {
-          const percentage = `${value.label}: ${value.formattedValue} contributors`
+          const percentage = `${value.label}: ${value.formattedValue} contributions`
           return percentage
         },
       },
@@ -51,58 +51,48 @@ export const options = {
     x: {
       title: {
         display: true,
-        text: "Faculty",
+        text: "Total approve blogs of students",
       },
+      max: 100,
     },
     y: {
       title: {
         display: true,
-        text: "Total contributors of each faculty",
+        text: "Contributors",
       },
-      suggestedMax: 20,
     },
   },
 }
 
-interface TotalContributorsChartProps {
-  contributors: ContributionsWithAcademicYear[]
-  faculty: Faculty[]
-  academicYear: AcademicYear[]
+interface TopContributorsChartProps {
+  contributors: Prisma.UserGetPayload<{
+    include: { authorContributions: true }
+  }>[]
+  academicYears: AcademicYear[]
 }
 
-export function TotalContributorsChart({
+export function TopContributorsChart({
   contributors,
-  faculty,
-  academicYear,
-}: TotalContributorsChartProps) {
-  const [select, setSelect] = React.useState(academicYear[0]?.id ?? "")
-
-  const sortContributorsOnAcademicYear = contributors.find(
-    ({ id }) => id === select
-  )!
+  academicYears,
+}: TopContributorsChartProps) {
+  const [select, setSelect] = React.useState("all-academic-year")
 
   const data: ChartData<"bar"> = {
-    labels: faculty.map(({ name }) => name),
+    labels: contributors.map(({ name }) => name),
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    datasets: faculty.map(({ id, name }) => {
-      const sortContributionsOnFaculty =
-        sortContributorsOnAcademicYear.contributions.filter(
-          ({ facultyId }) => facultyId === id
-        )
-
-      const uniqueUserIds = new Set();
-
-      // Count distinct contributors for the current faculty
-      sortContributionsOnFaculty.forEach(({ authorId }) => {
-        uniqueUserIds.add(authorId);
-      });
-
-      const contributorCount = uniqueUserIds.size;
+    datasets: contributors.map(({ name, authorContributions }) => {
+      const total = authorContributions.filter(({ academicYearId }) => {
+        if (select === "all-academic-year") {
+          return true
+        } else {
+          return academicYearId === select
+        }
+      })
 
       return {
         label: name,
-        data: [{ x: name, y: contributorCount }],
+        data: [{ x: total.length, y: name }],
         fill: true,
         grouped: false,
         borderWidth: 1,
@@ -113,14 +103,17 @@ export function TotalContributorsChart({
 
   return (
     <div className={styles["wrapper"]}>
-      <h2 className={styles["text"]}>Numbers of Contributors</h2>
+      <h2 className={styles["text"]}>Top contributors</h2>
 
       <Select value={select} onValueChange={setSelect}>
         <SelectTrigger className={styles["select"]}>
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {academicYear.map(({ id, name }) => (
+          {[
+            { id: "all-academic-year", name: "All academic year" },
+            ...academicYears,
+          ].map(({ id, name }) => (
             <SelectItem value={id}>{name}</SelectItem>
           ))}
         </SelectContent>
