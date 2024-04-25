@@ -49,6 +49,9 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
       createdAt: "asc",
     },
   })
+
+  const getUserFaculty = faculties.find(({ id }) => user.facultyId === id)
+
   const faculty =
     faculties.find((value) => value.id === facultyId) ?? faculties[0]
 
@@ -81,7 +84,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>
-              {user.facultyId ? faculty?.name : "-"}
+              {user.facultyId ? getUserFaculty?.name : "-"}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -143,7 +146,12 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
           )}
 
           {user?.role === "GUEST" && (
-            <GuestBlogsList user={user} query={q} page={pageNumber} rows={rowsNumber} />
+            <GuestBlogsList
+              user={user}
+              query={q}
+              page={pageNumber}
+              rows={rowsNumber}
+            />
           )}
         </>
       )}
