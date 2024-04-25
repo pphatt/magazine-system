@@ -43,9 +43,24 @@ export default async function LobbyPage() {
         author: true,
       },
     })) as ContributionWithUser[]
+  } else if (user?.role === "MARKETING_COORDINATOR") {
+    contributions = (await db.contributions.findMany({
+      where: {
+        facultyId: user.facultyId ?? "",
+        status: "APPROVE",
+      },
+      take: 12,
+      orderBy: {
+        gradedAt: "desc",
+      },
+      include: {
+        author: true,
+      },
+    })) as ContributionWithUser[]
   } else {
     contributions = (await db.contributions.findMany({
       where: {
+        allowGuest: true,
         status: "APPROVE",
       },
       take: 12,
