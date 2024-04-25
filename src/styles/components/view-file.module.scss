@@ -1,0 +1,21 @@
+.content {
+  max-width: 800px !important;
+}
+
+.file {
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  iframe {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  &:has(.image) {
+    overflow-y: scroll;
+  }
+}
+
+.image {
+  width: 100%;
+}

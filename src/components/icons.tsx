@@ -1,6 +1,7 @@
 import {
   AlertCircle,
   AlignJustify,
+  View,
   ArrowUpFromDot,
   Ban,
   BarChart3,
@@ -119,6 +120,7 @@ export const Icons = {
   imageDownload: ImageDown,
   mail: Mail,
   cornerDownRight: CornerDownRight,
+  viewFile: View,
   clock: Clock,
   heart: Heart,
   arrowUpVote: ArrowUpFromDot,

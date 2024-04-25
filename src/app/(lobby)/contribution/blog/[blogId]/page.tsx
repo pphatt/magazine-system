@@ -18,6 +18,7 @@ import { Icons } from "@/components/icons"
 import { LikeBtn } from "@/components/like-btn"
 import { RenderBlog } from "@/components/render-blog"
 import { SaveBlog } from "@/components/save-blog"
+import { ViewFile } from "@/components/view-file"
 import styles from "@/styles/(blog)/page.module.scss"
 import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
 import { AllowGuest } from "@/app/(lobby)/contribution/blog/[blogId]/_components/allow-guest"
@@ -200,14 +201,21 @@ export default async function BlogPage({
                 const name = _split[_split.length - 1] ?? ""
 
                 return (
-                  <Link
-                    href={`https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contributions/${value}`}
-                    className={styles["file"]}
-                    download={true}
-                  >
-                    <Icons.fileDownload />
-                    <span>{name}</span>
-                  </Link>
+                  <div className={styles["file-wrapper"]}>
+                    <Link
+                      href={`https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contributions/${value}`}
+                      download={true}
+                      className={styles["file"]}
+                    >
+                      <Icons.fileDownload />
+                      <span>{name}</span>
+                    </Link>
+
+                    <ViewFile
+                      name={name}
+                      url={`https://duwbantxkrrmpwimkocd.supabase.co/storage/v1/object/public/student-contributions/${value}`}
+                    />
+                  </div>
                 )
               })}
             </div>

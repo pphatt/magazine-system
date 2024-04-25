@@ -278,9 +278,15 @@
   gap: 0.5rem;
 }
 
+.file-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .file {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 0.5rem;
 
   width: fit-content;
