@@ -157,7 +157,7 @@ model Contributions {
   academicYear   AcademicYear @relation(fields: [academicYearId], references: [id], onDelete: Cascade)
 
   authorId String
-  author   User   @relation("Author", fields: [authorId], references: [id])
+  author   User   @relation("Author", fields: [authorId], references: [id], onDelete: Cascade)
 
   marketingCoordinatorId String?
   marketingCoordinator   User?   @relation("Marketing Coordinator", fields: [marketingCoordinatorId], references: [id])
@@ -168,7 +168,7 @@ model Contributions {
 }
 
 model LikeContributions {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   contribution   Contributions @relation(fields: [contributionId], references: [id], onDelete: Cascade)
@@ -180,7 +180,7 @@ model LikeContributions {
 }
 
 model SaveContributions {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   contribution   Contributions @relation(fields: [contributionId], references: [id], onDelete: Cascade)
@@ -196,7 +196,7 @@ model Comment {
   text      String
   createdAt DateTime @default(now())
 
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 
   contribution   Contributions @relation(fields: [contributionId], references: [id], onDelete: Cascade)
