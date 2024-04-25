@@ -22,6 +22,7 @@ import { ViewFile } from "@/components/view-file"
 import styles from "@/styles/(blog)/page.module.scss"
 import { ActionGroupButton } from "@/app/(lobby)/contribution/blog/[blogId]/_components/action-group-btn"
 import { AllowGuest } from "@/app/(lobby)/contribution/blog/[blogId]/_components/allow-guest"
+import {DeleteContribution} from "@/components/delete-contribution";
 
 const DownloadZip = dynamic(() => import("@/components/download-zip"), {
   ssr: false,
@@ -149,11 +150,8 @@ export default async function BlogPage({
                           Edit
                         </Link>
                       </Button>
-                      <Button asChild variant={"ghost"}>
-                        <Link href={`/contribution/blog/${blogId}/edit`}>
-                          Delete
-                        </Link>
-                      </Button>
+
+                      <DeleteContribution contributionId={blogId} />
                     </div>
                   )}
               </div>

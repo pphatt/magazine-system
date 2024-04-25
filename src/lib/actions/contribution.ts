@@ -14,6 +14,7 @@ import { currentUser } from "@/lib/auth/auth"
 import { commentSchema } from "@/lib/validations/comment"
 import {
   contributionGradingSchema,
+  deleteContribution,
   guestPermissionSchema,
   likeContributionSchema,
   saveContributionSchema,
@@ -239,7 +240,34 @@ export const editBlog = async (formData: FormData) => {
   }
 }
 
-export const deleteBlog = async () => {}
+export const deleteBlog = async (
+  values: z.infer<typeof deleteContribution>
+) => {
+  try {
+    const { contributionId } = deleteContribution.parse(values)
+
+    const user = await currentUser()
+
+    if (!user || !user.id) {
+      return { error: "Unauthorized" }
+    }
+
+    await db.contributions.delete({
+      where: {
+        id: contributionId,
+      },
+    })
+
+    return { success: "OK" }
+  } catch (error) {
+    console.log(error)
+    if (error instanceof z.ZodError) {
+      return { error: JSON.stringify(error.message) }
+    }
+
+    return { error: "Could not grading blog at this time. Please try later" }
+  }
+}
 
 export const gradingBlog = async (
   values: z.infer<typeof contributionGradingSchema>

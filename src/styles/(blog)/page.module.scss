@@ -158,6 +158,8 @@
 }
 
 .manage-blog-wrapper {
+  display: flex;
+
   background: rgba(245, 158, 11, 0.1);
 
   height: 42px;
@@ -168,6 +170,14 @@
   padding: 0.25rem;
 
   a {
+    height: 100% !important;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.035) !important;
+    }
+  }
+
+  button {
     height: 100% !important;
 
     &:hover {

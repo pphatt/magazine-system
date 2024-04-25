@@ -87,6 +87,10 @@ export const getRecentContributionSchema = z.object({
   academicYearId: z.coerce.string(),
 })
 
+export const deleteContribution = z.object({
+  contributionId: z.coerce.string(),
+})
+
 export const contributionGradingSchema = z.object({
   contributionId: z.coerce.string(),
   status: z.coerce.string(),
