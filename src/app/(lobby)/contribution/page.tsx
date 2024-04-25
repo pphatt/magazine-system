@@ -91,6 +91,7 @@ export default async function FacultyPage({ searchParams }: SearchPageProps) {
 
       <ContributionSelect
         faculties={faculties}
+        academicYear={academicYear!}
         academicYears={academicYears}
         role={user.role.toLowerCase()}
       />

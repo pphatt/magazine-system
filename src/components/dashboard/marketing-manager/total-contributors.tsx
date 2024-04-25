@@ -14,7 +14,7 @@ import {
 } from "chart.js"
 import { Bar } from "react-chartjs-2"
 
-import type { ContributionsWithAcademicYear, Contributors } from "@/lib/prisma"
+import type { ContributionsWithAcademicYear } from "@/lib/prisma"
 import { getRandomColor } from "@/lib/utils"
 import {
   Select,
