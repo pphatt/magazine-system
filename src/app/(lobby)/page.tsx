@@ -5,6 +5,7 @@ import type { User } from "next-auth"
 
 import { currentUser } from "@/lib/auth/auth"
 import type { ContributionWithUser } from "@/lib/prisma"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { BlogCard } from "@/components/blog-card"
 import { FacultyCarousel } from "@/components/carousel/faculty-carousel"
@@ -23,6 +24,26 @@ export default async function LobbyPage() {
         select: {
           contributions: true,
         },
+      },
+    },
+  })
+
+  const contributors = await db.user.findMany({
+    take: 10,
+    include: {
+      _count: {
+        select: {
+          authorContributions: {
+            where: {
+              status: "APPROVE",
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      authorContributions: {
+        _count: "desc",
       },
     },
   })
@@ -87,6 +108,39 @@ export default async function LobbyPage() {
       <div className={styles["faculty-carousel"]}>
         <div className={styles["faculty-carousel-header"]}>Faculties</div>
         <FacultyCarousel faculty={faculty} />
+      </div>
+
+      <div className={styles["top-contributors-card"]}>
+        <div
+          className={styles["blog-card-header-wrapper"]}
+          style={{ width: "100%", justifyContent: "flex-start" }}
+        >
+          <div className={styles["blog-card-header"]}>
+            <h2>Top contributors</h2>
+          </div>
+        </div>
+        <div className={styles["top-contributors"]}>
+          {contributors.map(({ name, image }) => (
+            <div className={styles["blog-author-details"]}>
+              <Avatar className={styles["avatar"]}>
+                <AvatarImage
+                  src={image ?? ""}
+                  alt={""}
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "top",
+                  }}
+                />
+                <AvatarFallback>
+                  {name?.charAt(0).toUpperCase() ?? ""}
+                </AvatarFallback>
+              </Avatar>
+              <div className={styles["author-name-wrapper"]}>
+                <div className={styles["author-name"]}>{name}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles["blog-card"]}>
